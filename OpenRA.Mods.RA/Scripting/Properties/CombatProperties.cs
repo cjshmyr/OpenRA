@@ -34,5 +34,14 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Move.Move(cell, WRange.FromCells(closeEnough))));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Guard the target actor.")]
+		public void Guard(Actor targetActor)
+		{
+			var guard = self.TraitOrDefault<Guard>();
+			if (guard != null && targetActor.HasTrait<Guardable>())
+				guard.GuardTarget(self, Target.FromActor(targetActor));
+		}
 	}
 }
