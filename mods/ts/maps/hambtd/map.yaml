@@ -1,0 +1,222 @@
+MapFormat: 7
+
+RequiresMod: ts
+
+Title: TD Test
+
+Description: 1-4 players, work in progress!
+
+Author: hamb
+
+Tileset: TEMPERATE
+
+MapSize: 66,130
+
+Bounds: 1,1,64,128
+
+Visibility: Lobby
+
+Type: Conquest
+
+Videos:
+
+Options:
+	Crates: False
+	Fog: False
+	Shroud: False
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 500
+	TechLevel: None
+	ConfigurableStartingUnits: False
+	ShortGame: False
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Ally:
+		Name: Ally
+		Faction: gdi
+		ColorRamp: 136,255,127
+		Allies: Multi0, Multi1, Multi2, Multi3
+		Enemies: Creeps
+	PlayerReference@Multi0:
+		Name: Multi0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		ColorRamp: 155,224,137
+		LockSpawn: True
+		LockTeam: True
+		Allies: Ally, Multi1, Multi2, Multi3
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		ColorRamp: 70,224,137
+		LockSpawn: True
+		LockTeam: True
+		Allies: Ally, Multi0, Multi2, Multi3
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		ColorRamp: 44,224,137
+		LockSpawn: True
+		LockTeam: True
+		Allies: Ally, Multi0, Multi1, Multi3
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		ColorRamp: 216,224,137
+		LockSpawn: True
+		LockTeam: True
+		Allies: Ally, Multi0, Multi1, Multi2
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		Faction: nod
+		ColorRamp: 255,224,137
+		Enemies: Ally
+
+Actors:
+	a_DefendMe: caaray
+		Owner: Neutral
+		Location: 43,21
+	a_Spawner1: waypoint
+		Owner: Neutral
+		Location: 49,-29
+	a_Spawner2: waypoint
+		Owner: Neutral
+		Location: 71,-19
+	a_Spawner3: waypoint
+		Owner: Neutral
+		Location: 87,-3
+	a_Spawner4: waypoint
+		Owner: Neutral
+		Location: 94,17
+	a_Path1: waypoint
+		Owner: Neutral
+		Location: 33,-13
+	a_Path2: waypoint
+		Owner: Neutral
+		Location: 49,3
+	a_Path3: waypoint
+		Owner: Neutral
+		Location: 65,19
+	a_Path4: waypoint
+		Owner: Neutral
+		Location: 78,33
+	a_PathConverge: waypoint
+		Owner: Neutral
+		Location: 55,10
+	a_PathConverge2: waypoint
+		Owner: Neutral
+		Location: 47,18
+	a_BuilderMulti0: builder
+		Owner: Multi0
+		Location: 43,17
+		SubCell: 2
+		Facing: 92
+		TurretFacing: 92
+	a_BuilderMulti1: engineer
+		Owner: Multi1
+		Location: 44,18
+		SubCell: 2
+		Facing: 92
+		TurretFacing: 92
+	a_BuilderMulti2: engineer
+		Owner: Multi2
+		Location: 47,21
+		SubCell: 2
+		Facing: 92
+		TurretFacing: 92
+	a_BuiulderMulti3: engineer
+		Owner: Multi3
+		Location: 48,22
+		SubCell: 2
+		Facing: 92
+		TurretFacing: 92
+	Actor16: galite
+		Owner: Multi0
+		Location: 50,-30
+	Actor17: galite
+		Owner: Multi1
+		Location: 72,-20
+	Actor18: galite
+		Owner: Multi2
+		Location: 88,-4
+	Actor19: galite
+		Owner: Multi3
+		Location: 95,16
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScript:
+			Scripts: hambtd.lua
+	BUILDER:
+		Inherits: ENGINEER
+		Mobile:
+			Speed: 200
+		RenderNameTag:
+		RenderSprites:
+			Image: ENGINEER
+		GivesBuildableArea:
+		ProvidesRadar:
+		Production:
+			Produces: Building,Defense
+		ProvidesPrerequisite@gdi:
+			Race: gdi
+			Prerequisite: structures.gdi
+		MustBeDestroyed:
+	WAVEUNIT:
+		Inherits: E1
+		RenderSprites:
+			Image: E1
+		Tooltip:
+			Name: Paul Chote
+		MustBeDestroyed:
+	NALASR:
+		Buildable:
+			Prerequisites: ~structures.gdi
+		Valued:
+			Cost: 10
+		Power:
+			Amount: 0
+		
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
