@@ -192,7 +192,7 @@ Rules:
 		RenderSprites:
 			Image: engineer
 		ProvidesPrerequisite@something:
-	BUILDER:
+	builder:
 		Inherits: ENGINEER
 		Mobile:
 			Speed: 200
@@ -209,13 +209,51 @@ Rules:
 			Race: gdi
 			Prerequisite: builder.gdi
 		MustBeDestroyed:
-	WAVEUNIT:
+	waveunit:
 		Inherits: E1
 		RenderSprites:
 			Image: E1
 		Tooltip:
 			Name: Paul Chote
 		MustBeDestroyed:
+	^td-towerbase:
+		Inherits: ^Building
+		Valued:
+			Cost: 0
+		Power:
+			Amount: 0
+		Building:
+		Health:
+			HP: 10
+		BodyOrientation:
+			QuantizedFacings: 32
+		AutoTarget:
+		Turreted:
+			ROT: 10
+			InitialFacing: 50
+		AttackTurreted:
+		RenderBuilding:
+			Image: testbase
+		SelectionDecorations:
+			VisualBounds: 48, 48, 0, -12
+	td-gatling:
+		Inherits: ^td-towerbase
+		Tooltip:
+			Name: Gatling Tower
+			Description: A tower with gun defenses
+			Icon: icon-vulcan
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi			
+		WithTurret@VULC:
+			Recoils: no
+			Sequence: turret-vulcan
+		Armament@VULCPRIMARY:
+			Weapon: VulcanTower
+			LocalOffset: 768,85,512
+			MuzzleSequence: muzzle
+			MuzzleSplitFacings: 8
 	TDTESTBASE:
 		Inherits: ^Building
 		Valued:
@@ -328,6 +366,8 @@ Rules:
 			Type: tower.light
 	
 Sequences:
+	gatling:
+		icon: twr1icon
 	testbase:
 		Defaults: gactwr
 			Offset: 0, -12
@@ -351,6 +391,9 @@ Sequences:
 			Length: 11
 			ShadowStart: 11
 		icon: towricon
+			Offset: 0, 0
+			UseTilesetCode: false
+		icon-vulcan: twr1icon
 			Offset: 0, 0
 			UseTilesetCode: false
 		turret-vulcan: gtctwr_b
@@ -378,7 +421,8 @@ Sequences:
 			UseTilesetCode: false
 		muzzle7: mgun-ne
 			Length: *
-			UseTilesetCode: false			
+			UseTilesetCode: false
+	
 			
 VoxelSequences:
 
