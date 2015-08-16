@@ -216,6 +216,7 @@ Rules:
 		Tooltip:
 			Name: Paul Chote
 		MustBeDestroyed:
+	# ^td-building:		
 	^td-towerbase:
 		Inherits: ^Building
 		Valued:
@@ -240,13 +241,13 @@ Rules:
 		Inherits: ^td-towerbase
 		Tooltip:
 			Name: Gatling Tower
-			Description: A tower with gun defenses
+			Description: todo
 			Icon: icon-vulcan
 		Buildable:
 			Queue: Defense
 			BuildPaletteOrder: 133
 			Prerequisites: builder.gdi			
-		WithTurret@VULC:
+		WithTurret:
 			Recoils: no
 			Sequence: turret-vulcan
 		Armament@VULCPRIMARY:
@@ -254,41 +255,40 @@ Rules:
 			LocalOffset: 768,85,512
 			MuzzleSequence: muzzle
 			MuzzleSplitFacings: 8
-	TDTESTBASE:
-		Inherits: ^Building
-		Valued:
-			Cost: 0
-		Power:
-			Amount: 0
+	td-barrage:
+		Inherits: ^td-towerbase
 		Tooltip:
-			Name: Test Base
+			Name: Cluster Tower
 			Description: todo
+			Icon: icon-rocket
 		Buildable:
 			Queue: Defense
 			BuildPaletteOrder: 133
-			Prerequisites: builder.gdi
-		Building:
-		Health:
-			HP: 10
-		BodyOrientation:
-			QuantizedFacings: 32
-		AutoTarget:
-		Turreted:
-			ROT: 10
-			InitialFacing: 50
-		AttackTurreted:
-		RenderBuilding:
-			Image: testbase
-		SelectionDecorations:
-			VisualBounds: 48, 48, 0, -12
-		WithTurret@VULC:
+			Prerequisites: builder.gdi			
+		WithTurret:
 			Recoils: no
-			Sequence: turret-vulcan
-		Armament@VULCPRIMARY:
-			Weapon: VulcanTower
-			LocalOffset: 768,85,512
-			MuzzleSequence: muzzle
-			MuzzleSplitFacings: 8
+			Sequence: turret-rocket
+		Armament@ROCKET:
+			Weapon: RPGTower
+			LocalOffset: 512,-128,512
+	td-cluster:
+		Inherits: ^td-towerbase
+		Tooltip:
+			Name: Rocket Barrage Tower
+			Description: todo
+			Icon: icon-sam
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi			
+		WithTurret:
+			Recoils: no
+			Sequence: turret-sam
+		Armament@SAM:
+			Weapon: RedEye2
+			LocalOffset: 512,0,512
+	td-laser:
+		
 	GACTWR:
 		Buildable:
 			Prerequisites: ~builder.gdi
@@ -396,8 +396,19 @@ Sequences:
 		icon-vulcan: twr1icon
 			Offset: 0, 0
 			UseTilesetCode: false
+		icon-rocket: twr2icon
+			Offset: 0, 0
+			UseTilesetCode: false		
+		icon-sam: twr3icon
+			Offset: 0, 0
+			UseTilesetCode: false		
 		turret-vulcan: gtctwr_b
 			Facings: 32
+		turret-rocket: gtctwr_c
+			Facings: 32
+			UseTilesetCode: false
+		turret-sam: gtctwr_d
+			Facings: 32			
 		muzzle0: mgun-n
 			Length: *
 			UseTilesetCode: false
