@@ -216,8 +216,7 @@ Rules:
 		Tooltip:
 			Name: Paul Chote
 		MustBeDestroyed:
-	# ^td-building:		
-	^td-towerbase:
+	^td-building:
 		Inherits: ^Building
 		Valued:
 			Cost: 0
@@ -232,11 +231,13 @@ Rules:
 		Turreted:
 			ROT: 10
 			InitialFacing: 50
-		AttackTurreted:
+		AttackTurreted:	
+		SelectionDecorations:
+			VisualBounds: 48, 48, 0, -12		
+	^td-towerbase:
+		Inherits: ^td-building
 		RenderBuilding:
 			Image: testbase
-		SelectionDecorations:
-			VisualBounds: 48, 48, 0, -12
 	td-gatling:
 		Inherits: ^td-towerbase
 		Tooltip:
@@ -288,7 +289,46 @@ Rules:
 			Weapon: RedEye2
 			LocalOffset: 512,0,512
 	td-laser:
-		
+		Inherits: ^td-building
+		Tooltip:
+			Name: Laser Tower
+			Description: todo
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi
+		RenderBuilding:
+			Image: nalasr
+		Armament:
+			Weapon: LaserFire2
+		RenderVoxels:
+			Image: nalasr
+		WithVoxelTurret:
+	td-obelisk:
+		Inherits: ^td-building
+		Tooltip:
+			Name: Large Laser Tower
+			Description: todo
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi
+		RenderBuilding:
+			Image: naobel
+		Armament:
+			Weapon: LaserFire
+			LocalOffset: 1400,200,1250
+		AttackCharge:
+			ChargeAudio: obelpowr.aud
+			ReloadTime: 50
+			InitialChargeDelay: 50
+		WithChargeOverlay:
+			Sequence: active
+			Palette: player
+			IsPlayerPalette: true
+		WithIdleOverlay@LIGHTS:
+			Sequence: idle-lights
+		AutoTarget:
 	GACTWR:
 		Buildable:
 			Prerequisites: ~builder.gdi
@@ -433,9 +473,9 @@ Sequences:
 		muzzle7: mgun-ne
 			Length: *
 			UseTilesetCode: false
-	
 			
 VoxelSequences:
+
 
 Weapons:
 
