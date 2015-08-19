@@ -20,6 +20,7 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using System.Diagnostics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -142,7 +143,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
 				var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
 				var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
-				mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
+				mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 128; //256; // 64;
 
 				var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
 				map = new Map(rules.TileSets[tileset], mapSize, mapSize)
@@ -165,7 +166,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					// CnC
 					using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
-						UnpackCncTileData(s);
+					{
+						//UnpackCncTileData(s);
+						UnpackSSTileData(s);
+					}
 					ReadCncOverlay(file);
 					ReadCncTrees(file);
 				}
@@ -323,6 +327,31 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				};
 
 				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+			}
+		}
+
+
+		void UnpackSSTileData(Stream ms)
+		{
+			// all SS maps have a 128x128 size
+			// unlike CNC, not all x/y are in the map, so the first two bytes specify coordinates
+			try
+			{
+				while (ms.CanRead)
+				{
+					var x = ms.ReadUInt8();
+					var y = ms.ReadUInt8() * 2;
+					var type = ms.ReadUInt8();
+					var index = ms.ReadUInt8();
+
+					Debug.WriteLine("x={0},y={1},type={2},index={3}", x, y, type, index);
+
+					map.MapTiles.Value[new CPos(x, y)] = new TerrainTile(type, index);
+				}
+			}
+			catch (Exception e)
+			{
+				var test = 0;
 			}
 		}
 
