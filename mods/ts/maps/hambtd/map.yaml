@@ -329,6 +329,28 @@ Rules:
 		WithIdleOverlay@LIGHTS:
 			Sequence: idle-lights
 		AutoTarget:
+	td-test1:
+		Inherits: ^td-building
+		Tooltip:
+			Name: What the hell is this
+			Description: todo
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi
+		RenderBuilding:
+			Image: gapowrup
+	td-test2:
+		Inherits: ^td-building
+		Tooltip:
+			Name: What the hell is this - part 2
+			Description: todo
+		Buildable:
+			Queue: Defense
+			BuildPaletteOrder: 133
+			Prerequisites: builder.gdi
+		RenderBuilding:
+			Image: gaplug3
 	GACTWR:
 		Buildable:
 			Prerequisites: ~builder.gdi
@@ -357,8 +379,6 @@ Rules:
 			Cost: 10
 		Power:
 			Amount: 0
-	GAPOWRUP:
-	GAPLUG3:	
 	NALASR:
 		Buildable:
 			Prerequisites: ~builder.gdi
@@ -406,8 +426,10 @@ Rules:
 			Type: tower.light
 	
 Sequences:
-	gatling:
-		icon: twr1icon
+	gapowrup:
+		idle: gapowrup
+		make: gapowrup
+			Length: 1
 	testbase:
 		Defaults: gactwr
 			Offset: 0, -12

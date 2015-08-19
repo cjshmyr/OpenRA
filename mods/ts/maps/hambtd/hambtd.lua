@@ -10,6 +10,27 @@ Player4 = Player.GetPlayer("Multi3")
 Ally = Player.GetPlayer("Ally")
 Creeps = Player.GetPlayer("Creeps")
 
+-- Interesting buildings
+-- temperat.mix 
+-- gttech_a.shp (a dome)
+-- ntstlh_a (a dome)
+-- tibtre01 to 03 (trees, for tiberium towers?)
+
+-- Interesting effects for weapons
+-- conquer.mix
+-- cldrngl1 (a smoke spread effect for impact)
+-- cloud1 (a tiberium cloud)
+-- dropexp (a decent smoky drop)
+-- emp_fx01 (an amazing lightning ball)'
+-- fire1, firepowr (fire shps)
+-- h2o_exp (water explosions -- for a water element??)
+-- pulsball (another amazing lightning ball)
+-- ring1 (decent lightning explosion)
+-- torpedo (a green ball, potentially use this for tiberium)
+
+-- Other unexperimented ideas
+-- turn the missile silo into a defense
+
 -- Actor vars
 Player1WavePath = { a_Spawner1, a_Path1, a_PathConverge, a_PathConverge2 }
 Player2WavePath = { a_Spawner2, a_Path2, a_PathConverge, a_PathConverge2 }
