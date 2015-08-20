@@ -76,10 +76,70 @@ World:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
+	MPStartUnits@mcvonly:
+		Class: none
+		ClassName: MCV Only
+		Factions: gdi, nod
+		BaseActor: mcv
+	MPStartUnits@defaultgdia:
+		Class: light
+		ClassName: Light Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
+	MPStartUnits@defaultgdib:
+		Class: light
+		ClassName: Light Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
+	MPStartUnits@defaultnoda:
+		Class: light
+		ClassName: Light Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,bggy,bike
+	MPStartUnits@defaultnodb:
+		Class: light
+		ClassName: Light Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,e3,bggy
+	MPStartUnits@defaultnodc:
+		Class: light
+		ClassName: Light Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
+	MPStartUnits@heavynoda:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
+	MPStartUnits@heavynodb:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
+	MPStartUnits@heavygdia:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
+	MPStartUnits@heavygdib:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
+	SpawnMPUnits:
 	CrateSpawner:
 		Minimum: 1
-		Maximum: 100
-		SpawnInterval: 1
+		Maximum: 6
+		SpawnInterval: 120
 		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
