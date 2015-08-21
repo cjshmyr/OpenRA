@@ -11,27 +11,29 @@ Folders:
 	./mods/ss/bits/jungle
 	./mods/ss/bits/ss
 	./mods/ss/uibits
-	~^Content/cnc
+	~^Content/ss
 
 MapFolders:
 	./mods/ss/maps: System
-	~^maps/cnc: User
+	~^maps/ss: User
 
 Packages:
-	speech.mix
+	aud.mix
 	conquer.mix
+	deseicnh.mix
+	general.mix
+	local.mix
+	scores.mix
+	sole.mix
+	soledisk.mix
 	sounds.mix
-	tempicnh.mix
+	speech.mix
 	temperat.mix
+	tempicnh.mix
+	update.mix
+	updatec.mix
 	winter.mix
-	desert.mix
-	snow.mix
-	~movies-gdi.mix
-	~movies-nod.mix
-	~movies.mix
-	~scores.mix
-	~scores2.mix
-	~transit.mix
+	winticnh.mix
 
 Rules:
 	./mods/ss/rules/misc.yaml
@@ -86,7 +88,7 @@ Chrome:
 Assemblies:
 	./mods/common/OpenRA.Mods.Common.dll
 	./mods/ra/OpenRA.Mods.RA.dll
-	./mods/ss/OpenRA.Mods.Cnc.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	./mods/ss/chrome/install.yaml
@@ -144,7 +146,7 @@ ContentInstaller:
 	MusicMenuWidget: INSTALL_MUSIC_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
-	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt
+	PackageMirrorList: http://hamb.in/ss/packages/cnc-mirrors.txt
 	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
 	PackageToExtractFromCD: install/setup.z
 	ExtractFilesFromCD:
@@ -152,7 +154,7 @@ ContentInstaller:
 	CopyFilesFromCD:
 		.: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
 	ShippedSoundtracks: 4
-	MusicPackageMirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
+	MusicPackageMirrorList: http://hamb.in/ss/packages/cnc-music-mirrors.txt
 	InstallShieldCABFileIds: 66, 45, 42, 65, 68, 67, 71, 47, 49, 60, 75, 73, 53
 
 ServerTraits:

@@ -1,0 +1,250 @@
+Optained from MrFibble on http://www.ppmforums.com/viewtopic.php?t=13248&sid=a7b5dd88d5e87f08434c1c7e3802a1d6
+
+File lists for Sole Survivor MIX files
+--------------------------------------
+By MrFlibble
+
+Since the current version of XCC Mixer doesn't identify file names
+in Sole Survivor's MIX files, so I did a little research, and, as
+a result, was able to identify almost all files. Also, I have found
+the names for some Tinerian Dawn files, these are also present in
+the end of this document.
+
+Sole Survivor SCORES.MIX file list:
+
+ID		Filename	Description
+A6064500	MUDREMX.AUD	MUD Remix
+DBA7A5ED	DRILL.AUD	Drill
+E8071CDB	CREEPING.AUD	Creeping Upon
+164136D7	CRSHNVOX.AUD	Crush (remix)
+2239092F	WORKREMX.AUD	Workmen Remix
+2426DCCF	DEPTHCHG.AUD	Depth Charge
+262502EB	HELLNVOX.AUD	HellMarch (remix)
+26391CDF	IRONFIST.AUD	Iron Fist
+69FDDD28	MERCY98.AUD	No Mercy '98
+
+
+Sole Survivor SOLE.MIX file list:
+
+ID		Filename	Description
+064F1AE1	CRUNSHRD.AUD	reveal map
+62182CEA	CRRANGE.AUD	weapon range upgraded
+963036D4	CRUNCLK.AUD	stealth deactivated
+977E25E4	CRHEAL.AUD	health restored
+9E1A28D8	CRSPEED.AUD	speed upgraded
+9E3E42EC	CRTPORT.AUD	teleport
+A5EE3CE8	CRARMOR.AUD	armor upgraded
+E22128D3	CRRELOAD.AUD	rapid reload
+EE4D28DF	CRSHROUD.AUD	hide map
+F6512ABD	CRWEAPON.AUD	firepower upgraded
+09EC0F21	UNCLOAKD.SHP	crat: deactivate stealth
+2F22E009	RAPTICNH.TEM	icon: velociraptor
+3225DF09	RAPTICNH.SHP	icon: velociraptor
+3EF72411	TREXICNH.TEM	icon: t-rex
+41F43703	STATDISP.SHP	sidebar background bits
+41FA2311	TREXICNH.SHP	icon: t-rex
+71EA0446	TIMEQK2.SHP	crat: time quake
+8DDDEE1C	HEALTHD.SHP	crat: heal
+8E162212	MSGLEFT.SHP	message bar left
+A5E84622	SUCRATE.SHP	super burst crate
+AB6DDE35	RADARD.SHP	crat: radar
+ABA5E7F5	ACRATE.SHP	armageddon crate
+ABA5E811	HCRATE.SHP	heal crate
+ADDA1C48	SATTAB.SHP	unit stats bar
+AE222A0A	MORTARD.SHP	crat: firepower upgarde
+BB8E1625	TELEFX.SHP	teleport flare
+D9C3AA2D	MSGRT.SHP	message bar right
+DB7A260F	MSGMID.SHP	message bar center
+E38DEE13	RELOAD.SHP	crat: rapid reload
+E39221F1	ARMORD.SHP	crat: armor upgrade
+EB072411	TRICICNH.TEM	icon: triceratops
+EE0A2311	TRICICNH.SHP	icon: triceratops
+EE2814FB	LITENNGD.SHP	crat: speed upgrade
+F2EF0019	VICEICNH.TEM	icon: visceroid
+F5F1FF19	VICEICNH.SHP	icon: visceroid
+FAF72C0D	STEGICNH.TEM	icon: stegosaurus
+FDFA2B0D	STEGICNH.SHP	icon: stegosaurus
+
+
+Sole Survivor SOLEDISK.MIX file list:
+
+ID		Filename	Description
+183366D3	C_STLTHA.AUD	Rambo: Stealth Mode
+183366DB	E_STLTHA.AUD	Eva: Stealth Mode
+183366FB	M_STLTHA.AUD	Guy: Stealth Mode
+18336713	S_STLTHA.AUD	Girl: Stealth Mode
+1E3366D3	C_STLTHD.AUD	Rambo: Stealth Deactivated
+1E3366DB	E_STLTHD.AUD	Eva: Stealth Deactivated
+1E3366FB	M_STLTHD.AUD	Guy: Stealth Deactivated
+1E336713	S_STLTHD.AUD	Girl: Stealth Deactivated
+2E3B40D3	C_STLALL.AUD	Rambo: Global Stealth Deactivated
+2E3B40DB	E_STLALL.AUD	Eva: Global Stealth Deactivated
+2E3B40FB	M_STLALL.AUD	Guy: Global Stealth Deactivated
+2E3B4113	S_STLALL.AUD	Girl: Global Stealth Deactivated
+71C86AD0	C_HEAL1.AUD	Rambo: Health Upgraded
+71C86AD8	E_HEAL1.AUD	Eva: Health Upgraded
+71C86AF8	M_HEAL1.AUD	Guy: Health Upgraded
+71C86B10	S_HEAL1.AUD	Girl: Health Upgraded
+95FC7AE0	C_UNIT1.AUD	Rambo: Choose Your Unit
+95FC7AE8	E_UNIT1.AUD	Eva: Choose Your Unit
+95FC7B08	M_UNIT1.AUD	Guy: Choose Your Unit
+95FC7B20	S_UNIT1.AUD	Girl: Choose Your Unit
+AC2750DB	C_RAPID1.AUD	Rambo: Rapid Reload
+AC2750E3	E_RAPID1.AUD	Eva: Rapid Reload
+AC275103	M_RAPID1.AUD	Guy: Rapid Reload
+AC27511B	S_RAPID1.AUD	Girl: Rapid Reload
+AC294CD7	C_RANGE1.AUD	Rambo: Range Upgraded
+AC294CDF	E_RANGE1.AUD	Eva: Range Upgraded
+AC294CFF	M_RANGE1.AUD	Guy: Range Upgraded
+AC294D17	S_RANGE1.AUD	Girl: Range Upgraded
+AC2B68D8	C_MAPUP1.AUD	Rambo: Map Revealed
+AC2B68E3	E_MAPUP1.AUD	Eva: Map Revealed
+AC2B6903	M_MAPUP1.AUD	Guy: Map Revealed
+AC2B691B	S_MAPUP1.AUD	Girl: Map Revealed
+AC4340C3	C_RADAR1.AUD	Rambo: Radar Activated
+AC4340CB	E_RADAR1.AUD	Eva: Radar Activated
+AC4340EB	M_RADAR1.AUD	Guy: Radar Activated
+AC434103	S_RADAR1.AUD	Girl: Radar Activated
+B043490B	M_UBTEL1.AUD	Guy: You've Been Teleported
+B1E05CE4	C_NUKE1.AUD	Rambo: Nuclear Bomb
+B1E05CEC	E_NUKE1.AUD	Eva: Nuclear Bomb
+B1E05D0C	M_NUKE1.AUD	Guy: Nuclear Bomb
+B1E05D24	S_NUKE1.AUD	Girl: Nuclear Bomb
+BC0D40C9	C_MEGAA1.AUD	Rambo: Mega Armor
+BC0D40D1	E_MEGAA1.AUD	Eva: Mega Armor
+BC0D40F1	M_MEGAA1.AUD	Guy: Mega Armor
+BC0D4109	S_MEGAA1.AUD	Girl: Mega Armor
+BC1556D3	C_HELLO1.AUD	Rambo: Welcome
+BC1556DB	E_HELLO1.AUD	Eva: Welcome
+BC1556FB	M_HELLO1.AUD	Guy: Welcome
+BC155713	S_HELLO1.AUD	Girl: Welcome
+BC3140C9	C_MEGAS1.AUD	Rambo: Mega Speed
+BC3140D1	E_MEGAS1.AUD	Eva: Mega Speed
+BC3140F1	M_MEGAS1.AUD	Guy: Mega Speed
+BC314109	S_MEGAS1.AUD	Girl: Mega Speed
+BC3940C9	C_MEGAW1.AUD	Rambo: Mega Weapon
+BC3940D1	E_MEGAW1.AUD	Eva: Mega Weapon
+BC3940F1	M_MEGAW1.AUD	Guy: Mega Weapon
+BC394109	S_MEGAW1.AUD	Girl: Mega Weapon
+BC4748D3	C_TELEP1.AUD	Rambo: Teleport Activated
+BC4748DB	E_TELEP1.AUD	Eva: Teleport Activated
+BC474913	S_TELEP1.AUD	Girl: Teleport Activated
+BC4F5EBD	C_WEAPN1.AUD	Rambo: Weapon Upgraded
+BC4F5EC5	E_WEAPN1.AUD	Eva: Weapon Upgraded
+BC4F5EE5	M_WEAPN1.AUD	Guy: Weapon Upgraded
+BC4F5EFD	S_WEAPN1.AUD	Girl: Weapon Upgraded
+BE1556FB	M_HELLO2.AUD	Guy: Welcome 2
+BF8223FE	C_ION1.AUD	Rambo: Ion Cannon
+BF822406	E_ION1.AUD	Eva: Ion Cannon
+BF822426	M_ION1.AUD	Guy: Ion Cannon
+BF82243E	S_ION1.AUD	Girl: Ion Cannon
+CB6E23F8	C_DRK1.AUD	Rambo: Global Darkness
+CB6E2400	E_DRK1.AUD	Eva: Global Darkness
+CB6E2420	M_DRK1.AUD	Guy: Global Darkness
+CB6E2438	S_DRK1.AUD	Girl: Global Darkness
+E42B48E1	C_LOSER1.AUD	Rambo: You Lose
+E42B48E9	E_LOSER1.AUD	Eva: You Lose
+E42B4909	M_LOSER1.AUD	Guy: You Lose
+E42B4921	S_LOSER1.AUD	Girl: You Lose
+E45562DF	C_SORRY1.AUD	Rambo: Please Try Again
+E45562E7	E_SORRY1.AUD	Eva: Please Try Again
+E4556307	M_SORRY1.AUD	Guy: Please Try Again
+E455631F	S_SORRY1.AUD	Girl: Please Try Again
+E82B48C5	C_SPEED1.AUD	Rambo: Speed Upgraded
+E82B48CD	E_SPEED1.AUD	Eva: Speed Upgraded
+E82B48ED	M_SPEED1.AUD	Guy: Speed Upgraded
+E82B4905	S_SPEED1.AUD	Girl: Speed Upgraded
+EFE34CD5	C_ARMGD1.AUD	Rambo: Armageddon
+EFE34CDD	E_ARMGD1.AUD	Eva: Armageddon
+EFE34CFD	M_ARMGD1.AUD	Guy: Armageddon
+EFE34D15	S_ARMGD1.AUD	Girl: Armageddon
+EFFF5CD5	C_ARMOR1.AUD	Rambo: Armor Upgraded
+EFFF5CDD	E_ARMOR1.AUD	Eva: Armor Upgraded
+EFFF5CFD	M_ARMOR1.AUD	Guy: Armor Upgraded
+EFFF5D15	S_ARMOR1.AUD	Girl: Armor Upgraded
+F02762BD	C_MGARNG.AUD	Rambo: Mega Range
+F02762C5	E_MGARNG.AUD	Eva: Mega Range
+F02762E5	M_MGARNG.AUD	Guy: Mega Range
+F02762FD	S_MGARNG.AUD	Girl: Mega Range
+FE2F40C9	C_MEGARR.AUD	Rambo: Mega Rapid Reload
+FE2F40D1	E_MEGARR.AUD	Eva: Mega Rapid Reload
+FE2F40F1	M_MEGARR.AUD	Guy: Mega Rapid Reload
+FE2F4109	S_MEGARR.AUD	Girl: Mega Rapid Reload
+1E18E5F8	SCS01EA.INI	inif: Crossroads
+1E18E5FA	SCS02EA.INI	inif: Donut World
+1E18E5FC	SCS03EA.INI	inif: River Dispair
+2218E5F6	SCS10EA.INI	inif: Desert Vertigo
+2218E5F8	SCS11EA.INI	inif: Ice Maze
+2218E5FA	SCS12EA.INI	inif: Island Pain
+2218E5FE	SCS14EA.INI	inif: Jigsaw
+2218E600	SCS15EA.INI	inif: Ripples
+2218E602	SCS16EA.INI	inif: Death Race
+2218E604	SCS17EA.INI	inif: Grid of Insanity
+2A18E5F6	SCS30EA.INI	inif:
+2A18E5F8	SCS31EA.INI	inif:
+2A18E5FA	SCS32EA.INI	inif:
+2A18E5FC	SCS33EA.INI	inif:
+2A18E600	SCS35EA.INI	inif:
+2A18E602	SCS36EA.INI	inif:
+2A18E604	SCS37EA.INI	inif:
+2A18E606	SCS38EA.INI	inif:
+2A18E608	SCS39EA.INI	inif:
+2E18E5F6	SCS40EA.INI	inif:
+2E18E5F8	SCS41EA.INI	inif:
+2E18E5FA	SCS42EA.INI	inif:
+2E18E5FC	SCS43EA.INI	inif:
+3218E5F6	SCS50EA.INI	inif:
+3218E5F8	SCS51EA.INI	inif:
+3618E5F6	SCS60EA.INI	inif:
+3618E5F8	SCS61EA.INI	inif:
+3618E5FA	SCS62EA.INI	inif:
+3618E5FC	SCS63EA.INI	inif:
+1E1DE0F1	SCS01EA.BIN	bin: Crossroads
+1E1DE0F3	SCS02EA.BIN	bin: Donut World
+1E1DE0F5	SCS03EA.BIN	bin: River Dispair
+221DE0EF	SCS10EA.BIN	bin: Desert Vertigo
+221DE0F1	SCS11EA.BIN	bin: Ice Maze
+221DE0F3	SCS12EA.BIN	bin: Island Pain
+221DE0F7	SCS14EA.BIN	bin: Jigsaw
+221DE0F9	SCS15EA.BIN	bin: Ripples
+221DE0FB	SCS16EA.BIN	bin: Death Race
+221DE0FD	SCS17EA.BIN	bin: Grid of Insanity
+2A1DE0EF	SCS30EA.BIN	bin:
+2A1DE0F1	SCS31EA.BIN	bin:
+2A1DE0F3	SCS32EA.BIN	bin:
+2A1DE0F5	SCS33EA.BIN	bin:
+2A1DE0F9	SCS35EA.BIN	bin:
+2A1DE0FB	SCS36EA.BIN	bin:
+2A1DE0FD	SCS37EA.BIN	bin:
+2A1DE0FF	SCS38EA.BIN	bin:
+2A1DE101	SCS39EA.BIN	bin:
+2E1DE0EF	SCS40EA.BIN	bin:
+2E1DE0F1	SCS41EA.BIN	bin:
+2E1DE0F3	SCS42EA.BIN	bin:
+2E1DE0F5	SCS43EA.BIN	bin:
+321DE0EF	SCS50EA.BIN	bin:
+321DE0F1	SCS51EA.BIN	bin:
+361DE0EF	SCS60EA.BIN	bin:
+361DE0F1	SCS61EA.BIN	bin:
+361DE0F3	SCS62EA.BIN	bin:
+361DE0F5	SCS63EA.BIN	bin:
+
+
+Unknown files in some Tiberian Dawn MIXes
+-----------------------------------------
+
+Unknown files in AUD.MIX:
+
+ID		Filename	Description
+FA2D0EBD	cmptalk2.aud	garbled speech
+FC2D0EBD	cmptalk3.aud	garbled speech
+FE2D0EBD	cmptalk4.aud	garbled speech
+002D0EBD	cmptalk5.aud	garbled speech
+81E00B00	finish1.aud	installation complete
+
+
+Unknown files in SCORES.MIX:
+
+ID		Filename	Description
+24070101	nod_map1.aud	Nod Map Theme
+24031115	nod_win1.aud	Nod Score Theme
