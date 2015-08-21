@@ -23,7 +23,7 @@ Packages:
 	deseicnh.mix
 	general.mix
 	local.mix
-	scores.mix
+	~scores.mix
 	sole.mix
 	soledisk.mix
 	sounds.mix
@@ -144,17 +144,17 @@ ContentInstaller:
 	BackgroundWidget: INSTALL_BACKGROUND
 	MenuWidget: INSTALL_PANEL
 	MusicMenuWidget: INSTALL_MUSIC_PANEL
-	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
-	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
-	PackageMirrorList: http://hamb.in/ss/packages/cnc-mirrors.txt
-	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
-	PackageToExtractFromCD: install/setup.z
+	FilesToCopy: aud.mix, conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
+	FilesToExtract: deseicnh.mix, local.mix, sole.mix, soledisk.mix, speech.mix, tempicnh.mix, update.mix, updatec.mix, winticnh.mix
+	PackageMirrorList: http://hamb.in/openra/ss/ss-mirrors.txt
+	DiskTestFiles: conquer.mix, desert.mix, setup/setup.z
+	PackageToExtractFromCD: setup/setup.z
 	ExtractFilesFromCD:
-		.: speech.mix, tempicnh.mix, transit.mix
+		.: deseicnh.mix, local.mix, sole.mix, soledisk.mix, speech.mix, tempicnh.mix, update.mix, updatec.mix, winticnh.mix
 	CopyFilesFromCD:
-		.: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
+		.: aud.mix, conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
 	ShippedSoundtracks: 4
-	MusicPackageMirrorList: http://hamb.in/ss/packages/cnc-music-mirrors.txt
+	MusicPackageMirrorList: http://hamb.in/openra/ss/ss-music-mirrors.txt
 	InstallShieldCABFileIds: 66, 45, 42, 65, 68, 67, 71, 47, 49, 60, 75, 73, 53
 
 ServerTraits:
