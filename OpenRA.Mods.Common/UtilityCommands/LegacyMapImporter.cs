@@ -20,7 +20,6 @@ using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using System.Diagnostics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -337,14 +336,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// unlike CNC, not all x/y are in the map, so the first two bytes specify coordinates
 			try
 			{
-				while (ms.CanRead)
+				while (ms.Position != ms.Length)
 				{
 					var x = ms.ReadUInt8();
 					var y = ms.ReadUInt8() * 2;
 					var type = ms.ReadUInt8();
 					var index = ms.ReadUInt8();
-
-					Debug.WriteLine("x={0},y={1},type={2},index={3}", x, y, type, index);
 
 					map.MapTiles.Value[new CPos(x, y)] = new TerrainTile(type, index);
 				}
