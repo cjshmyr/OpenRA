@@ -8,8 +8,6 @@ Folders:
 	.
 	./mods/ss
 	./mods/ss/bits
-	./mods/ss/bits/jungle
-	./mods/ss/bits/ss
 	./mods/ss/uibits
 	~^Content/ss
 
@@ -68,9 +66,7 @@ Sequences:
 TileSets:
 	./mods/ss/tilesets/desert.yaml
 	./mods/ss/tilesets/winter.yaml
-	./mods/ss/tilesets/snow.yaml
 	./mods/ss/tilesets/temperat.yaml
-	./mods/ss/tilesets/jungle.yaml
 
 Weapons:
 	./mods/ss/weapons/explosions.yaml
@@ -206,7 +202,7 @@ Fonts:
 Missions:
 	./mods/ss/missions.yaml
 
-SupportsMapsFrom: cnc
+SupportsMapsFrom: ss
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
@@ -214,6 +210,4 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetExtensions:
 		TEMPERAT: .tem
 		WINTER: .win
-		SNOW: .sno
 		DESERT: .des
-		JUNGLE: .jun
