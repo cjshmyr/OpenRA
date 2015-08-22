@@ -151,7 +151,6 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
-	-GainsExperience:
 
 RMBO:
 	Inherits: ^Soldier

@@ -31,7 +31,6 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
-	-GainsExperience:
 	-Cloak:
 	SelectionDecorations:
 		VisualBounds: 36,36
@@ -69,7 +68,6 @@ HARV:
 		Range: 4c0
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
-	-GainsExperience:
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	Explodes:
