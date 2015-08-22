@@ -1,5 +1,5 @@
 Metadata:
-	Title: Sole Survivor Plus
+	Title: Sole Survivor
 	Description: A re-imagining of Sole Survivor... and more.
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
@@ -21,6 +21,7 @@ Packages:
 	aud.mix
 	conquer.mix
 	deseicnh.mix
+	desert.mix
 	general.mix
 	local.mix
 	~scores.mix
