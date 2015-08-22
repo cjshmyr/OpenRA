@@ -1,3 +1,8 @@
+Also on cnc-comm is a global mix database file that has some of these mappings already in a database, but not all. This won't work for what we need.
+http://cnc-comm.com/community/index.php?topic=3117.0
+
+-----
+
 Optained from MrFibble on http://www.ppmforums.com/viewtopic.php?t=13248&sid=a7b5dd88d5e87f08434c1c7e3802a1d6
 
 File lists for Sole Survivor MIX files
