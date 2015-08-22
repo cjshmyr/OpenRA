@@ -48,7 +48,6 @@ Rules:
 	./mods/ss/rules/civilian.yaml
 	./mods/ss/rules/civilian-desert.yaml
 	./mods/ss/rules/tech.yaml
-	./mods/ss/rules/ships.yaml
 	./mods/ss/rules/aircraft.yaml
 	./mods/ss/rules/husks.yaml
 
@@ -61,7 +60,6 @@ Sequences:
 	./mods/ss/sequences/misc.yaml
 	./mods/ss/sequences/funpark.yaml
 	./mods/ss/sequences/civilian.yaml
-	./mods/ss/sequences/campaign.yaml
 
 TileSets:
 	./mods/ss/tilesets/desert.yaml
