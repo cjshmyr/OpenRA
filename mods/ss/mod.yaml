@@ -202,7 +202,7 @@ Fonts:
 Missions:
 	./mods/ss/missions.yaml
 
-SupportsMapsFrom: ss
+SupportsMapsFrom: cnc
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
