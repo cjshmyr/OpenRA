@@ -50,7 +50,6 @@
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -112,7 +111,6 @@
 
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
 	TargetableAircraft:
@@ -148,7 +146,6 @@
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Health:
 		Radius: 128
 	Armor:
@@ -391,7 +388,6 @@
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
