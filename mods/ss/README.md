@@ -1,7 +1,7 @@
 # Sole Survivor
 
 ### About
-This is an attempt to document the gameplay and technical details behind the C&C game known as Sole Survivor. Sole Survivor is unlike other C&Cs at the time -- rather than establishing a base and buiilding up forces, the played controlled a single unit of choice among dozens of other players in an online setting. The game modes varied, favoring more deathmatch-style or objective based gameplay. The player's unit will encounter crates along its path containing upgrades - or danger - as you wage war with allies and enemies. The SS universe is that of Tiberian Dawn's, as the game's assets are almost entirely composed of the original C&C's
+This is an attempt to document technical details behind C&C as Sole Survivor. The gameplay differed from traditional RTS games at the time -- rather than establishing a base and buiilding up forces, the played controlled a single unit among dozens of other players in an online setting. The game modes varied, favoring more deathmatch-style or objective based gameplay. The player's unit will encounter crates along its path containing upgrades - or danger - as you wage war with allies and enemies. The SS universe is that of Tiberian Dawn's, as the game's assets are almost entirely composed of the original C&C's
 
 The original SS at this point in time simply cannot be played online, even though there have been a attempts by others to create a dedicated server, it hasn't happened. The largest amount of resources we have right now for SS is purely from the files, the Offline Practice mode within SS, videos, pictures, and reasonable conjecture from people.
 
@@ -9,63 +9,6 @@ All sole survivor information is being gathered on a patched (version 1.05) vers
 
 #### Official Patches
 There is a sole survivor patch that upgrades from version 1.00 to 1.05, which contains a myriad of changes detailed in a changelog added with the patch. There is plenty in those notes that are not docuemnted here and it definitely deserves a peek [here](https://github.com/cjshmyr/OpenRA/tree/ss-master/mods/ss/dev/ssnews.txt).
-
-### Gameplay
-##### Game modes
-There are five game modes, more details can be found in the ssnews.txt file linked above.
-- Capture The Flag (CTF)
-- Football
-- Human vs. Hunter (HvsH)
-- Free-For-All (FFA)
-- Team Fight
-
-Interestingly none of the maps have any base defenses on them, the logic as to how flags spawn, where they sapwn, and where bases spawn on the maps is unknown to me at this time.
-
-##### Basics
-Ingame there is a help page covering the basics, seen [here](http://i.imgur.com/kubxMqX.png). It highlights the basics such as crates, base defenses, and game modes objectives.
-
-##### Unit behavior
-On spawn, the player's unit is invisible for ~30 seconds.
-Five stats could be upgrade for a vehicle several times until maxed out: Move Speed, Attack Speed, Attack and Vision Range, Rate of Fire, and Armor.
-
-##### Crates
-There are five different types of crates. A list of crates you can encounter during the game can be found [here](http://www.cnc-source.com/?page=content/ss/ssmisc).
-
-##### Units
-The player is allowed to pick from any land unit (QUESTION: At the start of the game only, or during the game?). A list of playable units can be found [here](http://www.cnc-source.com/index.php?page=content/ss/ssunits).
-
-##### Rules.ini
-Rules this time live within the executable, so it's a bit trickier to find stuff out. This may be because the game isn't really extendable.
-
-##### Offline practice
-There's an offline practice mode available, where you can practice solo on a randomly chosen map against 0-10 AI players, who are all against you. They also will never lose sight of you no matter how far you run. Interestingly, even though it's a timed deathmatch, enemy base defenses can pop up. The base defense behavior is currently unknown to me at this time.
-
-#### Online servers
-There are a *lot* of varying server configurations, this isn't yet documented but the information about this is scattered. The settings could range from game mode, ion storm danger, time limit, kill limit, number of CTF structures, number of football flags, which types of crates could drop, so on.
-
-By pressing F2 in Sole Survivor, the "game parameters" can be seen. In Offline Practice this is displayed:
-```
-You are playing in the Offline Practice channel.
-Crates Ratio is 1000 Wooden : 0 Steel : 0 Green : 0 Orange
-Armageddon is NOT possible
-You do NOT lose invulnerability when you pick up an orange crate.
-This is NOT a ladder game.
-There is a Time limit of 15 minutes.
-There is NO Score limit.
-There is NO Life limit.
-TeamCrates are OFF.
-There is NO Ion Cannon.
-Map reshroud is ENABLED.
-Radar is NOT provided free to everybody.
-Healthbars are shown only for YOU.
-Hunters are NOT matched to the numbers of players.
-Hunters are introduced according to these numbers: (u)120/10, (b)120/3
-```
-Notes:
-- Armageddon is the fifth, red crate
-- Ion Cannon is refers to Ion Storm, a factor where by the more crates you picked up, the higher chance you had of being zapped by an ion cannon.
-
-And also online, players could join a game in progress!
 
 ### MIX Files
 The MIX files used by Sole Survivor are a combination of files on the disk, and installed to the hard drive (extracted from the Setup.Z file). It's unknown to me at this time what version the C&C files are. 
@@ -93,7 +36,6 @@ mercy98: No Mercy '98
 map1: Map Theme
 ```
 
-
 ##### sole.mix
 Contains new UI art, crate pickup sound fx, crate effects art, crate art, as well as dinosaur sounds and art.
 
@@ -110,7 +52,7 @@ A6064500	MUDREMX.AUD	    MUD Remix
 ```
 
 ### Maps
-There are 29 maps included with Solve Survivor, which also get updated with the latest 1.05 patch. One of the maps imported into OpenRA can be seen [here](http://i.imgur.com/PhWHZth.png). All of the original maps, and a powershell script used to convert them to OpenRA's TD mod en masse, can be found [here](https://github.com/cjshmyr/OpenRA/tree/ss-master/mods/ss/dev).
+There are 29 maps included with Solve Survivor, which also get updated with the latest 1.05 patch. One of the maps imported into OpenRA can be seen [here](http://i.imgur.com/PhWHZth.png). All of the original maps, and a powershell script used to convert them to OpenRA's TD mod en masse, can be found [here](https://github.com/cjshmyr/OpenRA/tree/ss-master/mods/ss/dev). Interestingly none of the maps have any base defenses on them, the logic as to how flags spawn, where they sapwn, and where bases spawn on the maps is unknown to me at this time.
 
 ### Map waypoints / spawnpoints
 Of the 29 maps, only 10 of them had a name, while the remaining 19 remained unnamed. There is some subtle differences between the two.
@@ -142,5 +84,56 @@ A SS map binary beginning with bytes `` 9C OO 8D OO | 9D OO 8D O1 ``, means at c
 The INI format is mostly the same between C&C and SS -- differences noted so far:
 - 99 player definitions exist.
 
-### Is this everything?
-No -- this document is missing a lot.
+### Online servers
+There are a *lot* of varying server configurations, this isn't yet documented but the information about this is scattered. The settings could range from game mode, ion storm danger, time limit, kill limit, number of CTF structures, number of football flags, which types of crates could drop, so on.
+
+By pressing F2 in Sole Survivor, the "game parameters" can be seen. In Offline Practice this is displayed:
+```
+You are playing in the Offline Practice channel.
+Crates Ratio is 1000 Wooden : 0 Steel : 0 Green : 0 Orange
+Armageddon is NOT possible
+You do NOT lose invulnerability when you pick up an orange crate.
+This is NOT a ladder game.
+There is a Time limit of 15 minutes.
+There is NO Score limit.
+There is NO Life limit.
+TeamCrates are OFF.
+There is NO Ion Cannon.
+Map reshroud is ENABLED.
+Radar is NOT provided free to everybody.
+Healthbars are shown only for YOU.
+Hunters are NOT matched to the numbers of players.
+Hunters are introduced according to these numbers: (u)120/10, (b)120/3
+```
+Notes:
+- Armageddon is the fifth, red crate
+- Ion Cannon is refers to Ion Storm, a factor where by the more crates you picked up, the higher chance you had of being zapped by an ion cannon.
+
+And also online, players could join a game in progress!
+
+### Game Overview
+##### Game modes
+There are five game modes, more details can be found in the ssnews.txt file linked above.
+- Capture The Flag (CTF)
+- Football
+- Human vs. Hunter (HvsH)
+- Free-For-All (FFA)
+- Team Fight
+
+Ingame there is a help page covering the basics, seen [here](http://i.imgur.com/kubxMqX.png). It highlights the basics such as crates, base defenses, and game modes objectives.
+
+##### Units
+The player is allowed to pick from any land unit (QUESTION: At the start of the game only, or during the game?). A list of playable units can be found [here](http://www.cnc-source.com/index.php?page=content/ss/ssunits).
+
+On spawn, the player's unit is invisible for ~30 seconds.
+
+Five stats could be upgrade for a vehicle several times until maxed out: Move Speed, Attack Speed, Attack and Vision Range, Rate of Fire, and Armor.
+
+##### Crates
+There are five different types of crates. A list of crates you can encounter during the game can be found [here](http://www.cnc-source.com/?page=content/ss/ssmisc).
+
+##### Rules.ini
+Rules this time live within the executable, so it's a bit trickier to find stuff out. This may be because the game isn't really extendable.
+
+##### Offline practice
+There's an offline practice mode available, where you can practice solo on a randomly chosen map against 0-10 AI players, who are all against you. They also will never lose sight of you no matter how far you run. Interestingly, even though it's a timed deathmatch, enemy base defenses can pop up. The base defense behavior is currently unknown to me at this time.
