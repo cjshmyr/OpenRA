@@ -1,0 +1,589 @@
+SSNEWS.TXT
+
+COMMAND & CONQUER: SOLE SURVIVOR
+Copyright (c) 1997-1998 Westwood Studios, Inc.
+All rights reserved.
+"C&C", "Command & Conquer", "Command & Conquer: Sole Survivor" and 
+"Westwood Studios" are trademarks of Westwood Studios, Inc.
+
+---------------------------------------------------------------------------------
+
+                           -- Sole Survivor News --
+
+Welcome to Sole Survivor News.
+
+Each SS update will update this file. This file is available in-game through the 
+menu (News), or by using the *news command in-game.
+
+
+Content Outline
+---------------
+1. Patch news. The latest news is at the top.
+2. FAQ.
+3. Squad FAQ.
+4. Game Modes.
+
+
+------------------------------ Feb 20 1998 --------------------------------------
+
+Changes in 1.04
+----------------
+
+- Note: This is likely to be the last patch for SS, unless there are absolutely 
+  necessary changes. However the SS community is likely to evolve squad
+  infrastructure (amongst other things). We will also change server settings 
+  periodically to provide new gameplay experiences.
+
+- Squad news! We have decided to provide some support for squads. Please
+  read the SQUAD FAQ below if you are interested in squad activities. 
+
+- There is a new button on the main menu that leads to Westwood's 
+  Sole Survivor website. This has links to all related pages, including
+  Squad resources, and (coming soon) Sole Survivor discussion boards. It also
+  has links to the ladder pages.
+
+- The 5th and 6th buttons on the main menu are now customisable in 
+  conquer.ini. The new settings will appear at the bottom of your 
+  conquer.ini next time you quit SS. If you wish, you can edit the relevant 
+  information to change the URL's and Button text. By default they will point
+  to Westwood's Sole Survivor page and to the team-ladder page respectively.
+
+- Team win criteria has changed. It is no longer determined by the player that 
+  scores the highest. It is now determined by your total team score. If players
+  leave before the game is over, their points still count. You can therefore 
+  rank the performance of up to 4 teams in a game, based on their team scores.
+  Team scores are shown in the player list. They are also displayed on the
+  end-game dialog. 
+
+- The OK button on the end-game dialog has changed to a "Take a Screenshot"
+  button. This is useful if you want to snap end-game results.
+
+- The server now has the ability to control the exact ratios of different crate
+  types (wooden, steel, orange, and green). Any combination is possible!
+  Expect to see some interesting combinations! Pressing F2 will tell you
+  what ratio is being used on any server. The default ratio per 1000 crates is:
+
+    Steel               = 50
+    Green               = 100
+    Orange              = 10
+    Wooden              = 840    
+
+- Armageddon can be disabled altogether on the server. Expect to see some channels
+  without any armageddon. Again, pressing F2 will show whether this is in effect.
+
+- The duration of the orange crate effect is another server option; it can be 
+  any duration over 1 second. Pressing F2 will show you what duration is used.  
+  The default is 30 seconds.
+
+- There is a new server parameter that determines whether or not you lose 
+  invulnerability when you pick up an orange crate. Default is true. Pressing
+  F2 will show what setting is used.
+
+- Ion cannon now comes in THREE server settings. It can now be:
+  - No ion cannon
+  - ion cannon damages (most commonly used)
+  - ion cannon always kills  
+
+  Pressing F2 will show you what setting is used on any server.
+
+- The guard-player key (ctrl-alt-lclick) has been disabled. Some annoying
+  people were using it to be... annoying.
+
+- Note that there IS a key to "bump" a teammate: alt-lclick. Best use
+  of this is to bump a teammate off your own flagspot when you are trying to cap 
+  a flag and he/she is AFK, or too daft to move.
+
+- The FAQ below has been extended, including troubleshooting information. 
+
+- A Squad FAQ has been added.
+
+- Any message you receive containing your full nick will now warn you with 
+  a "Yo!", just like private messaging does. Case is not important. 
+  If you want to get the attention of someone, include their full nick
+  in the message!
+  
+  If TypingSound is set to 0 in your conquer.ini, you will not hear it.
+
+- There is a new command called *log, which toggles whether or not messages
+  from other players are logged to a file called LOG.TXT. If you want to save 
+  your witty dialog, this is for you. By default this is OFF. Pressing F3 shows 
+  the current status of this flag. Private messages are now marked with [] so
+  that they can be distinguished in the log.
+
+- There is a new key action. Pressing B in a game of CTF will center the view
+  on your base. This is useful whenever you don't know where your base is.
+
+- Improved namelist sorting code.
+
+- Any type of connection failure now takes you to the main menu rather than 
+  quitting out of the game completely.
+
+- Fixed a bug where AI units that shouldn't have range upgrades were 
+  getting them.
+
+- The following units have been "tweaked":
+	- Visceroid:       up armour, up reload, up sightrange
+	- Jeep:            up sightrange
+	- Bike:            up sightrange
+	- Grenadier:	    up sightrange, up reload
+	- FlameThrower:    up sightrange, up reload
+	- ChemWarrier:     up sightrange, up reload
+	- Artillery:       up reload, up range
+	- Rocket launcher: up range
+	- TRex:            up reload
+	- Velociraptor:    up reload
+
+	- AGT:             up reload
+
+  In addition to this, rate-of-fire has been increased by 15% across the 
+  board.
+
+
+
+
+------------------------------ Jan 9 1998 --------------------------------------
+
+Changes in 1.03
+----------------
+
+- On flag capture or goal scoring, name of flag-carrier is announced.
+- Flag-carrier gets significant points at end of journey. Only the person
+  who plants the flag on their pedestal gets points. 
+- A team gets more points now for flag capture.
+- Shift-s now shows a message about the screenshot.
+- There are now 10 default team macro's.
+- When you die, or kill, the message is a bit more varied now.
+- Team wins are now announced in the corresponding color.
+- You can no longer flood messaging in skirmish (for those odd few who did).
+- Team games always announce team wins.
+- New menu button that takes you to the SS ladder. To use this, you need 
+  to be connected to the internet, and have a default browser. 
+- New command, *ladder, to do the same thing, in-game. It does not exit the 
+  game you are playing.
+- New menu button that shows ssnews.txt with your default txt reader. This 
+  file will prepend new version news for each update.
+- New command, *news,  to do the same thing, in-game. It does not exit the 
+  game you are playing.
+- If a game is not a ladder game, it will be announced when you join a channel. 
+  Most games are ladder games.
+- When you join an autoteaming game, the server welcomes you onto the team
+  it has assigned you.
+- When you are chasing someone and they teleport, you will no longer
+  keep chasing them.
+- You will no longer teleport into enemy bases!
+- About 60 small map fixes (stuck places). After this patch, please 
+  let me know if you ever get stuck on a map - and where.
+- Crate allocation and geography improved on the "island" map
+- The unpopular units have been enhanced... try them!
+- Infantry no longer leave trails.
+- Centering bugs fixed.
+- Teamcrates bug fixed (sometimes for some players, teamcrates didn't work).
+
+- WChat changes:
+  - If a game is AutoTeaming, Chat will show "AutoTeaming" in the
+    "Choose Your Team" box
+  - If a game is a ladder game (tournanment game), the channel will be colored 
+    yellow. Most games are ladder games.
+
+
+------------------------------ Jan 8 1998 --------------------------------------
+
+FAQ
+---
+
+This faq will be extended over time.
+
+Here are some of the questions we are asked most often:
+
+
+
+
+Q. I can't play, the game doesn't load properly. What is wrong?
+
+A. Do you have other applications running? Try disabling them.
+   Don't forget to try disabling your taskbar app's too!
+	If this doesn't work, try turning off the movies and sound
+	in CONQUER.INI.
+
+
+
+
+Q. My display is all messed up when I scroll, it doesn't draw properly.
+   What's wrong?
+
+A. Probably your video driver is having trouble with DirectX. Make sure
+   you have the latest DirectX drivers for your video card. Go to your
+   video-card manufacturer's website for this.
+
+   If this doesn't help, try editing the conquer.ini file in your 
+   Sole Survivor directory. Change
+
+   VideoBackBuffer=1
+
+   to 
+
+   VideoBackBuffer=0
+
+   This is likely to fix the problem.
+
+
+
+
+Q. When I press "Play Online", Sole Survivor minimizes itself. What
+   should I do?
+
+A. You always enter an online game through Westwood Online. Go to 
+   Westwood Online, Enter a Sole Survivor channel, select any options you 
+	want (such as your vehicle), and press "Let's Go". This will bring you 
+	into the game. When you quit you will find yourself back in Westwood 
+	Online.
+
+
+
+
+Q. Help! I don't know what I am doing in the game! What can I do?
+
+A. Press F1 for key help, F2 to find out about what parameters are controlling
+   the game, and F3 for advanced commands.
+
+	There are a number of websites concerning Sole Survivor, created and
+	maintained by enthusiasts. Try visiting them too.
+
+
+
+Q. How does the commando use C4 explosive?
+
+A. Use control-leftclick on a unit or structure. Left-click alone uses the 
+   sniper rifle.
+
+
+
+
+Q. How do I start my own server game?
+
+A. You don't. Westwood hosts the games on servers located mostly in the US.
+   Bandwidth requirement is high, and server parameters are complex. However
+   we do change settings frequently to give players the settings they request.
+
+
+
+
+Q. How can I learn a lot of new swear words in a brief time?
+
+A. Pick up an armageddon crate without consulting your teammates.
+
+
+
+
+Q. What is the deal with swear words? How do I get rid of that *&%$*$# 
+   filter?
+
+A. Remove NL.CFG from your SS directory. This means that text you RECEIVE 
+   will be unfiltered. However, do NOT type text in a manner to defeat the
+   filter, or be abusive or unpleasant to others. If you do, you may
+   be banned from one or more channels, or from chat.
+
+
+
+
+Q. What are those suffixes on the end of channel names, like _LV?
+
+A. The suffix is for our convenience, and shows where a server is located. 
+   Presently our servers are at:
+	LV = Las Vegas
+	GW = GlobalCenter West
+	GE = GlobalCenter East
+	UK = United Kingdom
+
+
+
+
+Q. I have plenty of misinformed notions about Internet latency. Can you correct
+   them?
+
+A. Let me try. When you experience the effects of Internet latency, or "lag", 
+   it means that the Internet connection between your computer and the Server
+   you are playing with, is poor. SS is client-server, which means that all the
+   clients (players) are connected to the server, but not to each other. 
+
+   Even if you have a fantastic internet connection like a T1 or T3, you are still
+   vulnerable to any bottleneck in the path from your client to the server.
+
+	The number of players inside a game does affect latency, in that you are 
+	more vulnerable to any Internet bottleneck when the traffic flow is high.
+
+	The Westwood Online server and the SS servers are completely separate. The 
+	number of people on Westwood Online has no effect on you when you are in-game.
+
+   Internet latency varies, as does for example traffic on a freeway. But server
+   performance varies very little. In fact, our servers are not stressed in terms
+   of CPU usage. Therefore *in general* if your connection is very bad, it is because
+   of the Internet. The Internet was not designed for many of the things it is 
+   expected to do these days. You can maximise your experience of the Internet by 
+   making sure you have a good ISP and a decent modem. Do not run other 
+	network-intensive apps at the same time as SS. And find which servers generally 
+	give you best performance. Most of our US servers are located at Internet hubs 
+	on either coast of the US.
+
+
+
+
+Q. I hate the ladder SO much and NOT just because my rank is so low... (etc)
+   Why don't you abolish it?
+
+A. Because some people like it, and we have provided NON-LADDER channels
+   as well! If you don't like the ladder, play in a NON-LADDER channel!
+	If they are popular, we will make more of them.
+
+   Ladder channels are shown in yellow inside the channel list.
+
+
+
+
+
+   
+--------------------------------------------------------------------------------
+
+SQUAD FAQ
+---------
+
+Q. What is a squad?
+
+A. A squad is a group of players who want to play together as a team on a 
+   regular basis. There is no formal process involved, Westwood supports
+   the notion of squads but does not administrate them. Anyone can form
+   a squad. It is up to the SS community to develop and police squad rules.
+
+
+
+Q. OK... If Westwood doesn't administrate squads, then what DOES it do?
+
+A. We have provided a minimal capability for squad games to occur. What we 
+   provide is a mechanism for passwording on designated "Squad Servers". 
+   The basic requirement for squad activity is that squad players are able 
+   to find a server with no players, and to prevent non-squad players from 
+   joining once a squad game is in play.
+
+
+
+Q. How do the squad channels work?
+
+A. A Squad channel is any channel starting with "Squad" in its name.
+   If you are playing there for non-squad stuff, you may be evicted, 
+   as squad stuff gets precedence there.
+
+   What happens is that if a SS sysop sets a password, then all players 
+   within the channel have a short time to enter that password. At the 
+   end of that time, anyone who didn't enter the password will be evicted. 
+   No-one will be able to enter that channel until the game is over. In fact, 
+	no-one can enter the game as of the instant the sysop sets the password. 
+	Of course, players who got the password right are able to change their 
+   unit in chat, and re-enter at any stage.
+
+   Informative messages are shown on-screen during this process.
+	
+   At the end of the game, most players will be evicted back into the 
+   channel.
+
+	[Note to sysops: be VERY careful that you don't set the password too 
+	                 early... There is no "undo". If you set the password
+						  early, or incorrectly, nothing can be done about it.
+						  You will have to wait until the game is finished.]
+
+
+
+Q. What is a SS sysop? How does he/she communicate the password to my squad?
+
+A. A SS sysop is typically NOT a Westwood employee. A few mature and 
+   responsible SS enthusiasts will be selected for this role. They are
+   coordinaters for squad games. Any squad that wants to play in a 
+   squad game MUST coordinate with a SS sysop, to book a playing time
+   and agree on a password. The suggested communication model is:
+
+   1. Two or more squads agree to challemge each other, sort out all 
+      the details and a SET of acceptable playing times.
+
+   2. One (1) of the squad leaders communicates with a sysop to establish 
+      a time and password. The sysop must be present at the start of the 
+      game. He/she may also play if on one of the squads.
+
+   3. The informed squad leader communicates the time and password back to 
+      the other squad leaders, who in turn communicate the information 
+      back to their squad members.
+
+
+
+
+Q. So... sysop's must be available 24/7 ?!
+
+A. Nope! It is up to them entirely to what extent they are available, 
+   and what hours/days they are willing and able to administrate.
+   They are doing you a great favour, so be nice! You need to give them 
+   plenty of advance warning for a proposed match. 
+
+   We have selected sysops who indicate willingness to administrate on a 
+   regular basis. Their responsibility is to BE THERE at the appointed
+   time and place. They must also communicate with all other sysops to
+   make sure there are no double-bookings. Obviously there are some 
+   infrastructure things that would help, and we expect sysops and
+   other enthusiasts to establish this.
+
+   If one sysop is unable to administrate for you, you will have to
+   find another.
+
+
+
+
+Q. OK, so I have formed a Squad, and we have challenged another squad.
+   How do I contact a sysop to find a time and agree on a password?
+
+A. Well, the Westwood Sole Survivor Squad resource page, which can be
+   accessed from http://www.solesurvivor.com, has communication links to 
+	all current sysops. It also has links to squads who have registered with 
+	Ted here at Westwood, who maintains this page.
+
+   Registering is not required - it simply allows you to have a 
+   link on our squad page. If you want to do that, send your squad
+   logo (gif or jpeg) and URL to the Westwood contact address shown on 
+	the above page. You will have to wait a few days or a week to see the 
+	page updated with your link.
+
+
+
+Q. Can I PLEASE be a sysop?
+
+A. Well, we want to have as few as possible, since they must all
+   coordinate together. If we have a shortage we will seek others
+   who are mature and responsible, and are prepared to regularly 
+   administrate games.
+
+
+
+Q. I entered a squad channel, but my connection was refused.
+   What gives?
+
+A. A squad game is in progress, and you are locked out until it is 
+   over. When it finishes, all the players will be evicted into the
+   channel, and you will be able to enter. But remember that you 
+   can be evicted at any time from a squad channel if you don't
+   have the password for a scheduled game.
+
+
+
+
+Q. Boy, I'm MAD! I was supposed to play in an EXTREMELY IMPORTANT
+   squad battle, and just because I was a FEW MINUTES late, I could
+   not enter the game! That SUCKS! I HATE YOU! I am never going to 
+   play SS again! Nor any other WW game! Why are you persecuting 
+   me?
+
+A. Chill out dude. Get yerself a watch. And turn up EARLY for your
+   pre-battle meeting. Your squad leader isn't going to be happy with 
+   you if you don't arrive on time.
+
+
+
+
+
+Q. What if I want to change the settings on the server for a match?
+
+A. This is not feasible, because there are many settings and they 
+   are complex enough that Westwood needs to do it. A sysop can not 
+   do it, please don't ask.
+	
+   We will set up a few CTF squad servers with different settings, please 
+   use these. The settings can be altered if the SS community wants that. 
+   But keeping settings standardised also helps keep squadgame performance 
+   relative. 
+
+
+
+
+Q. So when a sysop starts a squad game, how do I give the password?
+
+A. You just type it as you type a normal message. Normal messaging
+   is suspended during the countdown.
+
+
+
+
+Q. Fame, admiration and respect isn't enough for me. Can my squad
+   win prizes?
+
+A. Westwood reserves the right to give occassional prizes to the top
+   squad. This could only happen if the SS community develops their 
+   own solid and accepted ranking system.
+
+
+
+--------------------------------------------------------------------------------
+GAME MODES
+----------
+
+Capture The Flag (CTF)
+----------------------
+This is generally the most popular game. It comes in many varieties.
+The number of teams vary from 2 to 4. In some channels you may select
+which team you join. In Autoteaming channels, the server selects your
+team for you when you enter. Autoteaming games tend to be better balanced
+numerically.
+
+The basic object of CTF is to take the flag of any enemy to your own base, 
+carrying it onto your own "pedestal". Typically you will need to destroy some 
+or all of the enemy structures guarding their flag in order to get it.
+
+Enemy bases come in many sizes.
+
+
+Football
+--------
+Football is played with 2 teams and either 1 or 2 flags.
+
+In 1-flag-football, you fight to take the flag to the grey endzone
+that shows a square in your team color. Each time you achieve this,
+the colored square swaps to the other endzone.
+
+In 2-flag football each team carries their own flag (unlike CTF, where you
+may only carry another teams' flag).
+
+
+Human vs. Hunter (HvsH)
+-----------------------
+HvsH is simply humans vs. AI's. The number of hunters is loosely matched to the 
+number of humans. Humans work as a team against the AI's.
+
+
+Free-For-All (FFA)
+------------------
+Every man for himself! Every woman for herself too!
+FFA channels are likely to differ in the units allowed.
+
+
+Team Fight
+----------
+This is simply 2 to 4 teams against eachother; no flags, no bases.
+
+
+Practice channels
+-----------------
+Any channel marked as practice means that it is not a ladder game.
+It is intended for new players. Vets should stay away!
+
+
+Vet channels
+------------
+Any channel marked as "Vets" is intended for people with plenty of SS
+experience. Expect no mercy here; newbies should stay away!
+
+
+Specialised channels
+--------------------
+There are many parameters that control a game channel. In addition, we
+can allow any combination of units. For example, "BikeBash" might mean
+only nod bikes are allowed.
+
+
+Squad channels
+--------------
+These are intended to be used for squad games. Please read the Squad FAQ
+for information about these channels.
