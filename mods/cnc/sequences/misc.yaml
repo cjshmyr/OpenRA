@@ -163,12 +163,6 @@ crate-effects:
 	levelup: levelup
 		Length: *
 		Tick: 200
-	firepowerup: firepowercrate
-		Length: *
-	armorup: armorcrate
-		Length: *
-	speedup: speedcrate
-		Length: *
 
 atomicup:
 	idle:

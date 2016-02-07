@@ -1,0 +1,2401 @@
+MapFormat: 7
+
+RequiresMod: cnc
+
+Title: SS - Crossroads
+
+Description: The original map from Sole Survivor!
+
+Author: OpenRA team
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+Bounds: 1,1,126,126
+
+Visibility: Lobby
+
+Type: Sole Survivor
+
+Videos:
+
+Options:
+	Crates: True
+	Fog: False
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 0
+	TechLevel: None
+	ConfigurableStartingUnits: False
+	ShortGame: False
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Multi0:
+		Name: Multi0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi8:
+		Name: Multi8
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi9:
+		Name: Multi9
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi10:
+		Name: Multi10
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi11:
+		Name: Multi11
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi12:
+		Name: Multi12
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi13:
+		Name: Multi13
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi14:
+		Name: Multi14
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi15:
+		Name: Multi15
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi16:
+		Name: Multi16
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi17:
+		Name: Multi17
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi18:
+		Name: Multi18
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Multi19:
+		Name: Multi19
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps
+	PlayerReference@Hunter0:
+		Name: Hunter0
+		AllowBots: False
+		Playable: False
+		LockFaction: True
+		Faction: gdi
+		LockSpawn: True
+		LockTeam: True
+		Enemies: Creeps, Multi0
+		NonCombatant: True
+
+Actors:
+	Actor0: t01
+		Location: 45,55
+		Owner: Neutral
+	Actor1: tc02
+		Location: 12,63
+		Owner: Neutral
+	Actor2: tc03
+		Location: 20,47
+		Owner: Neutral
+	Actor3: tc03
+		Location: 25,30
+		Owner: Neutral
+	Actor4: tc04
+		Location: 21,33
+		Owner: Neutral
+	Actor5: tc05
+		Location: 18,31
+		Owner: Neutral
+	Actor6: t08
+		Location: 78,4
+		Owner: Neutral
+	Actor7: t08
+		Location: 91,2
+		Owner: Neutral
+	Actor8: t08
+		Location: 95,4
+		Owner: Neutral
+	Actor9: tc03
+		Location: 96,4
+		Owner: Neutral
+	Actor10: tc05
+		Location: 48,11
+		Owner: Neutral
+	Actor11: tc05
+		Location: 42,4
+		Owner: Neutral
+	Actor12: t14
+		Location: 45,3
+		Owner: Neutral
+	Actor13: t13
+		Location: 46,10
+		Owner: Neutral
+	Actor14: t12
+		Location: 50,5
+		Owner: Neutral
+	Actor15: t11
+		Location: 53,7
+		Owner: Neutral
+	Actor16: t11
+		Location: 57,4
+		Owner: Neutral
+	Actor17: t03
+		Location: 60,8
+		Owner: Neutral
+	Actor18: t03
+		Location: 64,2
+		Owner: Neutral
+	Actor19: t05
+		Location: 96,12
+		Owner: Neutral
+	Actor20: t05
+		Location: 97,14
+		Owner: Neutral
+	Actor21: t06
+		Location: 101,10
+		Owner: Neutral
+	Actor22: t07
+		Location: 108,16
+		Owner: Neutral
+	Actor23: t16
+		Location: 113,5
+		Owner: Neutral
+	Actor24: split2
+		Location: 122,10
+		Owner: Neutral
+	Actor25: split3
+		Location: 117,8
+		Owner: Neutral
+	Actor26: tc01
+		Location: 104,11
+		Owner: Neutral
+	Actor27: tc01
+		Location: 116,3
+		Owner: Neutral
+	Actor28: tc02
+		Location: 117,12
+		Owner: Neutral
+	Actor29: tc03
+		Location: 114,22
+		Owner: Neutral
+	Actor30: tc04
+		Location: 118,3
+		Owner: Neutral
+	Actor31: tc04
+		Location: 103,13
+		Owner: Neutral
+	Actor32: tc05
+		Location: 120,14
+		Owner: Neutral
+	Actor33: tc05
+		Location: 122,2
+		Owner: Neutral
+	Actor34: tc03
+		Location: 31,22
+		Owner: Neutral
+	Actor35: tc02
+		Location: 26,18
+		Owner: Neutral
+	Actor36: tc02
+		Location: 37,23
+		Owner: Neutral
+	Actor37: tc01
+		Location: 36,18
+		Owner: Neutral
+	Actor38: tc01
+		Location: 27,22
+		Owner: Neutral
+	Actor39: t16
+		Location: 28,25
+		Owner: Neutral
+	Actor40: t16
+		Location: 41,21
+		Owner: Neutral
+	Actor41: t08
+		Location: 37,21
+		Owner: Neutral
+	Actor42: t07
+		Location: 33,25
+		Owner: Neutral
+	Actor43: t07
+		Location: 33,19
+		Owner: Neutral
+	Actor44: t01
+		Location: 30,19
+		Owner: Neutral
+	Actor45: tc03
+		Location: 51,71
+		Owner: Neutral
+	Actor46: tc02
+		Location: 49,71
+		Owner: Neutral
+	Actor47: tc01
+		Location: 47,73
+		Owner: Neutral
+	Actor48: tc01
+		Location: 47,72
+		Owner: Neutral
+	Actor49: tc01
+		Location: 50,72
+		Owner: Neutral
+	Actor50: tc02
+		Location: 51,75
+		Owner: Neutral
+	Actor51: tc03
+		Location: 51,77
+		Owner: Neutral
+	Actor52: tc01
+		Location: 49,77
+		Owner: Neutral
+	Actor53: t14
+		Location: 45,71
+		Owner: Neutral
+	Actor54: t13
+		Location: 46,73
+		Owner: Neutral
+	Actor55: tc03
+		Location: 65,70
+		Owner: Neutral
+	Actor56: tc04
+		Location: 67,69
+		Owner: Neutral
+	Actor57: tc05
+		Location: 71,70
+		Owner: Neutral
+	Actor58: t08
+		Location: 70,72
+		Owner: Neutral
+	Actor59: tc01
+		Location: 66,74
+		Owner: Neutral
+	Actor60: t13
+		Location: 66,73
+		Owner: Neutral
+	Actor61: t08
+		Location: 67,77
+		Owner: Neutral
+	Actor62: t07
+		Location: 74,71
+		Owner: Neutral
+	Actor63: t07
+		Location: 76,74
+		Owner: Neutral
+	Actor64: t07
+		Location: 72,76
+		Owner: Neutral
+	Actor65: t07
+		Location: 41,71
+		Owner: Neutral
+	Actor66: t07
+		Location: 42,72
+		Owner: Neutral
+	Actor67: t07
+		Location: 44,75
+		Owner: Neutral
+	Actor68: t06
+		Location: 42,77
+		Owner: Neutral
+	Actor69: t05
+		Location: 39,70
+		Owner: Neutral
+	Actor70: t05
+		Location: 46,82
+		Owner: Neutral
+	Actor71: t06
+		Location: 48,80
+		Owner: Neutral
+	Actor72: t03
+		Location: 45,81
+		Owner: Neutral
+	Actor73: t03
+		Location: 40,74
+		Owner: Neutral
+	Actor74: t07
+		Location: 41,68
+		Owner: Neutral
+	Actor75: t06
+		Location: 73,72
+		Owner: Neutral
+	Actor76: t05
+		Location: 68,75
+		Owner: Neutral
+	Actor77: t03
+		Location: 69,76
+		Owner: Neutral
+	Actor78: t02
+		Location: 71,75
+		Owner: Neutral
+	Actor79: t10
+		Location: 78,72
+		Owner: Neutral
+	Actor80: t11
+		Location: 65,60
+		Owner: Neutral
+	Actor81: t12
+		Location: 67,60
+		Owner: Neutral
+	Actor82: t15
+		Location: 71,60
+		Owner: Neutral
+	Actor83: t14
+		Location: 65,58
+		Owner: Neutral
+	Actor84: t12
+		Location: 67,58
+		Owner: Neutral
+	Actor85: t10
+		Location: 70,58
+		Owner: Neutral
+	Actor86: t12
+		Location: 66,54
+		Owner: Neutral
+	Actor87: t13
+		Location: 67,52
+		Owner: Neutral
+	Actor88: split3
+		Location: 68,56
+		Owner: Neutral
+	Actor89: split2
+		Location: 66,57
+		Owner: Neutral
+	Actor90: t17
+		Location: 68,54
+		Owner: Neutral
+	Actor91: t17
+		Location: 66,55
+		Owner: Neutral
+	Actor92: t14
+		Location: 69,59
+		Owner: Neutral
+	Actor93: t12
+		Location: 65,59
+		Owner: Neutral
+	Actor94: t07
+		Location: 70,52
+		Owner: Neutral
+	Actor95: tc05
+		Location: 51,53
+		Owner: Neutral
+	Actor96: tc04
+		Location: 50,52
+		Owner: Neutral
+	Actor97: tc05
+		Location: 47,53
+		Owner: Neutral
+	Actor98: tc02
+		Location: 44,54
+		Owner: Neutral
+	Actor99: tc01
+		Location: 46,54
+		Owner: Neutral
+	Actor100: tc01
+		Location: 48,49
+		Owner: Neutral
+	Actor101: t16
+		Location: 52,48
+		Owner: Neutral
+	Actor102: t15
+		Location: 43,55
+		Owner: Neutral
+	Actor103: t11
+		Location: 50,54
+		Owner: Neutral
+	Actor104: t08
+		Location: 54,56
+		Owner: Neutral
+	Actor105: t05
+		Location: 52,50
+		Owner: Neutral
+	Actor106: t05
+		Location: 53,50
+		Owner: Neutral
+	Actor107: tc01
+		Location: 86,58
+		Owner: Neutral
+	Actor108: tc02
+		Location: 83,55
+		Owner: Neutral
+	Actor109: tc03
+		Location: 82,57
+		Owner: Neutral
+	Actor110: split3
+		Location: 88,56
+		Owner: Neutral
+	Actor111: split2
+		Location: 90,54
+		Owner: Neutral
+	Actor112: t17
+		Location: 86,40
+		Owner: Neutral
+	Actor113: t17
+		Location: 91,53
+		Owner: Neutral
+	Actor114: t16
+		Location: 86,53
+		Owner: Neutral
+	Actor115: t16
+		Location: 87,45
+		Owner: Neutral
+	Actor116: t15
+		Location: 90,48
+		Owner: Neutral
+	Actor117: t14
+		Location: 89,38
+		Owner: Neutral
+	Actor118: t14
+		Location: 88,48
+		Owner: Neutral
+	Actor119: t14
+		Location: 85,57
+		Owner: Neutral
+	Actor120: t12
+		Location: 90,53
+		Owner: Neutral
+	Actor121: t12
+		Location: 89,51
+		Owner: Neutral
+	Actor122: t11
+		Location: 84,50
+		Owner: Neutral
+	Actor123: t11
+		Location: 92,43
+		Owner: Neutral
+	Actor124: t08
+		Location: 88,40
+		Owner: Neutral
+	Actor125: t07
+		Location: 92,40
+		Owner: Neutral
+	Actor126: t06
+		Location: 93,41
+		Owner: Neutral
+	Actor127: t06
+		Location: 93,51
+		Owner: Neutral
+	Actor128: t02
+		Location: 91,39
+		Owner: Neutral
+	Actor129: t03
+		Location: 88,37
+		Owner: Neutral
+	Actor130: t03
+		Location: 94,34
+		Owner: Neutral
+	Actor131: t05
+		Location: 94,38
+		Owner: Neutral
+	Actor132: t05
+		Location: 93,37
+		Owner: Neutral
+	Actor133: t06
+		Location: 92,35
+		Owner: Neutral
+	Actor134: t06
+		Location: 91,43
+		Owner: Neutral
+	Actor135: t06
+		Location: 85,46
+		Owner: Neutral
+	Actor136: t06
+		Location: 88,53
+		Owner: Neutral
+	Actor137: t06
+		Location: 82,49
+		Owner: Neutral
+	Actor138: t07
+		Location: 88,47
+		Owner: Neutral
+	Actor139: t07
+		Location: 95,42
+		Owner: Neutral
+	Actor140: t08
+		Location: 95,36
+		Owner: Neutral
+	Actor141: t08
+		Location: 89,44
+		Owner: Neutral
+	Actor142: t08
+		Location: 100,35
+		Owner: Neutral
+	Actor143: t08
+		Location: 99,30
+		Owner: Neutral
+	Actor144: t10
+		Location: 104,29
+		Owner: Neutral
+	Actor145: t10
+		Location: 81,61
+		Owner: Neutral
+	Actor146: t11
+		Location: 84,60
+		Owner: Neutral
+	Actor147: t12
+		Location: 86,60
+		Owner: Neutral
+	Actor148: t13
+		Location: 86,59
+		Owner: Neutral
+	Actor149: t14
+		Location: 84,58
+		Owner: Neutral
+	Actor150: t01
+		Location: 89,47
+		Owner: Neutral
+	Actor151: t02
+		Location: 91,50
+		Owner: Neutral
+	Actor152: t03
+		Location: 87,48
+		Owner: Neutral
+	Actor153: t05
+		Location: 86,46
+		Owner: Neutral
+	Actor154: t05
+		Location: 84,44
+		Owner: Neutral
+	Actor155: t05
+		Location: 84,48
+		Owner: Neutral
+	Actor156: t06
+		Location: 88,45
+		Owner: Neutral
+	Actor157: t06
+		Location: 92,52
+		Owner: Neutral
+	Actor158: t06
+		Location: 92,48
+		Owner: Neutral
+	Actor159: t07
+		Location: 93,47
+		Owner: Neutral
+	Actor160: t07
+		Location: 91,45
+		Owner: Neutral
+	Actor161: t07
+		Location: 90,43
+		Owner: Neutral
+	Actor162: t08
+		Location: 91,41
+		Owner: Neutral
+	Actor163: t10
+		Location: 95,41
+		Owner: Neutral
+	Actor164: tc04
+		Location: 95,50
+		Owner: Neutral
+	Actor165: tc04
+		Location: 86,54
+		Owner: Neutral
+	Actor166: tc05
+		Location: 90,56
+		Owner: Neutral
+	Actor167: tc05
+		Location: 79,55
+		Owner: Neutral
+	Actor168: tc05
+		Location: 48,95
+		Owner: Neutral
+	Actor169: tc04
+		Location: 46,92
+		Owner: Neutral
+	Actor170: tc03
+		Location: 42,94
+		Owner: Neutral
+	Actor171: tc02
+		Location: 38,97
+		Owner: Neutral
+	Actor172: tc04
+		Location: 38,101
+		Owner: Neutral
+	Actor173: tc05
+		Location: 34,103
+		Owner: Neutral
+	Actor174: tc03
+		Location: 38,107
+		Owner: Neutral
+	Actor175: tc02
+		Location: 36,109
+		Owner: Neutral
+	Actor176: tc01
+		Location: 38,111
+		Owner: Neutral
+	Actor177: tc01
+		Location: 41,112
+		Owner: Neutral
+	Actor178: tc02
+		Location: 49,113
+		Owner: Neutral
+	Actor179: tc01
+		Location: 36,93
+		Owner: Neutral
+	Actor180: split2
+		Location: 35,97
+		Owner: Neutral
+	Actor181: split2
+		Location: 44,92
+		Owner: Neutral
+	Actor182: split2
+		Location: 45,96
+		Owner: Neutral
+	Actor183: split2
+		Location: 41,99
+		Owner: Neutral
+	Actor184: t17
+		Location: 40,92
+		Owner: Neutral
+	Actor185: t17
+		Location: 40,91
+		Owner: Neutral
+	Actor186: t17
+		Location: 42,90
+		Owner: Neutral
+	Actor187: t16
+		Location: 36,91
+		Owner: Neutral
+	Actor188: t16
+		Location: 34,93
+		Owner: Neutral
+	Actor189: t15
+		Location: 32,91
+		Owner: Neutral
+	Actor190: t15
+		Location: 31,102
+		Owner: Neutral
+	Actor191: t15
+		Location: 31,108
+		Owner: Neutral
+	Actor192: t14
+		Location: 32,107
+		Owner: Neutral
+	Actor193: t13
+		Location: 33,106
+		Owner: Neutral
+	Actor194: t13
+		Location: 36,107
+		Owner: Neutral
+	Actor195: t13
+		Location: 42,103
+		Owner: Neutral
+	Actor196: t13
+		Location: 89,89
+		Owner: Neutral
+	Actor197: t14
+		Location: 95,87
+		Owner: Neutral
+	Actor198: t14
+		Location: 92,92
+		Owner: Neutral
+	Actor199: t15
+		Location: 87,87
+		Owner: Neutral
+	Actor200: t15
+		Location: 91,86
+		Owner: Neutral
+	Actor201: t13
+		Location: 88,92
+		Owner: Neutral
+	Actor202: t13
+		Location: 87,90
+		Owner: Neutral
+	Actor203: t12
+		Location: 93,101
+		Owner: Neutral
+	Actor204: t12
+		Location: 100,99
+		Owner: Neutral
+	Actor205: t16
+		Location: 107,104
+		Owner: Neutral
+	Actor206: t16
+		Location: 111,110
+		Owner: Neutral
+	Actor207: t17
+		Location: 122,108
+		Owner: Neutral
+	Actor208: tc01
+		Location: 122,101
+		Owner: Neutral
+	Actor209: tc02
+		Location: 107,102
+		Owner: Neutral
+	Actor210: tc04
+		Location: 108,108
+		Owner: Neutral
+	Actor211: tc05
+		Location: 119,111
+		Owner: Neutral
+	Actor212: t03
+		Location: 23,76
+		Owner: Neutral
+	Actor213: t03
+		Location: 23,80
+		Owner: Neutral
+	Actor214: t12
+		Location: 25,76
+		Owner: Neutral
+	Actor215: t17
+		Location: 27,76
+		Owner: Neutral
+	Actor216: split2
+		Location: 29,76
+		Owner: Neutral
+	Actor217: t17
+		Location: 31,76
+		Owner: Neutral
+	Actor218: split2
+		Location: 33,76
+		Owner: Neutral
+	Actor219: t17
+		Location: 25,80
+		Owner: Neutral
+	Actor220: split2
+		Location: 27,80
+		Owner: Neutral
+	Actor221: split2
+		Location: 28,80
+		Owner: Neutral
+	Actor222: split3
+		Location: 29,80
+		Owner: Neutral
+	Actor223: split2
+		Location: 31,80
+		Owner: Neutral
+	Actor224: t17
+		Location: 33,80
+		Owner: Neutral
+	Actor225: t03
+		Location: 35,77
+		Owner: Neutral
+	Actor226: t12
+		Location: 37,78
+		Owner: Neutral
+	Actor227: t13
+		Location: 39,79
+		Owner: Neutral
+	Actor228: t12
+		Location: 35,82
+		Owner: Neutral
+	Actor229: t03
+		Location: 36,83
+		Owner: Neutral
+	Actor230: t12
+		Location: 36,85
+		Owner: Neutral
+	Actor231: t12
+		Location: 40,82
+		Owner: Neutral
+	Actor232: t17
+		Location: 40,84
+		Owner: Neutral
+	Actor233: split2
+		Location: 40,86
+		Owner: Neutral
+	Actor234: waypoint
+		Owner: Neutral
+		Location: 18,7
+	Actor235: waypoint
+		Location: 98,104
+		Owner: Neutral
+	Actor236: waypoint
+		Location: 70,107
+		Owner: Neutral
+	Actor237: waypoint
+		Location: 30,112
+		Owner: Neutral
+	Actor238: waypoint
+		Location: 105,68
+		Owner: Neutral
+	Actor239: waypoint
+		Location: 16,66
+		Owner: Neutral
+	Actor240: waypoint
+		Location: 117,23
+		Owner: Neutral
+	Actor241: waypoint
+		Location: 72,17
+		Owner: Neutral
+	Actor242: waypoint
+		Location: 25,27
+		Owner: Neutral
+	Actor243: waypoint
+		Owner: Neutral
+		Location: 10,21
+	Actor244: waypoint
+		Owner: Neutral
+		Location: 10,35
+	Actor245: waypoint
+		Owner: Neutral
+		Location: 15,43
+	Actor246: waypoint
+		Owner: Neutral
+		Location: 21,54
+	Actor247: waypoint
+		Owner: Neutral
+		Location: 41,49
+	Actor248: waypoint
+		Owner: Neutral
+		Location: 38,41
+	Actor249: waypoint
+		Owner: Neutral
+		Location: 49,39
+	Actor250: waypoint
+		Owner: Neutral
+		Location: 38,27
+	Actor251: waypoint
+		Owner: Neutral
+		Location: 54,27
+	Actor252: waypoint
+		Owner: Neutral
+		Location: 48,3
+	Actor253: waypoint
+		Owner: Neutral
+		Location: 58,10
+	Actor254: waypoint
+		Owner: Neutral
+		Location: 35,8
+	Actor255: waypoint
+		Owner: Neutral
+		Location: 30,17
+	Actor256: waypoint
+		Owner: Neutral
+		Location: 64,26
+	Actor257: waypoint
+		Owner: Neutral
+		Location: 73,29
+	Actor258: waypoint
+		Owner: Neutral
+		Location: 84,34
+	Actor259: waypoint
+		Owner: Neutral
+		Location: 90,12
+	Actor260: waypoint
+		Owner: Neutral
+		Location: 112,14
+	Actor261: waypoint
+		Owner: Neutral
+		Location: 120,8
+	Actor262: waypoint
+		Owner: Neutral
+		Location: 123,32
+	Actor263: waypoint
+		Owner: Neutral
+		Location: 115,46
+	Actor264: waypoint
+		Owner: Neutral
+		Location: 104,41
+	Actor265: waypoint
+		Owner: Neutral
+		Location: 97,27
+	Actor266: waypoint
+		Owner: Neutral
+		Location: 98,48
+	Actor267: waypoint
+		Owner: Neutral
+		Location: 86,52
+	Actor268: waypoint
+		Owner: Neutral
+		Location: 89,63
+	Actor269: waypoint
+		Owner: Neutral
+		Location: 101,57
+	Actor270: waypoint
+		Owner: Neutral
+		Location: 120,66
+	Actor271: waypoint
+		Owner: Neutral
+		Location: 75,46
+	Actor272: waypoint
+		Owner: Neutral
+		Location: 62,44
+	Actor273: waypoint
+		Owner: Neutral
+		Location: 58,54
+	Actor274: waypoint
+		Owner: Neutral
+		Location: 60,64
+	Actor275: waypoint
+		Owner: Neutral
+		Location: 49,61
+	Actor276: waypoint
+		Owner: Neutral
+		Location: 36,64
+	Actor277: waypoint
+		Owner: Neutral
+		Location: 24,61
+	Actor278: waypoint
+		Owner: Neutral
+		Location: 6,68
+	Actor279: waypoint
+		Owner: Neutral
+		Location: 5,88
+	Actor280: waypoint
+		Owner: Neutral
+		Location: 3,105
+	Actor281: waypoint
+		Owner: Neutral
+		Location: 7,112
+	Actor282: waypoint
+		Owner: Neutral
+		Location: 6,125
+	Actor283: waypoint
+		Owner: Neutral
+		Location: 25,125
+	Actor284: waypoint
+		Owner: Neutral
+		Location: 33,121
+	Actor285: waypoint
+		Owner: Neutral
+		Location: 47,125
+	Actor286: waypoint
+		Owner: Neutral
+		Location: 45,115
+	Actor287: waypoint
+		Owner: Neutral
+		Location: 31,98
+	Actor288: waypoint
+		Owner: Neutral
+		Location: 21,105
+	Actor289: waypoint
+		Owner: Neutral
+		Location: 16,92
+	Actor290: waypoint
+		Owner: Neutral
+		Location: 27,84
+	Actor291: waypoint
+		Owner: Neutral
+		Location: 14,77
+	Actor292: waypoint
+		Owner: Neutral
+		Location: 27,72
+	Actor293: waypoint
+		Owner: Neutral
+		Location: 38,82
+	Actor294: waypoint
+		Owner: Neutral
+		Location: 49,88
+	Actor295: waypoint
+		Owner: Neutral
+		Location: 59,77
+	Actor296: waypoint
+		Owner: Neutral
+		Location: 74,66
+	Actor297: waypoint
+		Owner: Neutral
+		Location: 90,73
+	Actor298: waypoint
+		Owner: Neutral
+		Location: 75,81
+	Actor299: waypoint
+		Owner: Neutral
+		Location: 81,76
+	Actor300: waypoint
+		Owner: Neutral
+		Location: 69,73
+	Actor301: waypoint
+		Owner: Neutral
+		Location: 70,84
+	Actor302: waypoint
+		Owner: Neutral
+		Location: 79,91
+	Actor303: waypoint
+		Owner: Neutral
+		Location: 72,94
+	Actor304: waypoint
+		Owner: Neutral
+		Location: 60,89
+	Actor305: waypoint
+		Owner: Neutral
+		Location: 62,97
+	Actor306: waypoint
+		Owner: Neutral
+		Location: 64,103
+	Actor307: waypoint
+		Owner: Neutral
+		Location: 57,106
+	Actor308: waypoint
+		Owner: Neutral
+		Location: 58,112
+	Actor309: waypoint
+		Owner: Neutral
+		Location: 64,120
+	Actor310: waypoint
+		Owner: Neutral
+		Location: 74,125
+	Actor311: waypoint
+		Owner: Neutral
+		Location: 82,113
+	Actor312: waypoint
+		Owner: Neutral
+		Location: 92,114
+	Actor313: waypoint
+		Owner: Neutral
+		Location: 98,118
+	Actor314: waypoint
+		Owner: Neutral
+		Location: 84,99
+	Actor315: waypoint
+		Owner: Neutral
+		Location: 99,125
+	Actor316: waypoint
+		Owner: Neutral
+		Location: 106,121
+	Actor317: waypoint
+		Owner: Neutral
+		Location: 114,124
+	Actor318: waypoint
+		Owner: Neutral
+		Location: 120,120
+	Actor319: waypoint
+		Owner: Neutral
+		Location: 113,117
+	Actor320: waypoint
+		Owner: Neutral
+		Location: 116,111
+	Actor321: waypoint
+		Owner: Neutral
+		Location: 111,104
+	Actor322: waypoint
+		Owner: Neutral
+		Location: 118,101
+	Actor323: waypoint
+		Owner: Neutral
+		Location: 110,95
+	Actor324: waypoint
+		Owner: Neutral
+		Location: 102,92
+	Actor325: waypoint
+		Owner: Neutral
+		Location: 103,82
+	Actor326: waypoint
+		Owner: Neutral
+		Location: 110,86
+	Actor327: waypoint
+		Owner: Neutral
+		Location: 125,92
+	Actor328: waypoint
+		Owner: Neutral
+		Location: 120,86
+	Actor329: waypoint
+		Owner: Neutral
+		Location: 122,72
+	Actor330: waypoint
+		Owner: Neutral
+		Location: 109,74
+	Actor331: waypoint
+		Owner: Neutral
+		Location: 109,51
+	Actor332: waypoint
+		Owner: Neutral
+		Location: 122,48
+	Actor333: waypoint
+		Owner: Neutral
+		Location: 108,24
+	Actor334: waypoint
+		Owner: Neutral
+		Location: 98,2
+	Actor335: waypoint
+		Owner: Neutral
+		Location: 82,6
+	Actor336: waypoint
+		Owner: Neutral
+		Location: 66,5
+	Actor337: waypoint
+		Owner: Neutral
+		Location: 59,16
+	Actor338: waypoint
+		Owner: Neutral
+		Location: 44,34
+	Actor339: waypoint
+		Owner: Neutral
+		Location: 60,35
+	Actor340: waypoint
+		Owner: Neutral
+		Location: 4,39
+	Actor341: waypoint
+		Owner: Neutral
+		Location: 18,16
+	Actor342: waypoint
+		Owner: Neutral
+		Location: 4,3
+	Actor343: waypoint
+		Owner: Neutral
+		Location: 48,20
+	Actor344: waypoint
+		Owner: Neutral
+		Location: 33,57
+	Actor345: waypoint
+		Owner: Neutral
+		Location: 53,95
+	Actor346: waypoint
+		Owner: Neutral
+		Location: 46,76
+	Actor347: waypoint
+		Owner: Neutral
+		Location: 76,55
+	Actor348: waypoint
+		Owner: Neutral
+		Location: 26,45
+	Actor349: waypoint
+		Owner: Neutral
+		Location: 21,37
+	Actor350: waypoint
+		Owner: Neutral
+		Location: 4,31
+	Actor351: waypoint
+		Owner: Neutral
+		Location: 38,92
+	Actor352: waypoint
+		Owner: Neutral
+		Location: 59,118
+	Actor353: waypoint
+		Owner: Neutral
+		Location: 74,100
+	Actor354: waypoint
+		Owner: Neutral
+		Location: 98,73
+	Actor355: waypoint
+		Owner: Neutral
+		Location: 88,43
+	Actor356: waypoint
+		Owner: Neutral
+		Location: 93,23
+	Actor357: waypoint
+		Owner: Neutral
+		Location: 80,26
+	Actor358: waypoint
+		Owner: Neutral
+		Location: 79,14
+	Actor359: waypoint
+		Owner: Neutral
+		Location: 73,3
+	Actor360: waypoint
+		Owner: Neutral
+		Location: 114,2
+	Actor361: waypoint
+		Owner: Neutral
+		Location: 109,33
+	Actor362: waypoint
+		Owner: Neutral
+		Location: 96,36
+	Actor363: waypoint
+		Owner: Neutral
+		Location: 57,41
+	Actor364: waypoint
+		Owner: Neutral
+		Location: 55,66
+	Actor365: waypoint
+		Owner: Neutral
+		Location: 43,62
+	Actor366: waypoint
+		Owner: Neutral
+		Location: 14,56
+	Actor367: waypoint
+		Owner: Neutral
+		Location: 12,50
+	Actor368: waypoint
+		Owner: Neutral
+		Location: 5,49
+	Actor369: waypoint
+		Owner: Neutral
+		Location: 32,51
+	Actor370: waypoint
+		Owner: Neutral
+		Location: 8,15
+	Actor371: waypoint
+		Owner: Neutral
+		Location: 85,83
+	Actor372: waypoint
+		Owner: Neutral
+		Location: 97,95
+	Actor373: waypoint
+		Owner: Neutral
+		Location: 93,90
+	Actor374: waypoint
+		Owner: Neutral
+		Location: 84,108
+	Actor375: waypoint
+		Owner: Neutral
+		Location: 70,114
+	Actor376: waypoint
+		Owner: Neutral
+		Location: 28,117
+	Actor377: waypoint
+		Owner: Neutral
+		Location: 39,105
+	Actor378: waypoint
+		Owner: Neutral
+		Location: 44,98
+	Actor379: waypoint
+		Owner: Neutral
+		Location: 7,99
+	Actor380: waypoint
+		Owner: Neutral
+		Location: 2,77
+	Actor381: waypoint
+		Owner: Neutral
+		Location: 5,59
+	Actor382: waypoint
+		Owner: Neutral
+		Location: 12,25
+	Actor383: waypoint
+		Owner: Neutral
+		Location: 26,13
+	Actor384: waypoint
+		Owner: Neutral
+		Location: 44,12
+	Actor385: waypoint
+		Owner: Neutral
+		Location: 70,36
+	Actor386: waypoint
+		Owner: Neutral
+		Location: 80,41
+	Actor387: waypoint
+		Owner: Neutral
+		Location: 112,59
+	Actor388: waypoint
+		Owner: Neutral
+		Location: 122,40
+	Actor389: waypoint
+		Owner: Neutral
+		Location: 88,4
+	Actor390: waypoint
+		Owner: Neutral
+		Location: 34,22
+	Actor391: waypoint
+		Owner: Neutral
+		Location: 25,5
+	Actor392: waypoint
+		Owner: Neutral
+		Location: 18,72
+	Actor393: waypoint
+		Owner: Neutral
+		Location: 16,83
+	Actor394: waypoint
+		Owner: Neutral
+		Location: 27,91
+	Actor395: waypoint
+		Owner: Neutral
+		Location: 21,97
+	Actor396: waypoint
+		Owner: Neutral
+		Location: 19,112
+	Actor397: waypoint
+		Owner: Neutral
+		Location: 13,105
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		GlobalUpgradeManager:
+	World:
+		CrateSpawner:
+			Minimum: 200
+			Maximum: 300
+			SpawnInterval: 1
+			InitialSpawnDelay: 0
+			WaterChance: 0
+			CrateActors: BrownCrate, GreyCrate, GreenCrate, OrangeCrate, RedCrate
+			CrateActorShares: 0, 0, 100, 0, 0
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScript:
+			Scripts: solesurvivor.lua
+		ScriptUpgradesCache:
+			Upgrades: spawnstealth
+	^ssCrate:
+		Inherits: ^SpriteActor
+		HiddenUnderFog:
+		RenderSprites:
+			Palette: effect
+		Tooltip:
+			Name: Crate
+		Crate:
+			TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+			Lifetime: 240
+	BrownCrate:
+		Inherits: ^ssCrate
+		RenderSprites:
+		WithCrateBody:
+		GrantUpgradeCrateAction@firepower:
+			SelectionShares: 20
+			Upgrades: firepower
+			Effect: firepower-up
+		GrantUpgradeCrateAction@damage:
+			SelectionShares: 20
+			Upgrades: damage
+			Effect: damage-up
+		GrantUpgradeCrateAction@speed:
+			SelectionShares: 20
+			Upgrades: speed
+			Effect: speed-up
+		GrantUpgradeCrateAction@reload:
+			SelectionShares: 20
+			Upgrades: reload
+			Effect: reload-up
+		GrantUpgradeCrateAction@inaccuracy:
+			SelectionShares: 20
+			Upgrades: inaccuracy
+			Effect: inaccuracy-up
+	GreyCrate:
+		Inherits: ^ssCrate
+		RenderSprites:
+		WithCrateBody:
+		GrantUpgradeCrateAction@megafirepower:
+			SelectionShares: 20
+			Upgrades: firepower, firepower, firepower, firepower
+			Effect: firepower-up
+		GrantUpgradeCrateAction@megadamage:
+			SelectionShares: 20
+			Upgrades: damage, damage, damage, damage
+			Effect: damage-up
+		GrantUpgradeCrateAction@megaspeed:
+			SelectionShares: 20
+			Upgrades: speed, speed, speed, speed
+			Effect: speed-up
+		GrantUpgradeCrateAction@megareload:
+			SelectionShares: 20
+			Upgrades: reload, reload, reload, reload
+			Effect: reload-up
+		GrantUpgradeCrateAction@megainaccuracy:
+			SelectionShares: 20
+			Upgrades: inaccuracy, inaccuracy, inaccuracy, inaccuracy
+			Effect: inaccuracy-up
+	GreenCrate:
+		Inherits: ^ssCrate
+		RenderSprites:
+		WithCrateBody:
+		RevealMapCrateAction:
+			SelectionShares: 50
+			Effect: reveal-map
+		HideMapCrateAction:
+			SelectionShares: 50
+			Effect: hide-map
+		GiveCashCrateAction:
+			SelectionShares: 1
+			Amount: 200
+			UseCashTick: true
+		HealUnitsCrateAction:
+			SelectionShares: 50
+			Notification: heal2.aud
+			Effect: heal
+	OrangeCrate:
+		Inherits: ^ssCrate
+		RenderSprites:
+		WithCrateBody:
+	RedCrate:
+		Inherits: ^ssCrate
+		RenderSprites:
+		WithCrateBody:
+	UnitChooser:
+		Inherits: FLARE
+		ScriptTriggers:
+		RevealsShroud:
+			Range: 8c0
+		Production:
+			Produces: ssUnits
+			MoveIntoWorld: false
+		Exit:
+		ProvidesPrerequisite:
+			Race: gdi
+			Prerequisite: ss.unit
+		ProductionQueue:
+			Type: ssUnits
+			Group: Infantry
+			RequireOwner: false			
+	E1:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 10
+		Valued:
+			Cost: 0			
+		Tooltip:
+			Description: General-purpose infantry.
+		RenderNameTag:			
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	E2:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 20
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Fast infantry armed with grenades.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	E3:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 30
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Anti-tank infantry.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	E4:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 40
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Advanced anti-infantry unit.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	E5:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 50
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Advanced general-purpose infantry.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	RMBO:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 60
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Elite sniper infantry unit.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-GainsExperience:
+		-TakeCover:
+		-Guard:
+		-AutoTarget:
+		-AttackMove:
+	PVICE:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 70
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Mutated abomination that spits liquid Tiberium.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+	STEG:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 80
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: A large, heavily built, herbivorous quadruped.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+	TREX:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 90
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Bipedal carnivore with a massive skull.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+	TRIC:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 100
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Quadruped with large bony frill and three horns.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+	RAPT:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 110
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Bipedal with enlarged sickle-shaped claw on each hindfoot.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+	APC:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit
+			BuildPaletteOrder: 200
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Armed infantry transport.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+		Mobile:
+			Crushes: crate		
+		-Cargo:
+	ARTY:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 210
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Long-range artillery.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:	
+		Mobile:
+			Crushes: crate		
+	FTNK:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 220
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Heavily armored flame-throwing vehicle.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:		
+		-AttackMove:
+		Mobile:
+			Crushes: crate
+	BGGY:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 230
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Fast scout and anti-infantry vehicle.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:			
+	BIKE:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 240
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Fast scout vehicle, armed with\nrockets.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:			
+	JEEP:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 240
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Fast scout and anti-infantry vehicle.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:		
+	LTNK:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 260
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Fast, light tank.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:		
+		-AttackMove:
+		Mobile:
+			Crushes: crate			
+	MTNK:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 270
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: General-Purpose GDI Tank.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:		
+		-AttackMove:
+		Mobile:
+			Crushes: crate			
+	HTNK:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 280
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Heavily armored GDI Tank.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+		Mobile:
+			Crushes: crate
+	MSAM:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 290
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Long range rocket artillery.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+		Mobile:
+			Crushes: crate			
+	MLRS:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 300
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Powerful anti-air unit.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		Cloak:
+			UpgradeTypes: spawnstealth
+			UpgradeMinEnabledLevel: 1
+			InitialDelay: 0
+			CloakDelay: 0
+			CloakSound: trans1.aud
+			UncloakSound: trans1.aud
+		-AutoTarget:
+		-AttackMove:
+		Mobile:
+			Crushes: crate			
+	STNK:
+		Buildable:
+			Queue: ssUnits
+			Prerequisites: ~ss.unit	
+			BuildPaletteOrder: 310
+		Valued:
+			Cost: 0
+		Tooltip:
+			Description: Long-range missile tank that can cloak.
+		RenderNameTag:
+		FirepowerMultiplier:
+			UpgradeTypes: firepower
+			Modifier: 120, 140, 160, 180, 200, 220, 240, 260, 280, 300
+		DamageMultiplier:
+			UpgradeTypes: damage
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		SpeedMultiplier:
+			UpgradeTypes: speed
+			Modifier: 110, 120, 130, 140, 150, 160, 170, 180, 190, 200
+		ReloadDelayMultiplier:
+			UpgradeTypes: reload
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		InaccuracyMultiplier:
+			UpgradeTypes: inaccuracy
+			Modifier: 95, 90, 85, 80, 75, 70, 65, 60, 55, 50
+		-AutoTarget:
+		-AttackMove:
+
+Sequences:
+	browncrate:
+		idle: wcrate
+			ZOffset: -511
+	greycrate:
+		idle: scrate
+			ZOffset: -511
+	greencrate:
+		idle: hcrate
+			ZOffset: -511
+	orangecrate:
+		idle: sucrate
+			ZOffset: -511
+	redcrate:
+		idle: acrate
+			ZOffset: -511
+	crate-effects:
+		firepower-up: mortard
+			Length: *
+		damage-up: armord
+			Length: *
+		speed-up: litenngd
+			Length: *
+		reload-up: reload
+			Length: *
+		inaccuracy-up: deviator
+			Length: *
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Music:
+
+Notifications:
+
+Translations:
