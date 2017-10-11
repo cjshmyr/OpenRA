@@ -1,0 +1,67 @@
+fact:
+	Defaults:
+		Offset: 0, 0, 36
+		DepthSprite: isodepth.shp
+	idle:
+	make: factmake
+		Length: *
+	build:
+		Start: 1
+		Length: 25
+	damaged-idle:
+		Start: 26
+	damaged-build:
+		Start: 27
+		Length: 25
+	dead: factdead
+		Tick: 800
+	icon: facticon
+		Offset: 0,0
+		-DepthSprite:
+	fake-icon: facficon
+
+powr:
+	Defaults:
+		Offset: 0, -3, 24  # Bottom corner of pp was being cut off, still might even be!
+		DepthSprite: isodepth.shp
+	idle:
+	damaged-idle:
+		Start: 1
+	make: powrmake
+		Length: *
+	dead: powrdead
+		Tick: 800
+	icon: powricon
+		Offset: 0,0
+		-DepthSprite:
+
+tent:
+	Defaults:
+		Offset: 0, 0, 24
+		DepthSprite: isodepth.shp
+	idle:
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+	make: tentmake
+		Length: *
+	icon: tenticon
+		Offset: 0,0
+		-DepthSprite:
+
+barr:
+	Defaults:
+		Offset: 0, -6, 24
+		DepthSprite: isodepth.shp
+	idle:
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+	make: barrmake
+		Length: *
+	icon: barricon
+		Offset: 0,0
+		-DepthSprite:
+

@@ -1,0 +1,88 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
+	ActorMap:
+	ScreenMap:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: maps
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+		ShroudPalette: shroud
+		FogPalette: shroud
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: allies, soviet
+	Faction@0:
+		Name: Allies
+		InternalName: allies
+	Faction@1:
+		Name: Soviet
+		InternalName: soviet
+	ResourceType@Tiberium:
+		Type: Tiberium
+		Name: Tiberium
+		PipColor: Green
+		ResourceType: 1
+		Palette: greentiberium
+		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		MaxDensity: 12
+		ValuePerUnit: 50
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: Tiberium
+	TerrainGeometryOverlay:
+	ExitsDebugOverlayManager:
+	CliffBackImpassabilityLayer:
+	SubterraneanActorLayer:
+	JumpjetActorLayer:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	CustomTerrainDebugOverlay:
+	DomainIndex:
+	ResourceLayer:
+	ResourceClaimLayer:
+	BridgeLayer:
+	ResourceClaimLayer:
+	WarheadDebugOverlay:
+	SpawnMapActors:
+	MapCreeps:
+	MapBuildRadius:
+	MapOptions:
+	CreateMPPlayers:
+	MPStartUnits@MCV:
+		Class: none
+		ClassName: MCV Only
+		Factions: allies, soviet
+		BaseActor: mcv
+	MPStartLocations:
+	SpawnMPUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ScreenShaker:
+	RadarPings:
+	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:
+	EditorSelectionLayer:
+		Palette: placebuilding
+		LineBuildSegmentPalette: placelinesegment
+	LoadWidgetAtGameStart:

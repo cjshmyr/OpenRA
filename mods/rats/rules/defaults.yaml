@@ -1,0 +1,349 @@
+^ExistsInWorld:
+	AppearsOnRadar:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	GivesExperience:
+		PlayerExperienceModifier: 1
+	ScriptTriggers:
+	ConditionManager:
+	RenderDebugState:
+
+^SpriteActor:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: false
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
+
+^1x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+
+^2x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^2x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^3x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
+
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
+^BasicBuilding:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Huntable:
+	WithTextControlGroupDecoration:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Priority: 3
+	Targetable:
+		TargetTypes: Ground, Building, C4
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+		Adjacent: 4
+	FrozenUnderFog:
+	SoundOnDamageTransition:
+		DamagedSounds: expnew01.aud
+		DestroyedSounds: crmble2.aud
+	WithSpriteBody:
+	EngineerRepairable:
+	ShakeOnDeath:
+	Guardable:
+		Range: 3c0
+	Demolishable:
+
+^Building:
+	Inherits@1: ^BasicBuilding
+	GivesBuildableArea:
+	Capturable:
+	RepairableBuilding:
+		IndicatorPalette: mouse
+		# PlayerExperience: 25
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	CaptureNotification:
+	Sellable:
+		SellSounds: cashturn.aud
+	WithMakeAnimation:
+
+^Vehicle:
+	Inherits@1: ^ExistsInWorld
+	# Inherits@2: ^GainsExperience
+	# Inherits@3: ^IronCurtainable
+	Inherits@4: ^SpriteActor
+	Huntable:
+	DrawLineToTarget:
+	UpdatesPlayerStatistics:
+	Mobile:
+		Crushes: mine, crate
+		TerrainSpeeds:
+			Clear: 80
+			Rough: 40
+			Road: 100
+			Bridge: 100
+			Ore: 70
+			Gems: 70
+			Beach: 40
+		TurnSpeed: 5
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 24, 24
+	Targetable:
+		TargetTypes: Ground, Repair, Vehicle
+		RequiresCondition: !parachute
+	Repairable:
+	Chronoshiftable:
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types: Vehicle
+	GivesBounty:
+	# GpsDot:
+	# 	String: Vehicle
+	WithDamageOverlay:
+	Guard:
+	Guardable:
+	Tooltip:
+		GenericName: Vehicle
+	Capturable:
+		Type: vehicle
+		CaptureThreshold: 100
+		CancelActivity: True
+	CaptureNotification:
+		Notification: UnitStolen
+	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
+	Parachutable:
+		FallRate: 26
+		KilledOnImpassableTerrain: true
+		GroundCorpseSequence:
+		GroundCorpsePalette:
+		WaterCorpseSequence:
+		WaterCorpsePalette:
+		ParachutingCondition: parachute
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	WithFacingSpriteBody:
+	WithParachute:
+		ShadowImage: parach-shadow
+		ShadowSequence: idle
+		Image: parach
+		Sequence: idle
+		OpeningSequence: open
+		Offset: 0,0,200
+		RequiresCondition: parachute
+	BodyOrientation:
+		UseClassicFacingFudge: True
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
+
+^Tank:
+	Inherits: ^Vehicle
+	Mobile:
+		Crushes: wall, mine, crate
+		TerrainSpeeds:
+			Clear: 80
+			Rough: 70
+			Road: 100
+			Bridge: 100
+			Ore: 70
+			Gems: 70
+			Beach: 70
+	Targetable:
+		TargetTypes: Ground, C4, Repair, Tank
+	ProximityCaptor:
+		Types: Tank
+	Tooltip:
+		GenericName: Tank
+
+^Infantry:
+	Inherits@1: ^ExistsInWorld
+	# Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Huntable:
+	DrawLineToTarget:
+	Health:
+		HP: 25
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 4c0
+	Mobile:
+		Speed: 56
+		Crushes: mine, crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Bridge: 100
+			Ore: 80
+			Gems: 80
+			Beach: 80
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 12,18,0,-8
+	Targetable:
+		TargetTypes: Ground, Infantry, Disguise
+		RequiresCondition: !parachute
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+	WithDeathAnimation:
+		DeathTypes:
+			DefaultDeath: 1
+			BulletDeath: 2
+			SmallExplosionDeath: 3
+			ExplosionDeath: 4
+			FireDeath: 5
+			ElectricityDeath: 6
+		CrushedSequence: die-crushed
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	HiddenUnderFog:
+	ActorLostNotification:
+	GivesBounty:
+	# GpsDot:
+	# 	String: Infantry
+	Crushable:
+		CrushSound: squishy2.aud
+	Guard:
+	Guardable:
+	Tooltip:
+		GenericName: Soldier
+	SelfHealing@HOSPITAL:
+		Step: 5
+		Delay: 100
+		HealIfBelow: 100
+		DamageCooldown: 125
+		RequiresCondition: hospitalheal
+	GrantConditionOnPrerequisite:
+		Condition: hospitalheal
+		Prerequisites: hosp
+	DeathSounds@NORMAL:
+		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
+	DeathSounds@BURNED:
+		Voice: Burned
+		DeathTypes: FireDeath
+	DeathSounds@ZAPPED:
+		Voice: Zapped
+		DeathTypes: ElectricityDeath
+	Parachutable:
+		FallRate: 26
+		KilledOnImpassableTerrain: true
+		GroundImpactSound: squishy2.aud
+		WaterImpactSound: splash9.aud
+		WaterCorpseSequence: small_splash
+		ParachutingCondition: parachute
+	Cloneable:
+		Types: Infantry
+	Voiced:
+		VoiceSet: GenericVoice
+	WithParachute:
+		ShadowImage: parach-shadow
+		ShadowSequence: idle
+		Image: parach
+		Sequence: idle
+		OpeningSequence: open
+		Offset: 0,0,427
+		RequiresCondition: parachute
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
+
+^Soldier:
+	Inherits: ^Infantry
+	UpdatesPlayerStatistics:
+	MustBeDestroyed:
+	ProximityCaptor:
+		Types: Infantry
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+	WithInfantryBody:
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
+	DetectCloaked:
+		CloakTypes: Hijacker

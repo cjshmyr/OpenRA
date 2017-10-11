@@ -1,0 +1,265 @@
+Metadata:
+	Title: Red Alert 1.5
+	Version: {DEV_VERSION}
+
+PackageFormats: Mix
+
+Packages:
+	~^Content/ra/v2/
+	~^Content/ra/v2/expand
+	~^Content/ra/v2/cnc
+	~^Content/ra/v2/movies
+	.
+	$ts: ts
+	$ra: ra
+	$rats: rats
+	./mods/common: common
+
+# Tiberian Sun (To be phased out)
+	## ~scores.mix
+	## ~sidenc01.mix
+	## ~sidenc02.mix
+	## ~e01scd01.mix
+	## ~e01scd02.mix
+	## ~movies01.mix
+	## ~movies02.mix
+	## ~sidecd01.mix
+	## ~sidecd02.mix
+	## ~cache.mix
+	## ~conquer.mix
+	## ~isosnow.mix
+	#### ~isotemp.mix #### (Moved into rats/bits/ts)
+	## ~local.mix
+	## ~sidec01.mix: sidebar-gdi
+	## ~sidec02.mix: sidebar-nod
+	## ~sno.mix
+	## ~snow.mix
+	## ~sounds.mix
+	## ~speech01.mix: speech-gdi
+	## ~speech02.mix: speech-nod
+	## ~tem.mix
+	#### ~temperat.mix #### (Moved into rats/bits/ts)
+# Firestorm (To be phased out)
+	## ~scores01.mix
+	## ~expand01.mix
+	## ~sounds01.mix
+	## ~e01sc01.mix
+	## ~e01sc02.mix
+	## ~e01vox01.mix
+	## ~e01vox02.mix
+	## ~ecache01.mix
+	## ts|bits
+	## ts|uibits
+# Red Alert
+	ra|bits
+	~main.mix
+	~conquer.mix
+	~lores.mix: lores
+	~hires.mix
+	~local.mix
+	~sounds.mix
+	~speech.mix
+	~allies.mix
+	~russian.mix
+	~temperat.mix
+	~snow.mix
+	~interior.mix
+	~scores.mix
+	~expand2.mix
+	~hires1.mix
+	~desert.mix
+# rats
+	rats|bits/ts/isotemp.mix # explicit ref for visibility
+	rats|bits/ts/temperat.mix # explicit ref for visibility
+	rats|bits/ts # ts content
+	rats|bits/ts/bits # ts/bits folder
+	# rats|bits/example
+	rats|bits
+	rats|uibits
+
+MapFolders:
+	rats|maps: System
+	~^maps/rats/{DEV_VERSION}: User
+
+Rules:
+	rats|rules/player.yaml
+	rats|rules/world.yaml
+	rats|rules/palettes.yaml
+	rats|rules/misc.yaml
+	rats|rules/defaults.yaml
+	rats|rules/vehicles.yaml
+	rats|rules/structures.yaml
+	rats|rules/infantry.yaml
+
+Weapons:
+	rats|weapons/ballistics.yaml
+	rats|weapons/explosions.yaml
+	rats|weapons/missiles.yaml
+	rats|weapons/other.yaml
+	rats|weapons/smallcaliber.yaml
+	rats|weapons/superweapons.yaml
+
+Sequences:
+	rats|sequences/aircraft.yaml
+	rats|sequences/decorations.yaml
+	rats|sequences/infantry.yaml
+	rats|sequences/misc.yaml
+	rats|sequences/ships.yaml
+	rats|sequences/structures.yaml
+	rats|sequences/vehicles.yaml
+
+TileSets:
+	rats|tilesets/temperate.yaml
+
+MapGrid:
+	TileSize: 48,24
+	EnableDepthBuffer: True
+	Type: RectangularIsometric
+	MaximumTerrainHeight: 16
+	SubCellOffsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultSubCell: 2
+
+Cursors:
+	rats|cursors.yaml
+
+Chrome:
+	rats|chrome.yaml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+	common|OpenRA.Mods.Cnc.dll
+
+ChromeLayout:
+	common|chrome/ingame.yaml
+	common|chrome/ingame-chat.yaml
+	common|chrome/ingame-fmvplayer.yaml
+	common|chrome/ingame-menu.yaml
+	rats|chrome/ingame-info.yaml
+	common|chrome/ingame-infoscripterror.yaml
+	common|chrome/ingame-infobriefing.yaml
+	common|chrome/ingame-infoobjectives.yaml
+	common|chrome/ingame-infostats.yaml
+	common|chrome/ingame-observer.yaml
+	rats|chrome/ingame-observerstats.yaml
+	rats|chrome/ingame-player.yaml
+	common|chrome/ingame-perf.yaml
+	rats|chrome/ingame-debug.yaml
+	common|chrome/mainmenu.yaml
+	rats|chrome/mainmenu-prerelease-notification.yaml
+	common|chrome/settings.yaml
+	common|chrome/credits.yaml
+	common|chrome/lobby.yaml
+	common|chrome/lobby-mappreview.yaml
+	common|chrome/lobby-players.yaml
+	common|chrome/lobby-options.yaml
+	common|chrome/lobby-music.yaml
+	common|chrome/lobby-kickdialogs.yaml
+	common|chrome/lobby-globalchat.yaml
+	rats|chrome/color-picker.yaml
+	common|chrome/map-chooser.yaml
+	common|chrome/multiplayer.yaml
+	common|chrome/multiplayer-browser.yaml
+	common|chrome/multiplayer-createserver.yaml
+	common|chrome/multiplayer-directconnect.yaml
+	common|chrome/multiplayer-globalchat.yaml
+	common|chrome/connection.yaml
+	common|chrome/replaybrowser.yaml
+	rats|chrome/dropdowns.yaml
+	common|chrome/musicplayer.yaml
+	common|chrome/tooltips.yaml
+	common|chrome/assetbrowser.yaml
+	common|chrome/missionbrowser.yaml
+	common|chrome/confirmation-dialogs.yaml
+	common|chrome/editor.yaml
+
+Voices:
+	rats|audio/voices.yaml
+
+Notifications:
+	rats|audio/notifications.yaml
+
+Music:
+	rats|audio/music.yaml
+
+Translations:
+	rats|languages/english.yaml
+
+LoadScreen: LogoStripeLoadScreen # BlankLoadScreen
+	Image: rats|uibits/loadscreen.png
+	Text: Placeholder 1..., Placeholder 2...
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+	LobbySettingsNotification
+
+ChromeMetrics:
+	common|metrics.yaml
+	rats|metrics.yaml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	Title:
+		Font: common|FreeSansBold.ttf
+		Size:32
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	Small:
+		Font: common|FreeSans.ttf
+		Size:12
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+SupportsMapsFrom: rats, ts
+
+SoundFormats: Aud, Wav
+
+SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS, TmpTS # TmpTS needed for TS terrain
+
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERATE: .tem
+		SNOW: .sno
+	TilesetCodes:
+		TEMPERATE: t
+		SNOW: a
+
+ModelSequenceFormat: VoxelModelSequence
+
+GameSpeeds:
+	slower:
+		Name: Slower
+		Timestep: 50
+		OrderLatency: 3
+	default:
+		Name: Normal
+		Timestep: 40
+		OrderLatency: 3
+	fast:
+		Name: Fast
+		Timestep: 35
+		OrderLatency: 4
+	faster:
+		Name: Faster
+		Timestep: 30
+		OrderLatency: 4
+	fastest:
+		Name: Fastest
+		Timestep: 20
+		OrderLatency: 6
+
+ColorValidator:

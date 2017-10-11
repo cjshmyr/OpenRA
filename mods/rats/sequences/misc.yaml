@@ -1,0 +1,146 @@
+shroud:
+	Defaults:
+		Offset: 0, -1
+		ZRamp: 1
+	shroud:
+		Length: *
+	fog: fog
+		Length: *
+
+resources:
+	Defaults:
+		UseTilesetExtension: true
+		Length: 12
+		ShadowStart: 12
+		Offset: 0, -12, 1.5
+		ZRamp: 1
+	tib01: tib01
+	tib02: tib02
+	tib03: tib03
+	tib04: tib04
+	tib05: tib05
+	tib06: tib06
+	tib07: tib07
+	tib08: tib08
+	tib09: tib09
+	tib10: tib10
+	tib11: tib11
+	tib12: tib12
+	tib13: tib13 # TODO: NW ramp variant, currently unused
+	tib14: tib14 # TODO: NW ramp variant, currently unused
+	tib15: tib15 # TODO: NE ramp variant, currently unused
+	tib16: tib16 # TODO: NE ramp variant, currently unused
+	tib17: tib17 # TODO: SE ramp variant, currently unused
+	tib18: tib18 # TODO: SE ramp variant, currently unused
+	tib19: tib19 # TODO: SW ramp variant, currently unused
+	tib20: tib20 # TODO: SW ramp variant, currently unused
+	veins: veins
+		Length: 1
+		Start: 52
+		ShadowStart: -1
+		Tick: 180
+		Offset: 0, -12, 2.5
+
+overlay:
+	Defaults: place
+		Offset: 0, -12, 1
+		ZRamp: 1
+	build-valid-snow:
+	build-valid-temperate:
+	build-invalid:
+		Start: 1
+	target-select:
+
+editor-overlay:
+	Defaults: place
+		Offset: 0, -12, 1
+		ZRamp: 1
+	copy: overlay
+	paste: overlay
+		Start: 1
+
+mpspawn:
+	idle: ts-mpspawn
+		Length: *
+		ZRamp: 1
+		Offset: 0, 0, 24
+
+waypoint:
+	idle: ts-waypoint
+		Length: *
+		ZRamp: 1
+		Offset: 0, 0, 24
+
+camera:
+	idle:
+		Length: *
+		ZRamp: 1
+		Offset: 0, 0, 24
+
+clock:
+	idle:
+		Length: *
+
+moveflsh:
+	idle:
+		Length: *
+		Tick: 80
+		ZOffset: 2047
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+rallypoint:
+	flag: flagfly
+		Length: *
+		Offset: 11,-5
+		ZOffset: 2535
+	circles: fpls
+		Length: *
+		ZOffset: 2047
+
+parach:
+	open:
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
+parach-shadow:
+	idle:
+		Length: *
+
+explosion:
+	Defaults:
+		Length: *
+		ZOffset: 511
+	piff: piff
+	piffs: piffpiff
+	water_piff: wpiff
+	water_piffs: wpifpif
+	small_explosion: veh-hit3
+	med_explosion: veh-hit2
+	small_explosion_air: flak
+	med_explosion_air: veh-hit1
+	large_splash: h2o_exp1
+	napalm: napalm2
+	building_napalm: napalm2
+		FlipX: true
+	nuke: atomsfx
+	med_splash: h2o_exp2
+	self_destruct: art-exp1
+	artillery_explosion: art-exp1
+	building: fball1
+		Offset: 0,-9
+	small_splash: h2o_exp3
+	large_explosion: frag1
+		Offset: -2,0
+	small_napalm: napalm1
+	large_napalm: napalm3
+	corpse: corpse1
+		ZOffset: -512
+		Tick: 1600
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT

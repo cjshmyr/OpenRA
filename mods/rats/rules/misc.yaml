@@ -1,0 +1,49 @@
+mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+# ^fact.colorpicker:
+	# Inherits: FACT
+	# RenderSprites:
+		# Image: fact
+		# Palette: colorpicker
+
+CAMERA:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+	DetectCloaked:
+		Range: 10c0
+
+^fact.colorpicker:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker

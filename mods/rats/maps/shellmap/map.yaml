@@ -1,0 +1,32 @@
+MapFormat: 11
+
+RequiresMod: rats
+
+Title: Shellmap
+
+Author: hamb
+
+Tileset: TEMPERATE
+
+MapSize: 130,146
+
+Bounds: 1,17,128,128
+
+Visibility: Shellmap, Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+
+Actors:
+
+Rules:

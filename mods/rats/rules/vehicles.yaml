@@ -1,0 +1,71 @@
+MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 90
+		Prerequisites: fix, ~techlevel.medium
+		BuildDuration: 2500
+		BuildDurationModifier: 40
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: MCV
+	Selectable:
+		Priority: 4
+	SelectionDecorations:
+		VisualBounds: 42,42
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		Crushes: wall, mine, crate, infantry
+	RevealsShroud:
+		Range: 4c0
+	Transforms:
+		IntoActor: fact
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	WithFacingSpriteBody:
+
+2TNK:
+	Inherits: ^Tank
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry # Vehicle # Change to Vehicle later
+		BuildAtProductionType: Soldier # Remove this entry later
+		BuildPaletteOrder: 100
+		Prerequisites: ~barracks # Change to war factory later
+		Description: Allied medium tank.
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Medium Tank
+	Health:
+		HP: 450
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 85
+		Crushes: wall, mine, crate, infantry
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Turreted:
+		TurnSpeed: 10
+	Armament:
+		Weapon: 90mm
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 720,0,80
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:

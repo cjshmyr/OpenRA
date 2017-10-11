@@ -1,0 +1,194 @@
+FACT:
+	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		Description: Produces structures.
+	ProvidesPrerequisite@allies:
+		Factions: allies
+		Prerequisite: structures.allies
+	ProvidesPrerequisite@soviet:
+		Factions: soviet
+		Prerequisite: structures.soviet
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Production:
+		Produces: Building,Defense
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Construction Yard
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	Transforms:
+		IntoActor: mcv
+		Offset: 1,1
+		Facing: 96
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
+		Color: 8A8A8A
+	BaseProvider:
+		Range: 16c0
+	WithBuildingPlacedAnimation:
+	Power:
+		Amount: 0
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	ProvidesPrerequisite@buildingname:
+
+POWR:
+	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+		Description: todo
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Power Plant
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	Power:
+		Amount: 100
+	Targetable:
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+
+TENT:
+	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: anypower, ~structures.allies
+		Description: todo
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Allied Barracks
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: -42,810,0
+		ExitCell: 1,2
+	Exit@2:
+		SpawnOffset: -725,640,0
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry, Soldier
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	ProductionBar:
+	ProvidesPrerequisite:
+		Prerequisite: barracks
+	ProvidesPrerequisite@allied:
+		Factions: allies
+		Prerequisite: infantry.allies
+	ProvidesPrerequisite@alliedstructure:
+		RequiresPrerequisites: structures.allies
+		Prerequisite: infantry.allies
+	Power:
+		Amount: -20
+	ProvidesPrerequisite@buildingname:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	# WithDecoration@primary:
+	# 	RequiresSelection: true
+	# 	Image: pips
+	# 	Sequence: tag-primary
+	# 	ReferencePoint: Top
+	# 	ZOffset: 256
+	# 	RequiresCondition: primary
+
+BARR:
+	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: anypower, ~structures.soviet
+		Description: todo
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Soviet Barracks
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: -170,810,0
+		ExitCell: 1,2
+	Exit@2:
+		SpawnOffset: -725,640,0
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry, Soldier
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	ProductionBar:
+	ProvidesPrerequisite:
+		Prerequisite: barracks
+	ProvidesPrerequisite@soviet:
+		Factions: soviet
+		Prerequisite: infantry.soviet
+	ProvidesPrerequisite@sovietstructure:
+		RequiresPrerequisites: structures.soviet
+		Prerequisite: infantry.soviet
+	Power:
+		Amount: -20
+	ProvidesPrerequisite@buildingname:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	# WithDecoration@primary:
+	# 	RequiresSelection: true
+	# 	Image: pips
+	# 	Sequence: tag-primary
+	# 	ReferencePoint: Top
+	# 	ZOffset: 256
+	# 	RequiresCondition: primary

@@ -1,0 +1,20 @@
+2tnk:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: False
+		Offset: 0, 0, 12
+	turret:
+		Start: 32
+		Facings: 32
+		UseClassicFacingFudge: False
+		Offset: 0, 0, 12
+	muzzle: gunfire2
+		Length: 5
+	icon: 2tnkicon
+
+mcv:
+	idle:
+ 		Facings: 32
+ 		UseClassicFacingFudge: False
+		Offset: 0, 0, 24
+ 	icon: mcvicon
