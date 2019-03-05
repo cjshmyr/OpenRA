@@ -1,0 +1,3 @@
+25mm: # For debug purposes
+	Warhead@1Dam: SpreadDamage
+		Damage: 60000
