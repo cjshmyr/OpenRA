@@ -694,6 +694,6 @@ Actors:
 	Actor210: waypoint
 		Owner: Neutral
 		Location: 98,24
-Rules: rules.yaml,infantry.yaml,vehicles.yaml,structures.yaml
+Rules: rules.yaml,defaults.yaml,infantry.yaml,vehicles.yaml,structures.yaml
 Sequences: sequences.yaml
 Weapons: weapons.yaml

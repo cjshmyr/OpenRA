@@ -12,6 +12,9 @@ TODO:
 BUGS:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
 	Purchase terminals are placed where the spawning actor is. Should place at 0,0 (less haccky but whatever)
+
+REFACTOR:
+	???
 ]]
 
 --[[ General ]]
@@ -55,7 +58,7 @@ WorldLoaded = function()
 
 	BindBaseEvents()
 	BindVehicleEvents()
-	BindBaseProximityEvents()
+	BindBaseFootprintEvents()
 
 	AddPurchaseTerminals()
 
@@ -79,27 +82,12 @@ Tick = function()
 	DrawNameTags()
 
 	HackyStopNeutralHarvesters()
-
---[[
-	-- This is to see if the team by ref stuff is the same as player info.
-	local hambA = PlayerInfo["A0"]
-	--local hambB = PlayerInfo["A0"]
-	local hambB = TeamInfo["Allies"].Players["A0"]
-
-	if (hambA ~= nil and hambB ~= nil) then
-		local isEqual = hambA.InfantryConditionToken == hambB.InfantryConditionToken
-
-		DisplayMessage(tostring(hambA.Score) .. " " .. tostring(hambB.Score))
-		--DisplayMessage("hambA = hambB?" .. tostring(isEqual))
-	end
-]]
-
 end
 
 --[[ World loaded ]]
 SetPlayerInfo = function()
 	local humanPlayers = Player.GetPlayers(function(p)
-		return p.IsNonCombatant == false and PlayerIsTeamAi(p.InternalName) == false
+		return PlayerIsHuman(p) -- p.IsNonCombatant == false and PlayerIsTeamAi(p.InternalName) == false
 	end)
 
 	Utils.Do(humanPlayers, function(p)
@@ -109,21 +97,23 @@ SetPlayerInfo = function()
 			Team = nil,
 			Hero = nil,
 			PurchaseTerminal = nil,
-			BuildingConditionToken = 0,
-			VehicleConditionToken = 0,
-			InfantryConditionToken = 0,
-			RadarConditionToken = 0,
+			CanBuyConditionToken = -1,
+			BuildingConditionToken = -1,
+			VehicleConditionToken = -1,
+			InfantryConditionToken = -1,
+			RadarConditionToken = -1,
 			Score = 0,
 			Kills = 0,
 			Deaths = 0,
-			PilotOfVehicle = nil
+			PassengerOfVehicle = nil,
+			IsPilot = false
 		}
 	end)
 end
 
 SetTeamInfo = function()
 	-- Could combine w/ SetPlayerInfo.
-	local teams = Player.GetPlayers(function (p) return PlayerIsTeamAi(p.InternalName) end)
+	local teams = Player.GetPlayers(function (p) return PlayerIsTeamAi(p) end)
 
 	Utils.Do(teams, function(team)
 		local playersOnTeam = { }
@@ -145,7 +135,9 @@ SetTeamInfo = function()
 			ServiceDepot = nil,
 			BasicDefenses = {},
 			PoweredDefenses = {},
-			LastCheckedResourceAmount = 0
+			LastCheckedResourceAmount = 0,
+			BuildingFootprintEnteredTrigger = -1,
+			BuildingFootprintExitedTrigger = -1
 		}
 	end)
 
@@ -218,9 +210,10 @@ BindPurchaseTerminals = function()
 			pt.GrantCondition(pi.Player.Faction)
 
 			pi.BuildingConditionToken = pt.GrantCondition("building")
+			pi.RadarConditionToken = pt.GrantCondition("radar")
 			pi.InfantryConditionToken = pt.GrantCondition("infantry")
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")
-			pi.RadarConditionToken = pt.GrantCondition("radar")
+
 
 			Trigger.OnProduction(pt, function(producer, produced)
 				-- DisplayMessage(producer.Owner.Name .. " purchased " .. produced.Type)
@@ -239,6 +232,7 @@ BindBaseEvents = function()
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Construction Yard was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
@@ -247,6 +241,7 @@ BindBaseEvents = function()
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Refinery was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -257,6 +252,7 @@ BindBaseEvents = function()
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Barracks was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.InfantryConditionToken)
@@ -271,6 +267,7 @@ BindBaseEvents = function()
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " War Factory was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.VehicleConditionToken)
@@ -285,6 +282,7 @@ BindBaseEvents = function()
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Radar Dome was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.RadarConditionToken)
@@ -299,6 +297,7 @@ BindBaseEvents = function()
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -309,6 +308,7 @@ BindBaseEvents = function()
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Service Depot was destroyed by " .. killer.Owner.Name)
+			BindBaseFootprintEvents()
 		end)
 
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
@@ -323,6 +323,8 @@ end
 SpawnHero = function(player)
 	local spawnpoint = Map.NamedActor(SpawnPointActorType)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint.Location })
+
+	hero.AddTag("hero")
 
 	PlayerInfo[player.InternalName].Hero = hero
 
@@ -364,9 +366,11 @@ BindVehicleEvents = function()
 					PlayerHarvesters[#PlayerHarvesters+1] = transport
 				end
 
+				PlayerInfo[passenger.Owner.InternalName].PassengerOfVehicle = transport
+
 				-- Name tag hack: Setting the driver to display the proper pilot name.
 				if transport.PassengerCount == 1 then
-					PlayerInfo[passenger.Owner.InternalName].PilotOfVehicle = transport
+					PlayerInfo[passenger.Owner.InternalName].IsPilot = true
 				end
 			end)
 
@@ -379,36 +383,86 @@ BindVehicleEvents = function()
 				-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
 				transport.Stop()
 
+				PlayerInfo[passenger.Owner.InternalName].PassengerOfVehicle = nil
+
 				-- Name tag hack: Remove pilot info.
-				if PlayerInfo[passenger.Owner.InternalName].PilotOfVehicle ~= nil then
-					PlayerInfo[passenger.Owner.InternalName].PilotOfVehicle = nil
-				end
+				PlayerInfo[passenger.Owner.InternalName].IsPilot = false
 			end)
 		end)
 	end)
 end
 
-BindBaseProximityEvents = function()
---[[
-	TODO:
-	For less copy/paste, we could use a collection of all buildings that provide this, or tag each building somehow.
-	We also need to remove the triggers once the building is destroyed.
-]]
+BindBaseFootprintEvents = function()
+
+	-- Outstanding bugs: If a hero buys another infantry unit, the canbuy stays active forever/even in vehicle.
+
 	Utils.Do(TeamInfo, function(ti)
-		Trigger.OnEnteredProximityTrigger(ti.ConstructionYard.CenterPosition,  WDist.New(1024 * 3), function(actor, id)
-			DisplayMessage("Entered proximity")
+
+		local purchaseTerminalEnabledBuildings = {
+			ti.ConstructionYard,
+			ti.Refinery,
+			ti.Barracks,
+			ti.WarFactory,
+			ti.Radar,
+			ti.Powerplant
+		}
+
+		local footprintCells = { }
+
+		Utils.Do(purchaseTerminalEnabledBuildings, function(building)
+			if not building.IsDead then
+				--[[
+					Hacky and dumb.
+					(Usual) building footprint:
+						ooo
+						ooo
+						ooo
+
+					Location gives the top left.
+					Increment X/Y by one, and expand footprint twice (incl. diagonal) to get adjacency.
+					Won't be perfect for other sizes, but good enough.
+				]]
+				local loc = building.Location + CVec.New(1, 1)
+				local expandedLoc = Utils.ExpandFootprint({loc}, true)
+				expandedLoc = Utils.ExpandFootprint(expandedLoc, true)
+
+				Utils.Do(expandedLoc, function(cell)
+					footprintCells[#footprintCells +1] = cell
+				end)
+			end
 		end)
 
-		Trigger.OnExitedProximityTrigger(ti.ConstructionYard.CenterPosition,  WDist.New(1024 * 3), function(actor, id)
-			DisplayMessage("Exited proximity")
+		local onEnteredTrigger = Trigger.OnEnteredFootprint(footprintCells, function(actor, id)
+			if actor.HasTag("hero") then
+				local pi = GetPlayerInfoForActor(actor)
+
+				pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
+			end
 		end)
+
+		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
+			-- Fun: If this building dies, it triggers its own callback.
+			if not actor.IsDead and actor.HasTag("hero") then
+				local pi = GetPlayerInfoForActor(actor)
+
+				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+			end
+		end)
+
+		-- Remove any previous footprints
+		Trigger.RemoveFootprintTrigger(ti.BuildingFootprintEnteredTrigger)
+		Trigger.RemoveFootprintTrigger(ti.BuildingFootprintExitedTrigger)
+
+		ti.BuildingFootprintEnteredTrigger = onEnteredTrigger
+		ti.BuildingFootprintExitedTrigger = onExitedTrigger
+
 	end)
 end
 
 InitializeAiHarvesters = function()
 	-- Order all starting harvesters to find resources
 	Utils.Do(Map.ActorsInWorld, function (actor)
-		if actor.Type == AiHarvesterActorType and PlayerIsTeamAi(actor.Owner.InternalName) then
+		if actor.Type == AiHarvesterActorType and PlayerIsTeamAi(actor.Owner) then
 			InitializeAiHarvester(actor)
 		end
 	end)
@@ -474,22 +528,22 @@ end
 
 DrawNameTags = function()
 	-- This is a horrible hack until WithTextDecoration is usable.
-	for k, v in pairs(PlayerInfo) do
-		if v.Hero ~= nil and v.Hero.IsInWorld then
-			local pos = WPos.New(v.Hero.CenterPosition.X, v.Hero.CenterPosition.Y - 1250, 0)
-			Media.FloatingText(v.Player.Name, pos, 1, v.Player.Color)
+	Utils.Do(PlayerInfo, function(pi)
+		if pi.Hero ~= nil and pi.Hero.IsInWorld then
+			local pos = WPos.New(pi.Hero.CenterPosition.X, pi.Hero.CenterPosition.Y - 1250, 0)
+			Media.FloatingText(pi.Player.Name, pos, 1, pi.Player.Color)
 		end
 
-		if v.PilotOfVehicle ~= nil then
-			local pos = WPos.New(v.PilotOfVehicle.CenterPosition.X, v.PilotOfVehicle.CenterPosition.Y - 1250, 0)
-			local passengerCount = v.PilotOfVehicle.PassengerCount
-			local name = v.Player.Name
+		if pi.IsPilot then
+			local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
+			local passengerCount = pi.PassengerOfVehicle.PassengerCount
+			local name = pi.Player.Name
 			if passengerCount > 1 then
 				name = name .. " (+" .. passengerCount - 1 .. ")"
 			end
-			Media.FloatingText(name, pos, 1, v.Player.Color)
+			Media.FloatingText(name, pos, 1, pi.Player.Color)
 		end
-	end
+	end)
 end
 
 HackyStopNeutralHarvesters = function()
@@ -508,23 +562,25 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	local hero = pi.Hero;
 
 	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalInfantryActorTypePrefix,"") -- strip buy prefix off, we assume there's an actor without that prefix.
+		local type = StringReplace(actorType, PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
 
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
 		newHero.Health = hero.Health
 		newHero.IsInWorld = true
+		newHero.AddTag("hero")
 
 		pi.Hero = newHero
 
 		-- Doesn't look that great if moving.
 		hero.Stop()
 		hero.IsInWorld = false
+		--hero.RemoveTag("hero")
 		hero.Destroy()
 
 		BindHeroEvents(newHero)
 	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalVehicleActorTypePrefix,"")
+		local type = StringReplace(actorType, PurchaseTerminalVehicleActorTypePrefix, "")
 
 		local ti = pi.Team
 		if not ti.WarFactory.IsDead then
@@ -547,6 +603,31 @@ ArrayContains = function(collection, value)
 	return false
 end
 
-PlayerIsTeamAi = function(playerInternalName)
-	return playerInternalName == AlphaTeamPlayerName or playerInternalName == BetaTeamPlayerName
+StringReplace = function(str, matchText, replaceText)
+	return str:gsub(matchText, replaceText)
+end
+
+PlayerIsTeamAi = function(player)
+	return player.InternalName == AlphaTeamPlayerName or player.InternalName == BetaTeamPlayerName
+end
+
+PlayerIsHuman = function(player)
+	return player.IsNonCombatant == false and PlayerIsTeamAi(player) == false
+end
+
+-- Returns the PlayerInfo for an actor. Otherwise nil if they aren't player owned.
+GetPlayerInfoForActor = function(actor)
+	-- Exit early on AI
+	if not PlayerIsHuman(actor.Owner) then
+		return nil
+	end
+
+	-- Hand rolled loop to exit early
+	for i, pi in pairs(PlayerInfo) do
+		if pi.Hero ~= nil and pi.Player.InternalName == actor.Owner.InternalName then
+			return pi
+		end
+	end
+
+	return nil
 end

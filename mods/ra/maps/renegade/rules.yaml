@@ -42,7 +42,7 @@ Player:
 		Enabled: false
 		Visible: false
 
-# These things are always present in build queue, so get rid of them.
+# These actors are always present in build queue, so get rid of them.
 # Changes to buildings/units are in other files.
 POWR:
 	-Buildable:
@@ -70,6 +70,8 @@ PurchaseTerminal:
 	Production:
 		Produces: Building, Vehicle, Infantry
 	Exit:
+	ExternalCondition@canbuy:
+		Condition: canbuy
 	ExternalCondition@building:
 		Condition: building
 	ExternalCondition@vehicle:
@@ -82,6 +84,9 @@ PurchaseTerminal:
 		Condition: soviet
 	ExternalCondition@radar:
 		Condition: radar
+	ProvidesPrerequisite@canbuy:
+		Prerequisite: canbuy
+		RequiresCondition: canbuy
 	ProvidesPrerequisite@building:
 		Prerequisite: building
 		RequiresCondition: building
@@ -120,7 +125,7 @@ buy.infantry.e1:
 		Name: Rifleman
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: !always
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E1
@@ -131,7 +136,7 @@ buy.infantry.e3:
 		Name: Rocket Soldier
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: !always
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E3
@@ -142,7 +147,7 @@ buy.infantry.e6:
 		Name: Engineer
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: !always
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E6
@@ -155,7 +160,7 @@ buy.infantry.medi:
 		Name: Medic
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: ~infantry, ~allies
+		Prerequisites: ~canbuy, ~infantry, ~allies
 		Queue: Infantry
 	RenderSprites:
 		Image: MEDI
@@ -168,7 +173,7 @@ buy.infantry.mech:
 		Name: Mechanic
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: ~infantry, ~allies
+		Prerequisites: ~canbuy, ~infantry, ~allies
 		Queue: Infantry
 	RenderSprites:
 		Image: MECH
@@ -181,7 +186,7 @@ buy.infantry.e2:
 		Name: Grenadier
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: ~infantry, ~soviet
+		Prerequisites: ~canbuy, ~infantry, ~soviet
 		Queue: Infantry
 	RenderSprites:
 		Image: E2
@@ -194,7 +199,7 @@ buy.infantry.e4:
 		Name: Flamethrower
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: ~infantry, ~soviet
+		Prerequisites: ~canbuy, ~infantry, ~soviet
 		Queue: Infantry
 	RenderSprites:
 		Image: E4
@@ -207,7 +212,7 @@ buy.vehicle.harv:
 		Name: Ore Truck
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: ~vehicle
+		Prerequisites: ~canbuy, ~vehicle
 		Queue: Vehicle
 	RenderSprites:
 		Image: harv
@@ -220,7 +225,7 @@ buy.vehicle.mnly:
 		Name: Minelayer
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: ~vehicle
+		Prerequisites: ~canbuy, ~vehicle
 		Queue: Vehicle
 	RenderSprites:
 		Image: mnly
@@ -233,7 +238,7 @@ buy.vehicle.jeep:
 		Name: Ranger
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: ~vehicle, ~allies
+		Prerequisites: ~canbuy, ~vehicle, ~allies
 		Queue: Vehicle
 	RenderSprites:
 		Image: jeep
@@ -246,7 +251,7 @@ buy.vehicle.arty:
 		Name: Light Tank
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: ~vehicle, ~allies
+		Prerequisites: ~canbuy, ~vehicle, ~allies
 		Queue: Vehicle
 	RenderSprites:
 		Image: arty
@@ -259,7 +264,7 @@ buy.vehicle.1tnk:
 		Name: Light Tank
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: ~vehicle, ~allies
+		Prerequisites: ~canbuy, ~vehicle, ~allies
 		Queue: Vehicle
 	RenderSprites:
 		Image: 1tnk
@@ -272,7 +277,7 @@ buy.vehicle.2tnk:
 		Name: Medium Tank
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: ~vehicle, ~allies
+		Prerequisites: ~canbuy, ~vehicle, ~allies
 		Queue: Vehicle
 	RenderSprites:
 		Image: 2tnk
@@ -285,7 +290,7 @@ buy.vehicle.ctnk:
 		Name: Chrono Tank
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: ~vehicle, ~allies
+		Prerequisites: ~canbuy, ~vehicle, ~allies
 		Queue: Vehicle
 	RenderSprites:
 		Image: ctnk
@@ -298,7 +303,7 @@ buy.vehicle.ftrk:
 		Name: Mobile Flak
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: ~vehicle, ~soviet
+		Prerequisites: ~canbuy, ~vehicle, ~soviet
 		Queue: Vehicle
 	RenderSprites:
 		Image: ftrk
@@ -311,7 +316,7 @@ buy.vehicle.3tnk:
 		Name: Heavy Tank
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: ~vehicle, ~soviet
+		Prerequisites: ~canbuy, ~vehicle, ~soviet
 		Queue: Vehicle
 	RenderSprites:
 		Image: 3tnk
@@ -324,7 +329,7 @@ buy.vehicle.4tnk:
 		Name: Mammoth Tank
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: ~vehicle, ~soviet
+		Prerequisites: ~canbuy, ~vehicle, ~soviet
 		Queue: Vehicle
 	RenderSprites:
 		Image: 4tnk
@@ -337,9 +342,7 @@ buy.vehicle.ttnk:
 		Name: Tesla Tank
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: ~vehicle, ~soviet
+		Prerequisites: ~canbuy, ~vehicle, ~soviet
 		Queue: Vehicle
 	RenderSprites:
 		Image: ttnk
-
-# Also need to ensure the AI player has infinite cash (or jeeps cost nothing).
