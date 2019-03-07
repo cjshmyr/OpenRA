@@ -393,10 +393,21 @@ BindVehicleEvents = function()
 end
 
 BindBaseFootprintEvents = function()
+	--[[
+		Outstanding bugs:
 
-	-- Outstanding bugs: If a hero buys another infantry unit, the canbuy stays active forever/even in vehicle.
+		Doesn't account for team yet.
+	]]
 
 	Utils.Do(TeamInfo, function(ti)
+
+		-- HACK: If we're killing a building, we have to manually clear the token for entering/exiting again.
+		Utils.Do(ti.Players, function(pi)
+			if pi.PurchaseTerminal ~= nil then -- nil on world load, in which we don't care.
+				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+				pi.CanBuyConditionToken = -1
+			end
+		end)
 
 		local purchaseTerminalEnabledBuildings = {
 			ti.ConstructionYard,
@@ -436,16 +447,23 @@ BindBaseFootprintEvents = function()
 			if actor.HasTag("hero") then
 				local pi = GetPlayerInfoForActor(actor)
 
-				pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
+				-- Hacky: Only set the token if there isn't one (there may already be a token if we're purchasing an infantry)
+				if pi.CanBuyConditionToken < 0 then
+					DisplayMessage("Adding!")
+					pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
+				end
 			end
 		end)
 
 		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
-			-- Fun: If this building dies, it triggers its own callback.
-			if not actor.IsDead and actor.HasTag("hero") then
-				local pi = GetPlayerInfoForActor(actor)
+			if actor.IsInWorld then
+				if actor.HasTag("hero") then
+					DisplayMessage("Revoking!")
+					local pi = GetPlayerInfoForActor(actor)
 
-				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+					pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+					pi.CanBuyConditionToken = -1
+				end
 			end
 		end)
 
@@ -575,7 +593,6 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 		-- Doesn't look that great if moving.
 		hero.Stop()
 		hero.IsInWorld = false
-		--hero.RemoveTag("hero")
 		hero.Destroy()
 
 		BindHeroEvents(newHero)
