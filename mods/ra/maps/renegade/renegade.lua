@@ -1,9 +1,9 @@
 --[[
 TODO:
 	Better spawn points.
-	Invulnerability area?
+	Invulnerability on spawn?
 	Add a series of tests (check for req'd actors, checkbox in lobby maybe)
-	Engineer stuff
+	Engineer/mechanic stuff
 	Building under attack notifications
 	Buying vehicles when WF is dead.
 	Defense stuff.
@@ -51,7 +51,7 @@ AiHarvesterActorType = "harv-ai"
 PlayerHarvesterActorType = "harv"
 
 -- [[ Hacks that should be removed ]]
-SpawnPointActorType = "hackyspawn"
+SpawnPointActorType = "waypoint"
 armorTypes = {
 	{name = 'soft', types = { 'e1', 'e3', 'e6', 'medi', 'mech', 'e2', 'e4' }} ,
 	{name = 'medium', types = { 'jeep', 'arty', '1tnk', 'ctnk', 'ftrk', 'ttnk' }},
@@ -210,8 +210,10 @@ end
 
 AddPurchaseTerminals = function()
 	Utils.Do(PlayerInfo, function(pi)
-		local spawnpoint = Map.NamedActor(SpawnPointActorType)
-		Actor.Create(PurchaseTerminalActorType, true, { Owner = pi.Player, Location = spawnpoint.Location })
+		-- Hacky, but create all purchase terminals at 0,0.
+		-- The side effect is a unit forcibly moving if a purchase is made, while standing on it.
+		local spawnpoint = CPos.New(0, 0)
+		Actor.Create(PurchaseTerminalActorType, true, { Owner = pi.Player, Location = spawnpoint })
 	end)
 end
 
@@ -347,8 +349,8 @@ BindBaseEvents = function()
 end
 
 SpawnHero = function(player)
-	local spawnpoint = Map.NamedActor(SpawnPointActorType)
-	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint.Location })
+	local spawnpoint = GetAvailableSpawnPoint(player)
+	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
 	hero.AddTag("hero")
 
@@ -356,6 +358,42 @@ SpawnHero = function(player)
 
     FocusLocalCameraOnActor(hero)
 	BindHeroEvents(hero)
+end
+
+GetAvailableSpawnPoint = function(player)
+	--[[
+		Hacky/funny :)
+		Spawn actors around the perimeter of an alive building
+		Like footprints, assumes buildings are shaped as:
+			ooo
+			ooo
+			ooo
+
+		We get the center of the building, expand twice, and only use the annulus (outer ring).
+	]]
+
+	local pi = PlayerInfo[player.InternalName]
+	local team = pi.Team
+
+	local allBuildings = {
+		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.Radar, ti.Powerplant, ti.ServiceDepot
+	}
+	local aliveBuildings = { }
+	Utils.Do(allbuildings, function(building) {
+		if not building.IsDead then	aliveBuildings[#aliveBuildings+1] = building end
+	})
+
+	-- Get the annulus
+	local building = Utils.Random(aliveBuildings)
+	local loc = building.Location + CVec.New(1, 1)
+	local expandedOnce = Utils.ExpandFootprint({loc}, true)
+	local expandedTwice = Utils.ExpandFootprint(expandedOnce, true)
+	local annulus = GetCPosAnnulus(expandedOnce, expandedTwice)
+
+	-- Pick a random cell, for now don't care about occupancy
+	local randomCell = Utils.Random(annulus)
+
+	return randomCell
 end
 
 FocusLocalCameraOnActor = function(actor)
@@ -729,6 +767,19 @@ ArrayContains = function(collection, value)
 		end
 	end
 	return false
+end
+
+-- Used for spawn logic, gets an annulus of two footprints
+GetCPosAnnulus = function(baseFootprintCells, expandedFootprintCells)
+	local result = {}
+
+	for i, v in ipairs(expandedFootprintCells) do
+		if not ArrayContains(baseFootprintCells, v) then
+			result[result+1] = v
+		end
+	end
+
+	return result
 end
 
 StringReplace = function(str, matchText, replaceText)
