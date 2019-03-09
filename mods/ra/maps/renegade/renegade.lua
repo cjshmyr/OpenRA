@@ -1,13 +1,14 @@
 --[[
 TODO:
-	A score system.
-	A purchasing system.
 	Better spawn points.
-	Respawn timer.
 	Invulnerability area?
 	Add a series of tests (check for req'd actors, checkbox in lobby maybe)
 	Engineer stuff
-	Score / Kills / Death
+	Building under attack notifications
+	Buying vehicles when WF is dead.
+	Defense stuff.
+	Better scoreboard (current rank, etc).
+	Victory condition on timer or points.
 
 BUGS:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
@@ -26,9 +27,9 @@ CashPerSecondPenalized = 2 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
-SpawnAsActorType = "e1"
 
 --[[ Mod-specific ]]
+SpawnAsActorType = "e1"
 AlphaTeamPlayerName = "Allies"
 BetaTeamPlayerName = "Soviet"
 NeutralPlayerName = "Neutral"
@@ -49,6 +50,20 @@ PlayerHarvesterActorType = "harv"
 
 -- [[ Hacks that should be removed ]]
 SpawnPointActorType = "hackyspawn"
+armorTypes = {
+	{name = 'soft', types = { 'e1', 'e3', 'e6', 'medi', 'mech', 'e2', 'e4' }} ,
+	{name = 'medium', types = { 'jeep', 'arty', '1tnk', 'ctnk', 'ftrk', 'ttnk' }},
+	{name = 'hard', types = { 'harv', 'mnly', '2tnk', '3tnk', '4tnk', 'harv-ai' }}
+}
+weaponTypes = {
+	{ name = 'heal', types = { 'medi', 'mech' }},
+	{ name = 'gun', types = { 'e1', 'e2', 'jeep', 'ftrk' }},
+	{ name = 'missile', types = { 'e3', 'ctnk' }},
+	{ name = 'smallShell', types = { 'e2', '1tnk' }},
+	{ name = 'bigShell', types = { 'arty', '2tnk', '3tnk', '4tnk'}},
+	{ name = 'fire', types = { 'e4' }},
+	{ name = 'zap', types = { 'ttnk' }}
+}
 
 WorldLoaded = function()
 	SetPlayerInfo()
@@ -236,6 +251,7 @@ BindBaseEvents = function()
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- Refinery
@@ -247,6 +263,7 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Refinery.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- Barracks
@@ -262,6 +279,7 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Barracks.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- War Factory
@@ -277,6 +295,7 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.WarFactory.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- Radar
@@ -292,6 +311,7 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Radar.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- Powerplant
@@ -303,6 +323,7 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Powerplant.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
 
 		-- Service Depot
@@ -315,7 +336,10 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.ServiceDepot.StartBuildingRepairs()
 			end
+			GrantRewardOnHit(self, attacker)
 		end)
+
+		-- TODO: Defenses
 
 	end)
 end
@@ -340,8 +364,24 @@ end
 
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
-		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name)
-		SpawnHero(self.Owner)
+		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name .. "!")
+
+		-- Increment K/D
+		local selfPi = PlayerInfo[self.Owner.InternalName]
+		local killerPi = PlayerInfo[self.Owner.InternalName]
+		if selfPi ~= nil then
+			selfPi.Deaths = selfPi.Deaths + 1
+		end
+		if killerPi ~= nil then
+			killerPi.Kills = killerPi.Kills + 1
+		end
+
+		-- Polish idea: leave a death cam, increase respawn time.
+		Trigger.AfterDelay(25, SpawnHero(self.Owner))
+	end)
+
+	Trigger.OnDamaged(hero, function(self, attacker)
+		GrantRewardOnHit(self, attacker)
 	end)
 end
 
@@ -447,10 +487,12 @@ BindBaseFootprintEvents = function()
 			if actor.HasTag("hero") then
 				local pi = GetPlayerInfoForActor(actor)
 
-				-- Hacky: Only set the token if there isn't one (there may already be a token if we're purchasing an infantry)
-				if pi.CanBuyConditionToken < 0 then
-					DisplayMessage("Adding!")
-					pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
+				-- On same team
+				if pi.Player.Faction == ti.AiPlayer.Faction then
+					-- Hacky: Only set the token if there isn't one (we can have > 1 if we buy an infantry)
+					if pi.CanBuyConditionToken < 0 then
+						pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
+					end
 				end
 			end
 		end)
@@ -458,11 +500,13 @@ BindBaseFootprintEvents = function()
 		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
 			if actor.IsInWorld then
 				if actor.HasTag("hero") then
-					DisplayMessage("Revoking!")
 					local pi = GetPlayerInfoForActor(actor)
 
-					pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
-					pi.CanBuyConditionToken = -1
+					-- On same team
+					if pi.Player.Faction == ti.AiPlayer.Faction then
+						pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+						pi.CanBuyConditionToken = -1
+					end
 				end
 			end
 		end)
@@ -538,7 +582,10 @@ DrawScoreboard = function()
 	--end)
 	Utils.Do(PlayerInfo, function(pi)
 		if pi.Player.IsLocalPlayer then
-			local scoreboard = "Player: " .. pi.Player.Name
+			local scoreboard =
+				pi.Player.Name
+				.. " -- Score: " .. tostring(pi.Score)
+				.. " (K/D: " .. tostring(pi.Kills) .. "/" .. tostring(pi.Deaths) .. ")"
 			UserInterface.SetMissionText(scoreboard)
 		end
 	end)
@@ -604,6 +651,68 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 			ti.WarFactory.Produce(type)
 		end
 	end
+end
+
+GrantRewardOnHit = function(self, attacker)
+	-- Ignore self/team damage
+	if self.Owner.Faction == attacker.Owner.Faction then
+		return
+	end
+
+	local pi = GetPlayerInfoForActor(attacker)
+
+	-- AI might do the attacking.
+	if pi ~= nil then
+		local points = CalculatePoints(self, attacker)
+
+		pi.Score = pi.Score + points
+		pi.Player.Cash = pi.Player.Cash + points
+	end
+end
+
+CalculatePoints = function(self, attacker)
+	-- Unfortunately there's no way to get damage done in Lua yet.
+	-- Instead a bad rock-paper-scissors ish point system has been made.
+	local selfArmorType = ''
+	local attackerWeaponType = ''
+	for i, v in pairs(armorTypes) do
+		if ArrayContains(v.types, self.Type) then selfArmorType = v.name end
+	end
+	for i, v in pairs(weaponTypes) do
+		if ArrayContains(v.types, attacker.Type) then attackerWeaponType = v.name end
+	end
+
+	local points = 5
+	if selfArmorType == 'soft' then
+		if attackerWeaponType == 'heal' then points = 5
+		elseif attackerWeaponType == 'gun' then points = 25
+		elseif attackerWeaponType == 'missle' then points = 5
+		elseif attackerWeaponType == 'smallShell' then points = 5
+		elseif attackerWeaponType == 'bigShell' then points = 5
+		elseif attackerWeaponType == 'fire' then points = 25
+		elseif attackerWeaponType == 'zap' then points = 100
+		end
+	elseif selfArmorType == 'medium' then
+		if attackerWeaponType == 'heal' then points = 5
+		elseif attackerWeaponType == 'gun' then points = 2
+		elseif attackerWeaponType == 'missle' then points = 25
+		elseif attackerWeaponType == 'smallShell' then points = 25
+		elseif attackerWeaponType == 'bigShell' then points = 25
+		elseif attackerWeaponType == 'fire' then points = 2
+		elseif attackerWeaponType == 'zap' then points = 50
+		end
+	elseif selfArmorType == 'hard' then
+		if attackerWeaponType == 'heal' then points = 5
+		elseif attackerWeaponType == 'gun' then points = 1
+		elseif attackerWeaponType == 'missle' then points = 25
+		elseif attackerWeaponType == 'smallShell' then points = 15
+		elseif attackerWeaponType == 'bigShell' then points = 25
+		elseif attackerWeaponType == 'fire' then points = 1
+		elseif attackerWeaponType == 'zap' then points = 25
+		end
+	end
+
+	return points
 end
 
 --[[ Misc. ]]--
