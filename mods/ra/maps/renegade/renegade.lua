@@ -9,6 +9,8 @@ TODO:
 	Defense stuff.
 	Better scoreboard (current rank, etc).
 	Victory condition on timer or points.
+	Powering off defenses with low power.
+	Refills...?
 
 BUGS:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
@@ -102,7 +104,7 @@ end
 --[[ World loaded ]]
 SetPlayerInfo = function()
 	local humanPlayers = Player.GetPlayers(function(p)
-		return PlayerIsHuman(p) -- p.IsNonCombatant == false and PlayerIsTeamAi(p.InternalName) == false
+		return PlayerIsHuman(p)
 	end)
 
 	Utils.Do(humanPlayers, function(p)
