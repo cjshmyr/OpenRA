@@ -487,7 +487,7 @@ BindBaseFootprintEvents = function()
 
 		local onEnteredTrigger = Trigger.OnEnteredFootprint(footprintCells, function(actor, id)
 			if actor.HasTag("hero") then
-				local pi = GetPlayerInfoForActor(actor)
+				local pi = PlayerInfo[actor.Owner.InternalName]
 
 				-- On same team
 				if pi.Player.Faction == ti.AiPlayer.Faction then
@@ -502,7 +502,7 @@ BindBaseFootprintEvents = function()
 		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
 			if actor.IsInWorld then
 				if actor.HasTag("hero") then
-					local pi = GetPlayerInfoForActor(actor)
+					local pi = PlayerInfo[actor.Owner.InternalName]
 
 					-- On same team
 					if pi.Player.Faction == ti.AiPlayer.Faction then
@@ -661,7 +661,7 @@ GrantRewardOnHit = function(self, attacker)
 		return
 	end
 
-	local pi = GetPlayerInfoForActor(attacker)
+	local pi = PlayerInfo[attacker.Owner.InternalName]
 
 	-- AI might do the attacking.
 	if pi ~= nil then
@@ -741,21 +741,4 @@ end
 
 PlayerIsHuman = function(player)
 	return player.IsNonCombatant == false and PlayerIsTeamAi(player) == false
-end
-
--- Returns the PlayerInfo for an actor. Otherwise nil if they aren't player owned.
-GetPlayerInfoForActor = function(actor)
-	-- Exit early on AI
-	if not PlayerIsHuman(actor.Owner) then
-		return nil
-	end
-
-	-- Hand rolled loop to exit early
-	for i, pi in pairs(PlayerInfo) do
-		if pi.Hero ~= nil and pi.Player.InternalName == actor.Owner.InternalName then
-			return pi
-		end
-	end
-
-	return nil
 end
