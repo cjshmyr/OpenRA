@@ -442,17 +442,23 @@ BindVehicleEvents = function()
 				if transport.PassengerCount == 1 then
 					transport.Owner = passenger.Owner
 				end
+				local pi = PlayerInfo[passenger.Owner.InternalName]
+
+				-- Set passenger state
+				pi.PassengerOfVehicle = transport
+
+				-- Revoke any purchasing
+				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
+				pi.CanBuyConditionToken = -1
+
+				-- Name tag hack: Setting the driver to display the proper pilot name.
+				if transport.PassengerCount == 1 then
+					pi.IsPilot = true
+				end
 
 				-- Harvester hack: Also adding to list of harvesters.
 				if transport.Type == PlayerHarvesterActorType then
 					PlayerHarvesters[#PlayerHarvesters+1] = transport
-				end
-
-				PlayerInfo[passenger.Owner.InternalName].PassengerOfVehicle = transport
-
-				-- Name tag hack: Setting the driver to display the proper pilot name.
-				if transport.PassengerCount == 1 then
-					PlayerInfo[passenger.Owner.InternalName].IsPilot = true
 				end
 			end)
 
@@ -465,10 +471,12 @@ BindVehicleEvents = function()
 				-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
 				transport.Stop()
 
-				PlayerInfo[passenger.Owner.InternalName].PassengerOfVehicle = nil
+				local pi = PlayerInfo[passenger.Owner.InternalName]
+
+				pi.PassengerOfVehicle = nil
 
 				-- Name tag hack: Remove pilot info.
-				PlayerInfo[passenger.Owner.InternalName].IsPilot = false
+				pi.IsPilot = false
 			end)
 		end)
 	end)
@@ -497,7 +505,8 @@ BindBaseFootprintEvents = function()
 			ti.Barracks,
 			ti.WarFactory,
 			ti.Radar,
-			ti.Powerplant
+			ti.Powerplant,
+			ti.ServiceDepot
 		}
 
 		local footprintCells = { }
