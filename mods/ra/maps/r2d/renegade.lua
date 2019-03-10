@@ -26,7 +26,7 @@ Todo:
 
 Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
-	Buying new infantry
+	Buying new infantry may result in lower health than expected.
 
 Refactor:
 	Should kill footprint bs and use proximity prerequisites granted to infantry.
@@ -712,7 +712,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
-		newHero.Health = hero.Health -- Todo: BUGGED.
+		newHero.Health = hero.Health
 		newHero.IsInWorld = true
 
 		pi.Hero = newHero
