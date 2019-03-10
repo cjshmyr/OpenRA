@@ -372,16 +372,22 @@ GetAvailableSpawnPoint = function(player)
 		We get the center of the building, expand twice, and only use the annulus (outer ring).
 	]]
 
+	-- Instead of random spawns, we could allow players to select a building to spawn on (?)
+
 	local pi = PlayerInfo[player.InternalName]
-	local team = pi.Team
+	local ti = pi.Team
 
 	local allBuildings = {
 		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.Radar, ti.Powerplant, ti.ServiceDepot
 	}
 	local aliveBuildings = { }
-	Utils.Do(allbuildings, function(building) {
-		if not building.IsDead then	aliveBuildings[#aliveBuildings+1] = building end
-	})
+	for i, v in ipairs(allBuildings) do
+		if not v.IsDead then aliveBuildings[#aliveBuildings+1] = v end
+	end
+
+	--Utils.Do(allbuildings, function(building)
+		--if not building.IsDead then	aliveBuildings[#aliveBuildings+1] = building end
+	--end)
 
 	-- Get the annulus
 	local building = Utils.Random(aliveBuildings)
@@ -416,8 +422,8 @@ BindHeroEvents = function(hero)
 			killerPi.Kills = killerPi.Kills + 1
 		end
 
-		-- Polish idea: leave a death cam, increase respawn time.
-		Trigger.AfterDelay(25, SpawnHero(self.Owner))
+		-- Polish idea: notify respawn time, leave a death cam, increase respawn time.
+		Trigger.AfterDelay(25, function() SpawnHero(self.Owner) end)
 	end)
 
 	Trigger.OnDamaged(hero, function(self, attacker)
@@ -775,7 +781,7 @@ GetCPosAnnulus = function(baseFootprintCells, expandedFootprintCells)
 
 	for i, v in ipairs(expandedFootprintCells) do
 		if not ArrayContains(baseFootprintCells, v) then
-			result[result+1] = v
+			result[#result+1] = v
 		end
 	end
 
