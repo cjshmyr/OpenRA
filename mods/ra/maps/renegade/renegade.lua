@@ -385,10 +385,6 @@ GetAvailableSpawnPoint = function(player)
 		if not v.IsDead then aliveBuildings[#aliveBuildings+1] = v end
 	end
 
-	--Utils.Do(allbuildings, function(building)
-		--if not building.IsDead then	aliveBuildings[#aliveBuildings+1] = building end
-	--end)
-
 	-- Get the annulus
 	local building = Utils.Random(aliveBuildings)
 	local loc = building.Location + CVec.New(1, 1)
