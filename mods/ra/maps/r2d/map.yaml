@@ -1,0 +1,232 @@
+MapFormat: 11
+RequiresMod: ra
+Title: Renegade 2D
+Author: hamb
+Tileset: TEMPERAT
+MapSize: 98,50
+Bounds: 1,1,96,48
+Visibility: Lobby
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: allies
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: allies
+		Enemies: Allies, Soviet, A0, A1, S0, S1
+	PlayerReference@Allies:
+		Name: Allies
+		Faction: allies
+		Color: ABB7E4
+		Team: 1
+		Allies: Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+		Enemies: Creeps, Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+	PlayerReference@Soviet:
+		Name: Soviet
+		Faction: soviet
+		Color: FE1100
+		Team: 2
+		Allies: Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+		Enemies: Creeps, Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+	PlayerReference@A0:
+		Name: A0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: ABB7E4
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+		Enemies: Creeps, Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+	PlayerReference@A1:
+		Name: A1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: ABB7E4
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+		Enemies: Creeps, Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+	PlayerReference@S0:
+		Name: S0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: soviet
+		LockColor: True
+		Color: FE1100
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+		Enemies: Creeps, Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+	PlayerReference@S1:
+		Name: S1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: soviet
+		LockColor: True
+		Color: FE1100
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Soviet, S0, S1, S2, S3, S4, S5, S6, S7, S8, S9
+		Enemies: Creeps, Allies, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9
+Actors:
+	Actor0: fact
+		Location: 5,17
+		Owner: Allies
+	Actor4: weap
+		Location: 9,12
+		Health: 100
+		Owner: Allies
+	Actor5: dome
+		Location: 10,22
+		Owner: Allies
+	Actor6: apwr
+		Location: 5,7
+		Owner: Allies
+	Actor7: proc
+		Location: 18,21
+		Owner: Allies
+	Actor8: fix
+		Location: 18,12
+		Owner: Allies
+	Actor11: gmine
+		Owner: Neutral
+		Location: 48,4
+	Actor12: fact
+		Location: 91,17
+		Faction: allies
+		Owner: Soviet
+	Actor13: tent
+		Location: 14,17
+		Owner: Allies
+	Actor14: dome
+		Location: 87,22
+		Faction: allies
+		Owner: Soviet
+	Actor16: weap
+		Location: 87,12
+		Faction: allies
+		Owner: Soviet
+	Actor17: barr
+		Location: 83,17
+		Faction: allies
+		Owner: Soviet
+	Actor15: apwr
+		Location: 91,7
+		Faction: allies
+		Owner: Soviet
+	Actor18: fix
+		Location: 78,12
+		Faction: allies
+		Owner: Soviet
+	Actor19: proc
+		Location: 78,21
+		Faction: allies
+		Owner: Soviet
+	Actor20: mine
+		Owner: Neutral
+		Location: 54,34
+	Actor21: mine
+		Owner: Neutral
+		Location: 43,34
+	Actor22: tsla
+		Location: 84,25
+		Faction: allies
+		Owner: Soviet
+	Actor23: ftur
+		Location: 84,26
+		TurretFacing: 92
+		Faction: allies
+		Owner: Soviet
+	Actor24: tsla
+		Location: 93,24
+		Faction: allies
+		Owner: Soviet
+	Actor25: ftur
+		Location: 93,25
+		TurretFacing: 92
+		Faction: allies
+		Owner: Soviet
+	Actor26: ftur
+		Location: 74,28
+		TurretFacing: 92
+		Faction: allies
+		Owner: Soviet
+	Actor27: tsla
+		Location: 74,27
+		Faction: allies
+		Owner: Soviet
+	Actor30: ftur
+		Location: 83,7
+		TurretFacing: 92
+		Faction: allies
+		Owner: Soviet
+	Actor31: ftur
+		Location: 74,9
+		TurretFacing: 92
+		Faction: allies
+		Owner: Soviet
+	Actor32: gun
+		Location: 24,27
+		TurretFacing: 92
+		Owner: Allies
+	Actor33: pbox
+		Location: 24,28
+		TurretFacing: 92
+		Owner: Allies
+	Actor34: pbox
+		Location: 16,28
+		TurretFacing: 92
+		Owner: Allies
+	Actor35: pbox
+		Location: 6,25
+		TurretFacing: 92
+		Owner: Allies
+	Actor36: gun
+		Location: 16,27
+		Owner: Allies
+		TurretFacing: 170
+	Actor37: gun
+		Location: 6,24
+		TurretFacing: 92
+		Owner: Allies
+	Actor38: pbox
+		Location: 24,9
+		TurretFacing: 92
+		Owner: Allies
+	Actor41: gun
+		Location: 24,10
+		Owner: Allies
+		TurretFacing: 42
+	Actor40: gun
+		Location: 16,7
+		Owner: Allies
+		TurretFacing: 210
+	Actor42: tsla
+		Owner: Soviet
+		Location: 83,8
+	Actor43: tsla
+		Owner: Soviet
+		Location: 74,10
+	Actor39: pbox
+		Owner: Allies
+		Location: 16,6
+		TurretFacing: 92
+Rules: rules.yaml,defaults.yaml,infantry.yaml,vehicles.yaml,structures.yaml
+Sequences: sequences.yaml
+Weapons: weapons.yaml
