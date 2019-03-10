@@ -1,8 +1,0 @@
-# Any infantry is being tagged as a hero unit.
-^Infantry:
-	ScriptTags:
-
-# AI's purchased vehicles cost nothing.
-^Vehicles:
-	Valued:
-		Cost: 0
