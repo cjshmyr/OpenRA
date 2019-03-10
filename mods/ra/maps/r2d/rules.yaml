@@ -21,9 +21,14 @@ World:
 		AllyBuildRadiusCheckboxLocked: true
 		AllyBuildRadiusCheckboxEnabled: false
 		AllyBuildRadiusCheckboxVisible: false
+	ResourceType@ore:
+		ValuePerUnit: 15 # 300 per load
+	ResourceType@gem:
+		ValuePerUnit: 30 # 600 per load
 
 Player:
 	-ConquestVictoryConditions:
+	-AllyRepair:
 	Shroud:
 		FogCheckboxLocked: true
 		FogCheckboxEnabled: true
@@ -87,6 +92,8 @@ PurchaseTerminal:
 		Condition: soviet
 	ExternalCondition@radar:
 		Condition: radar
+	ProvidesPrerequisite@testing:
+		RequiresCondition: inbase
 	ProvidesPrerequisite@canbuy:
 		Prerequisite: canbuy
 		RequiresCondition: canbuy

@@ -1,14 +1,19 @@
 --[[
 Todo:
-	Engineer/mechanic stuff.
-	Auto heal around any allied buildings
+	Remove duplication of footprint and proximity conditions.
+	Engineer repair animation and voice.
+	Engineer/Mechanic repair range.
 	Defense stuff.
 	Powering off defenses with low power.
 	Starting ore and amounts for ore/gems.
 	Turret damage increased.
 	Minelayer mine damage reduced.
+	Only allow purchasing while not mobile? Can remove jittery infantry buying.
+
+	Disable items we can't afford.
 
 	Building under attack notifications.
+	Building lost notification (sound).
 	Buying vehicles when WF is dead.
 	Invulnerability on spawn?
 	Better scoreboard (current rank, etc).
@@ -21,20 +26,25 @@ Todo:
 
 Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
+	Buying new infantry
+
+Refactor:
+	Should kill footprint bs and use proximity prerequisites granted to infantry.
 
 Lua ideas:
-	Expose score
-	Expose better UI (scoreboard)
-	Checking cell occupancy
-	Getting damage values
+	Expose score.
+	Expose better UI (scoreboard).
+	Checking cell occupancy.
+	Getting damage values.
+	Probably more i've forgotten. (Proximity/Footprint stuff)
 ]]
 
 --[[ General ]]
 PlayerInfo = { }
 TeamInfo = { }
 PlayerHarvesters = { } -- Exists due to a hack.
-CashPerSecond = 4 -- Cash given per second.
-CashPerSecondPenalized = 2 -- Cash given per second, with no ref.
+CashPerSecond = 2 -- Cash given per second.
+CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
@@ -242,7 +252,6 @@ BindPurchaseTerminals = function()
 			pi.InfantryConditionToken = pt.GrantCondition("infantry")
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")
 
-
 			Trigger.OnProduction(pt, function(producer, produced)
 				-- DisplayMessage(producer.Owner.Name .. " purchased " .. produced.Type)
 				BuildPurchaseTerminalItem(pi, produced.Type)
@@ -360,8 +369,6 @@ end
 SpawnHero = function(player)
 	local spawnpoint = GetAvailableSpawnPoint(player)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
-
-	hero.AddTag("hero")
 
 	PlayerInfo[player.InternalName].Hero = hero
 
@@ -558,7 +565,11 @@ BindBaseFootprintEvents = function()
 		end)
 
 		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
-			--if actor.IsInWorld then
+			-- TODO: Test what happens when we kill someone in a footprint, pi may be nil and token may never be removed.
+
+			-- Currently used to prevent swapping actors at purchase terminal from tripping this. May impact dying units.
+			-- Dying units probably need the token removed
+			if actor.IsInWorld then
 				local pi = PlayerInfo[actor.Owner.InternalName]
 
 				if pi ~= nil then
@@ -568,7 +579,7 @@ BindBaseFootprintEvents = function()
 						pi.CanBuyConditionToken = -1
 					end
 				end
-			--end
+			end
 		end)
 
 		-- Remove any previous footprints
@@ -602,6 +613,16 @@ InitializeAiHarvester = function(harv)
 end
 
 --[[ Ticking ]]
+CheckIfInBase = function()
+	Utils.Do(TeamInfo, function(ti)
+		Utils.Do(PlayerInfo, function(pi)
+
+
+
+		end)
+	end)
+end
+
 IncrementPlayerCash = function()
 	Utils.Do(TeamInfo, function(ti)
 		Utils.Do(ti.Players, function(pi)
@@ -691,9 +712,8 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
-		newHero.Health = hero.Health
+		newHero.Health = hero.Health -- Todo: BUGGED.
 		newHero.IsInWorld = true
-		newHero.AddTag("hero")
 
 		pi.Hero = newHero
 
