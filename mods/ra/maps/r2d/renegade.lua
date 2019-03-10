@@ -1,23 +1,32 @@
 --[[
-TODO:
-	Better spawn points.
-	Invulnerability on spawn?
-	Add a series of tests (check for req'd actors, checkbox in lobby maybe)
-	Engineer/mechanic stuff
-	Building under attack notifications
-	Buying vehicles when WF is dead.
+Todo:
+	Engineer/mechanic stuff.
+	Auto heal around any allied buildings
 	Defense stuff.
+	Powering off defenses with low power.
+	Starting ore and amounts for ore/gems.
+	Turret damage increased.
+	Minelayer mine damage reduced.
+
+	Building under attack notifications.
+	Buying vehicles when WF is dead.
+	Invulnerability on spawn?
 	Better scoreboard (current rank, etc).
 	Victory condition on timer or points.
-	Powering off defenses with low power.
-	Refills...?
 
-BUGS:
+	Add locking to vehicles that aren't yours (so they aren't stolen)
+	Score overhaul.
+	Score/$ on kill of buildings or units.
+	Better spawn points. Allow players to choose.
+
+Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
-	Purchase terminals are placed where the spawning actor is. Should place at 0,0 (less haccky but whatever)
 
-REFACTOR:
-	???
+Lua ideas:
+	Expose score
+	Expose better UI (scoreboard)
+	Checking cell occupancy
+	Getting damage values
 ]]
 
 --[[ General ]]
@@ -410,7 +419,7 @@ BindHeroEvents = function(hero)
 
 		-- Increment K/D
 		local selfPi = PlayerInfo[self.Owner.InternalName]
-		local killerPi = PlayerInfo[self.Owner.InternalName]
+		local killerPi = PlayerInfo[killer.Owner.InternalName]
 		if selfPi ~= nil then
 			selfPi.Deaths = selfPi.Deaths + 1
 		end
@@ -447,7 +456,7 @@ BindVehicleEvents = function()
 				-- Set passenger state
 				pi.PassengerOfVehicle = transport
 
-				-- Revoke any purchasing
+				-- Revoke any purchasing (we may be mistakenly granting this token when they enter a vehicle, need to check the event)
 				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
 				pi.CanBuyConditionToken = -1
 
@@ -535,31 +544,31 @@ BindBaseFootprintEvents = function()
 		end)
 
 		local onEnteredTrigger = Trigger.OnEnteredFootprint(footprintCells, function(actor, id)
-			if actor.HasTag("hero") then
-				local pi = PlayerInfo[actor.Owner.InternalName]
+			local pi = PlayerInfo[actor.Owner.InternalName]
 
-				-- On same team
-				if pi.Player.Faction == ti.AiPlayer.Faction then
+			if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
+				if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
 					-- Hacky: Only set the token if there isn't one (we can have > 1 if we buy an infantry)
 					if pi.CanBuyConditionToken < 0 then
 						pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
 					end
 				end
 			end
+
 		end)
 
 		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
-			if actor.IsInWorld then
-				if actor.HasTag("hero") then
-					local pi = PlayerInfo[actor.Owner.InternalName]
+			--if actor.IsInWorld then
+				local pi = PlayerInfo[actor.Owner.InternalName]
 
+				if pi ~= nil then
 					-- On same team
 					if pi.Player.Faction == ti.AiPlayer.Faction then
 						pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
 						pi.CanBuyConditionToken = -1
 					end
 				end
-			end
+			--end
 		end)
 
 		-- Remove any previous footprints

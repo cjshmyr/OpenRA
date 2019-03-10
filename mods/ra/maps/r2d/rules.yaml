@@ -3,6 +3,9 @@ World:
 		Scripts: renegade.lua
 	-SpawnMPUnits:
 	-MPStartLocations:
+	CrateSpawner:
+		CheckboxLocked: true
+		CheckboxEnabled: false
 	MapOptions:
 		TechLevel: unrestricted
 		TechLevelDropdownLocked: true
