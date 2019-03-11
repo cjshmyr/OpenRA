@@ -1,16 +1,11 @@
 --[[
 Todo:
-	Remove duplication of footprint and proximity conditions.
-	Engineer repair animation and voice.
-	Engineer/Mechanic repair range.
+	Disable repairing through build palette.
 	Defense stuff.
 	Powering off defenses with low power.
-	Starting ore and amounts for ore/gems.
 	Turret damage increased.
 	Minelayer mine damage reduced.
 	Only allow purchasing while not mobile? Can remove jittery infantry buying.
-
-	Disable items we can't afford.
 
 	Building under attack notifications.
 	Building lost notification (sound).
@@ -28,15 +23,12 @@ Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
 	Buying new infantry may result in lower health than expected.
 
-Refactor:
-	Should kill footprint bs and use proximity prerequisites granted to infantry.
-
 Lua ideas:
 	Expose score.
 	Expose better UI (scoreboard).
 	Checking cell occupancy.
 	Getting damage values.
-	Probably more i've forgotten. (Proximity/Footprint stuff)
+	Probably more i've forgotten.
 ]]
 
 --[[ General ]]
@@ -94,7 +86,7 @@ WorldLoaded = function()
 
 	BindBaseEvents()
 	BindVehicleEvents()
-	BindBaseFootprintEvents()
+	BindProximityEvents()
 
 	AddPurchaseTerminals()
 
@@ -142,7 +134,8 @@ SetPlayerInfo = function()
 			Kills = 0,
 			Deaths = 0,
 			PassengerOfVehicle = nil,
-			IsPilot = false
+			IsPilot = false,
+			ProximityEventTokens = { }
 		}
 	end)
 end
@@ -171,9 +164,7 @@ SetTeamInfo = function()
 			ServiceDepot = nil,
 			BasicDefenses = {},
 			PoweredDefenses = {},
-			LastCheckedResourceAmount = 0,
-			BuildingFootprintEnteredTrigger = -1,
-			BuildingFootprintExitedTrigger = -1
+			LastCheckedResourceAmount = 0
 		}
 	end)
 
@@ -269,7 +260,6 @@ BindBaseEvents = function()
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Construction Yard was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
@@ -279,7 +269,6 @@ BindBaseEvents = function()
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Refinery was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -291,7 +280,6 @@ BindBaseEvents = function()
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Barracks was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.InfantryConditionToken)
@@ -307,7 +295,6 @@ BindBaseEvents = function()
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " War Factory was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.VehicleConditionToken)
@@ -323,7 +310,6 @@ BindBaseEvents = function()
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Radar Dome was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.RadarConditionToken)
@@ -339,7 +325,6 @@ BindBaseEvents = function()
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -351,7 +336,6 @@ BindBaseEvents = function()
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Service Depot was destroyed by " .. killer.Owner.Name)
-			BindBaseFootprintEvents()
 		end)
 
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
@@ -380,7 +364,7 @@ GetAvailableSpawnPoint = function(player)
 	--[[
 		Hacky/funny :)
 		Spawn actors around the perimeter of an alive building
-		Like footprints, assumes buildings are shaped as:
+		Assumes buildings are shaped as:
 			ooo
 			ooo
 			ooo
@@ -388,7 +372,7 @@ GetAvailableSpawnPoint = function(player)
 		We get the center of the building, expand twice, and only use the annulus (outer ring).
 	]]
 
-	-- Instead of random spawns, we could allow players to select a building to spawn on (?)
+	-- Instead of random spawns, we could allow players to select a building to spawn on after their first death.
 
 	local pi = PlayerInfo[player.InternalName]
 	local ti = pi.Team
@@ -463,10 +447,6 @@ BindVehicleEvents = function()
 				-- Set passenger state
 				pi.PassengerOfVehicle = transport
 
-				-- Revoke any purchasing (we may be mistakenly granting this token when they enter a vehicle, need to check the event)
-				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
-				pi.CanBuyConditionToken = -1
-
 				-- Name tag hack: Setting the driver to display the proper pilot name.
 				if transport.PassengerCount == 1 then
 					pi.IsPilot = true
@@ -498,24 +478,10 @@ BindVehicleEvents = function()
 	end)
 end
 
-BindBaseFootprintEvents = function()
-	--[[
-		Outstanding bugs:
-
-		Doesn't account for team yet.
-	]]
-
+BindProximityEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 
-		-- HACK: If we're killing a building, we have to manually clear the token for entering/exiting again.
-		Utils.Do(ti.Players, function(pi)
-			if pi.PurchaseTerminal ~= nil then -- nil on world load, in which we don't care.
-				pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
-				pi.CanBuyConditionToken = -1
-			end
-		end)
-
-		local purchaseTerminalEnabledBuildings = {
+		local proximityEnabledBuildings = {
 			ti.ConstructionYard,
 			ti.Refinery,
 			ti.Barracks,
@@ -525,70 +491,37 @@ BindBaseFootprintEvents = function()
 			ti.ServiceDepot
 		}
 
-		local footprintCells = { }
+		Utils.Do(proximityEnabledBuildings, function(building)
 
-		Utils.Do(purchaseTerminalEnabledBuildings, function(building)
-			if not building.IsDead then
-				--[[
-					Hacky and dumb.
-					(Usual) building footprint:
-						ooo
-						ooo
-						ooo
+			-- Fun fact: We declare the exited trigger first, so it always fires first
+			-- Spawning a new infantry unit will cause the first one to exit, and the new one to enter
+			-- thus the order of token removal/addition is proper
 
-					Location gives the top left.
-					Increment X/Y by one, and expand footprint twice (incl. diagonal) to get adjacency.
-					Won't be perfect for other sizes, but good enough.
-				]]
-				local loc = building.Location + CVec.New(1, 1)
-				local expandedLoc = Utils.ExpandFootprint({loc}, true)
-				expandedLoc = Utils.ExpandFootprint(expandedLoc, true)
-
-				Utils.Do(expandedLoc, function(cell)
-					footprintCells[#footprintCells +1] = cell
-				end)
-			end
-		end)
-
-		local onEnteredTrigger = Trigger.OnEnteredFootprint(footprintCells, function(actor, id)
-			local pi = PlayerInfo[actor.Owner.InternalName]
-
-			if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
-				if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
-					-- Hacky: Only set the token if there isn't one (we can have > 1 if we buy an infantry)
-					if pi.CanBuyConditionToken < 0 then
-						pi.CanBuyConditionToken = pi.PurchaseTerminal.GrantCondition("canbuy")
-					end
-				end
-			end
-
-		end)
-
-		local onExitedTrigger = Trigger.OnExitedFootprint(footprintCells, function(actor, id)
-			-- TODO: Test what happens when we kill someone in a footprint, pi may be nil and token may never be removed.
-
-			-- Currently used to prevent swapping actors at purchase terminal from tripping this. May impact dying units.
-			-- Dying units probably need the token removed
-			if actor.IsInWorld then
+			Trigger.OnExitedProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
 				local pi = PlayerInfo[actor.Owner.InternalName]
 
-				if pi ~= nil then
-					-- On same team
-					if pi.Player.Faction == ti.AiPlayer.Faction then
-						pi.PurchaseTerminal.RevokeCondition(pi.CanBuyConditionToken)
-						pi.CanBuyConditionToken = -1
+				if pi ~= nil then -- A human player
+					if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
+						local tokenToRevoke = pi.ProximityEventTokens[building.Type]
+						pi.PurchaseTerminal.RevokeCondition(tokenToRevoke)
+						pi.ProximityEventTokens[building.Type] = -1
 					end
 				end
-			end
+			end)
+
+			Trigger.OnEnteredProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
+				if not building.IsDead then
+					local pi = PlayerInfo[actor.Owner.InternalName]
+
+					if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
+						if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
+							pi.ProximityEventTokens[building.Type] = pi.PurchaseTerminal.GrantCondition("canbuy") -- e.g. table['fact'] = token
+						end
+					end
+				end
+			end)
+
 		end)
-
-		-- Remove any previous footprints
-		Trigger.RemoveFootprintTrigger(ti.BuildingFootprintEnteredTrigger)
-		Trigger.RemoveFootprintTrigger(ti.BuildingFootprintExitedTrigger)
-
-		ti.BuildingFootprintEnteredTrigger = onEnteredTrigger
-		ti.BuildingFootprintExitedTrigger = onExitedTrigger
-
 	end)
 end
 

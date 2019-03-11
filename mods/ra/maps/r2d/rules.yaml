@@ -92,8 +92,6 @@ PurchaseTerminal:
 		Condition: soviet
 	ExternalCondition@radar:
 		Condition: radar
-	ProvidesPrerequisite@testing:
-		RequiresCondition: inbase
 	ProvidesPrerequisite@canbuy:
 		Prerequisite: canbuy
 		RequiresCondition: canbuy

@@ -5,6 +5,7 @@ E6:
 	-Captures:
 	-Captures@REUSABLE:
 	AttackFrontal:
+		Voice: Action
 	Armament:
 		Weapon: Repair
 		Cursor: repair
@@ -14,11 +15,15 @@ E6:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Building, Vehicle, Ship
+	WithInfantryBody:
+		DefaultAttackSequence: idle1
 
 MECH:
 	-CaptureManager:
 	-Captures:
 	-Infiltrates:
 	-AutoTargetPriority@DEFAULT:
+	AttackFrontal:
+		Voice: Action
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Building, Vehicle, Ship
