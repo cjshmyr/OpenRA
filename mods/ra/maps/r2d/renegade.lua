@@ -1,8 +1,5 @@
 --[[
 Todo:
-	Disable repairing through build palette.
-	Defense stuff.
-	Powering off defenses with low power.
 	Turret damage increased.
 	Minelayer mine damage reduced.
 	Only allow purchasing while not mobile? Can remove jittery infantry buying.
@@ -18,13 +15,15 @@ Todo:
 	Victory condition on timer or points.
 
 	Add locking to vehicles that aren't yours (so they aren't stolen)
-	Score overhaul.
-	Score/$ on kill of buildings or units.
 	Better spawn points. Allow players to choose.
 
 Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
 	Buying new infantry may result in lower health than expected.
+
+Refactor:
+	Score / points system.
+	Harvester waypoints for FindResources.
 
 Lua ideas:
 	Expose score.
@@ -256,7 +255,7 @@ BindBaseEvents = function()
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Construction Yard was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
@@ -266,7 +265,7 @@ BindBaseEvents = function()
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Refinery was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -278,7 +277,7 @@ BindBaseEvents = function()
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Barracks was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.InfantryConditionToken)
@@ -294,7 +293,7 @@ BindBaseEvents = function()
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " War Factory was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.VehicleConditionToken)
@@ -310,7 +309,7 @@ BindBaseEvents = function()
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Radar Dome was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.RadarConditionToken)
@@ -326,7 +325,7 @@ BindBaseEvents = function()
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -338,7 +337,7 @@ BindBaseEvents = function()
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Service Depot was destroyed by " .. killer.Owner.Name)
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
@@ -350,8 +349,8 @@ BindBaseEvents = function()
 		-- Defenses
 		Utils.Do(ti.Defenses, function(building)
 			Trigger.OnKilled(building, function(self, attacker)
-				-- TODO: Message!
-				GrantRewardOnKilled(self, killer)
+				-- TODO: Message?
+				GrantRewardOnKilled(self, killer, "defense")
 			end)
 			Trigger.OnDamaged(building, function(self, attacker)
 				if not ti.ConstructionYard.IsDead then
@@ -421,7 +420,7 @@ end
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
 		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name .. "!")
-		GrantRewardOnKilled(self, killer)
+		GrantRewardOnKilled(self, killer, "unit")
 
 		-- Increment K/D
 		local selfPi = PlayerInfo[self.Owner.InternalName]
@@ -445,6 +444,14 @@ end
 BindVehicleEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 		Trigger.OnProduction(ti.WarFactory, function(producer, produced)
+			-- Bind any events
+			Trigger.OnDamaged(produced, function(self, attacker)
+				GrantRewardOnDamage(self, attacker)
+			end)
+			Trigger.OnKilled(produced, function(self, killer)
+				GrantRewardOnKilled(self, killer, "unit")
+			end)
+
 			-- New vehicles belong to Neutral (except harvesters...)
 			if produced.Type ~= AiHarvesterActorType then
 				produced.Owner = NeutralPlayer
@@ -627,7 +634,7 @@ DrawNameTags = function()
 	Utils.Do(PlayerInfo, function(pi)
 		if pi.Hero ~= nil and pi.Hero.IsInWorld then
 			local name = pi.Player.Name
-			name = name:sub(0,8) -- truncate to 8 chars
+			name = name:sub(0,10) -- truncate to 10 chars
 
 			local pos = WPos.New(pi.Hero.CenterPosition.X, pi.Hero.CenterPosition.Y - 1250, 0)
 			Media.FloatingText(name, pos, 1, pi.Player.Color)
@@ -637,7 +644,7 @@ DrawNameTags = function()
 			local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
 			local passengerCount = pi.PassengerOfVehicle.PassengerCount
 			local name = pi.Player.Name
-			name = name:sub(0,8) -- truncate to 8 chars
+			name = name:sub(0,10) -- truncate to 10 chars
 			if passengerCount > 1 then
 				name = name .. " (+" .. passengerCount - 1 .. ")"
 			end
@@ -662,7 +669,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	local hero = pi.Hero;
 
 	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
-		local type = actorType:sub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
+		local type = actorType:gsub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
 
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
@@ -678,7 +685,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		BindHeroEvents(newHero)
 	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
-		local type = actorType:sub(PurchaseTerminalVehicleActorTypePrefix, "")
+		local type = actorType:gsub(PurchaseTerminalVehicleActorTypePrefix, "")
 
 		local ti = pi.Team
 		if not ti.WarFactory.IsDead then
@@ -704,9 +711,18 @@ GrantRewardOnDamage = function(self, attacker)
 	end
 end
 
-GrantRewardOnKilled = function(self, killer)
+GrantRewardOnKilled = function(self, killer, actorCategory)
+	local points = 0
+	if actorCategory == "unit" then
+		points = 100
+	elseif actorCategory == "defense" then
+		points = 200
+	elseif actorCategory == "building" then
+		points = 300
+	end
+
 	-- Ignore self/team killing
-	if self.Owner.Faction == attacker.Owner.Faction then
+	if self.Owner.Faction == killer.Owner.Faction then
 		return
 	end
 
@@ -714,8 +730,6 @@ GrantRewardOnKilled = function(self, killer)
 
 	-- AI might do the killing.
 	if pi ~= nil then
-		local points = 100 -- TODO: Lazy, currently just reward 100. Should check actor types for a proper amount.
-
 		pi.Score = pi.Score + points
 		pi.Player.Cash = pi.Player.Cash + points
 	end
