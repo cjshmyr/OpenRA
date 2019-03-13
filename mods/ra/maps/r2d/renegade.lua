@@ -65,7 +65,7 @@ AiHarvesterActorType = "harv-ai"
 PlayerHarvesterActorType = "harv"
 
 -- [[ Hacks that should be removed ]]
-SpawnPointActorType = "waypoint"
+MoveAiHarvestersToRefineryOnDeath = true
 armorTypes = {
 	{name = 'soft', types = { 'e1', 'e3', 'e6', 'medi', 'mech', 'e2', 'e4' }} ,
 	{name = 'medium', types = { 'jeep', 'arty', '1tnk', 'ctnk', 'ftrk', 'ttnk' }},
@@ -437,7 +437,8 @@ BindVehicleEvents = function()
 			if produced.Type ~= AiHarvesterActorType then
 				produced.Owner = NeutralPlayer
 			else
-				InitializeAiHarvester(produced)
+				local wasPurchased = true
+				InitializeAiHarvester(produced, wasPurchased)
 			end
 
 			-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
@@ -535,12 +536,19 @@ InitializeAiHarvesters = function()
 	-- Order all starting harvesters to find resources
 	Utils.Do(Map.ActorsInWorld, function (actor)
 		if actor.Type == AiHarvesterActorType and PlayerIsTeamAi(actor.Owner) then
-			InitializeAiHarvester(actor)
+			local wasPurchased = false
+			InitializeAiHarvester(actor, wasPurchased)
 		end
 	end)
 end
 
-InitializeAiHarvester = function(harv)
+InitializeAiHarvester = function(harv, wasPurchased)
+	if wasPurchased and MoveAiHarvestersToRefineryOnDeath then
+		-- Map-specific hack: In some cases, we need to tell purchased the ore truck to move near the refinery, then find resources.
+		local ti = TeamInfo[harv.Owner.InternalName]
+		harv.Move(ti.Refinery.Location, 5)
+	end
+
 	harv.FindResources()
 
 	Trigger.OnKilled(harv, function(self, killer)
@@ -552,16 +560,6 @@ InitializeAiHarvester = function(harv)
 end
 
 --[[ Ticking ]]
-CheckIfInBase = function()
-	Utils.Do(TeamInfo, function(ti)
-		Utils.Do(PlayerInfo, function(pi)
-
-
-
-		end)
-	end)
-end
-
 IncrementPlayerCash = function()
 	Utils.Do(TeamInfo, function(ti)
 		Utils.Do(ti.Players, function(pi)
