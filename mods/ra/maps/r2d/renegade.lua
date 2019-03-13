@@ -7,6 +7,9 @@ Todo:
 	Minelayer mine damage reduced.
 	Only allow purchasing while not mobile? Can remove jittery infantry buying.
 
+	AI Harvesters are stupid after they die.
+	Enable minelayers, mine limits, mine rebalancing.
+
 	Building under attack notifications.
 	Building lost notification (sound).
 	Buying vehicles when WF is dead.
@@ -542,7 +545,7 @@ InitializeAiHarvester = function(harv)
 
 	Trigger.OnKilled(harv, function(self, killer)
 		local ti = TeamInfo[self.Owner.InternalName]
-		if not ti.WarFactory.IsDead then
+		if not ti.WarFactory.IsDead and not ti.Refinery.IsDead then
 			ti.WarFactory.Produce(AiHarvesterActorType)
 		end
 	end)
