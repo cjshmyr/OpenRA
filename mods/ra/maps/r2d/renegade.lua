@@ -546,7 +546,7 @@ InitializeAiHarvester = function(harv, wasPurchased)
 	if wasPurchased and MoveAiHarvestersToRefineryOnDeath then
 		-- Map-specific hack: In some cases, we need to tell purchased the ore truck to move near the refinery, then find resources.
 		local ti = TeamInfo[harv.Owner.InternalName]
-		harv.Move(ti.Refinery.Location, 5)
+		harv.Move(ti.Refinery.Location, 5) -- Potential crash if this thing dies while this happens.
 	end
 
 	harv.FindResources()
@@ -613,14 +613,18 @@ DrawNameTags = function()
 	-- This is a horrible hack until WithTextDecoration is usable.
 	Utils.Do(PlayerInfo, function(pi)
 		if pi.Hero ~= nil and pi.Hero.IsInWorld then
+			local name = pi.Player.Name
+			name = name:sub(0,8) -- truncate to 8 chars
+
 			local pos = WPos.New(pi.Hero.CenterPosition.X, pi.Hero.CenterPosition.Y - 1250, 0)
-			Media.FloatingText(pi.Player.Name, pos, 1, pi.Player.Color)
+			Media.FloatingText(name, pos, 1, pi.Player.Color)
 		end
 
 		if pi.IsPilot then
 			local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
 			local passengerCount = pi.PassengerOfVehicle.PassengerCount
 			local name = pi.Player.Name
+			name = name:sub(0,8) -- truncate to 8 chars
 			if passengerCount > 1 then
 				name = name .. " (+" .. passengerCount - 1 .. ")"
 			end
@@ -645,7 +649,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	local hero = pi.Hero;
 
 	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
-		local type = StringReplace(actorType, PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
+		local type = actorType:sub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
 
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
@@ -661,7 +665,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		BindHeroEvents(newHero)
 	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
-		local type = StringReplace(actorType, PurchaseTerminalVehicleActorTypePrefix, "")
+		local type = actorType:sub(PurchaseTerminalVehicleActorTypePrefix, "")
 
 		local ti = pi.Team
 		if not ti.WarFactory.IsDead then
@@ -757,10 +761,6 @@ GetCPosAnnulus = function(baseFootprintCells, expandedFootprintCells)
 	end
 
 	return result
-end
-
-StringReplace = function(str, matchText, replaceText)
-	return str:gsub(matchText, replaceText)
 end
 
 PlayerIsTeamAi = function(player)
