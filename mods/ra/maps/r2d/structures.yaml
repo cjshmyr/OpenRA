@@ -8,3 +8,11 @@ PROC:
 		Capacity: 999999
 	FreeActor: # Use the AI specific harvester.
 		Actor: HARV-AI
+
+GUN:
+	Power: # Powered defense
+		Amount: -1
+
+TSLA:
+	Power: # Powered defense
+		Amount: -1

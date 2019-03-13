@@ -59,19 +59,18 @@ RadarActorTypes = {"dome"}
 WarFactoryActorTypes = {"weap"}
 BarracksActorTypes = {"barr","tent"}
 ServiceDepotActorTypes = {"fix"}
-BasicDefenseActorTypes = {"ftur","pbox","hbox"}
-PoweredDefenseActorTypes = {"tsla","gun"}
+DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 AiHarvesterActorType = "harv-ai"
 PlayerHarvesterActorType = "harv"
 
 -- [[ Hacks that should be removed ]]
 MoveAiHarvestersToRefineryOnDeath = true
-armorTypes = {
+ArmorTypes = {
 	{name = 'soft', types = { 'e1', 'e3', 'e6', 'medi', 'mech', 'e2', 'e4' }} ,
 	{name = 'medium', types = { 'jeep', 'arty', '1tnk', 'ctnk', 'ftrk', 'ttnk' }},
 	{name = 'hard', types = { 'harv', 'mnly', '2tnk', '3tnk', '4tnk', 'harv-ai' }}
 }
-weaponTypes = {
+WeaponTypes = {
 	{ name = 'heal', types = { 'medi', 'mech' }},
 	{ name = 'gun', types = { 'e1', 'e2', 'jeep', 'ftrk' }},
 	{ name = 'missile', types = { 'e3', 'ctnk' }},
@@ -165,8 +164,7 @@ SetTeamInfo = function()
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
-			BasicDefenses = {},
-			PoweredDefenses = {},
+			Defenses = {},
 			LastCheckedResourceAmount = 0
 		}
 	end)
@@ -209,14 +207,9 @@ AssignTeamBuildings = function()
 			TeamInfo[actor.Owner.InternalName].ServiceDepot = actor
 		end
 
-		if ArrayContains(BasicDefenseActorTypes, actor.Type) then
-			-- TODO: Add defenses.
-			--TeamInfo[actor.Owner.InternalName].BasicDefenseActorTypes = actor
-		end
-
-		if ArrayContains(PoweredDefenseActorTypes, actor.Type) then
-			-- TODO: Add defenses.
-			--TeamInfo[actor.Owner.InternalName].BasicDefenseActorTypes = actor
+		if ArrayContains(DefenseActorTypes, actor.Type) then
+			local ti = TeamInfo[actor.Owner.InternalName]
+			ti.Defenses[#ti.Defenses+1] = actor
 		end
 	end)
 end
@@ -263,26 +256,29 @@ BindBaseEvents = function()
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Construction Yard was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Refinery was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
 				ti.Refinery.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Barracks was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.InfantryConditionToken)
@@ -292,12 +288,13 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Barracks.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " War Factory was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.VehicleConditionToken)
@@ -307,12 +304,13 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.WarFactory.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Radar Dome was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.RadarConditionToken)
@@ -322,33 +320,46 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Radar.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
 				ti.Powerplant.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Service Depot was destroyed by " .. killer.Owner.Name)
+			GrantRewardOnKilled(self, killer)
 		end)
-
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
 				ti.ServiceDepot.StartBuildingRepairs()
 			end
-			GrantRewardOnHit(self, attacker)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
-		-- TODO: Defenses
+		-- Defenses
+		Utils.Do(ti.Defenses, function(building)
+			Trigger.OnKilled(building, function(self, attacker)
+				-- TODO: Message!
+				GrantRewardOnKilled(self, killer)
+			end)
+			Trigger.OnDamaged(building, function(self, attacker)
+				if not ti.ConstructionYard.IsDead then
+					ti.ServiceDepot.StartBuildingRepairs()
+				end
+				GrantRewardOnDamage(self, attacker)
+			end)
+		end)
 
 	end)
 end
@@ -410,6 +421,7 @@ end
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
 		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name .. "!")
+		GrantRewardOnKilled(self, killer)
 
 		-- Increment K/D
 		local selfPi = PlayerInfo[self.Owner.InternalName]
@@ -426,7 +438,7 @@ BindHeroEvents = function(hero)
 	end)
 
 	Trigger.OnDamaged(hero, function(self, attacker)
-		GrantRewardOnHit(self, attacker)
+		GrantRewardOnDamage(self, attacker)
 	end)
 end
 
@@ -545,8 +557,9 @@ end
 InitializeAiHarvester = function(harv, wasPurchased)
 	if wasPurchased and MoveAiHarvestersToRefineryOnDeath then
 		-- Map-specific hack: In some cases, we need to tell purchased the ore truck to move near the refinery, then find resources.
+		-- TODO: Potential crash if this thing dies while this happens. Replace this with a waypoint.
 		local ti = TeamInfo[harv.Owner.InternalName]
-		harv.Move(ti.Refinery.Location, 5) -- Potential crash if this thing dies while this happens.
+		harv.Move(ti.Refinery.Location, 5)
 	end
 
 	harv.FindResources()
@@ -674,7 +687,7 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	end
 end
 
-GrantRewardOnHit = function(self, attacker)
+GrantRewardOnDamage = function(self, attacker)
 	-- Ignore self/team damage
 	if self.Owner.Faction == attacker.Owner.Faction then
 		return
@@ -691,15 +704,32 @@ GrantRewardOnHit = function(self, attacker)
 	end
 end
 
+GrantRewardOnKilled = function(self, killer)
+	-- Ignore self/team killing
+	if self.Owner.Faction == attacker.Owner.Faction then
+		return
+	end
+
+	local pi = PlayerInfo[killer.Owner.InternalName]
+
+	-- AI might do the killing.
+	if pi ~= nil then
+		local points = 100 -- TODO: Lazy, currently just reward 100. Should check actor types for a proper amount.
+
+		pi.Score = pi.Score + points
+		pi.Player.Cash = pi.Player.Cash + points
+	end
+end
+
 CalculatePoints = function(self, attacker)
 	-- Unfortunately there's no way to get damage done in Lua yet.
 	-- Instead a bad rock-paper-scissors ish point system has been made.
 	local selfArmorType = ''
 	local attackerWeaponType = ''
-	for i, v in pairs(armorTypes) do
+	for i, v in pairs(ArmorTypes) do
 		if ArrayContains(v.types, self.Type) then selfArmorType = v.name end
 	end
-	for i, v in pairs(weaponTypes) do
+	for i, v in pairs(WeaponTypes) do
 		if ArrayContains(v.types, attacker.Type) then attackerWeaponType = v.name end
 	end
 
