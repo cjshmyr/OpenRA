@@ -12,19 +12,19 @@ Balance:
 	Enable sea units.
 
 Gameplay:
-	Only allow purchasing while not mobile? Can remove jittery infantry buying.
-	Fix AI Harvesters to follow a waypoint path after death.
-
-	Victory condition on timer or points.
 	Building under attack notifications.
 	Building lost notification (sound).
 	Buying vehicles when WF is dead.
 	Buying advanced infantry when Barracks is dead.
+	Victory condition on timer or points.
 	Better scoreboard (show current rank in the game, team score).
 
+	Add a camera on death, and increment respawn time.
 	Add locking to vehicles that aren't yours (so they aren't stolen).
 	Better spawn points. Allow players to choose.
 	Toggling of nametags, scoreboard.
+	Fix AI Harvesters to follow a waypoint path after death.
+	Only allow purchasing while not mobile? Can remove jittery infantry buying.
 
 Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
@@ -52,6 +52,7 @@ CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
+NotifyBaseUnderAttackSecondInterval = DateTime.Seconds(30)
 
 --[[ Mod-specific ]]
 SpawnAsActorType = "e1"
@@ -174,7 +175,8 @@ SetTeamInfo = function()
 			Powerplant = nil,
 			ServiceDepot = nil,
 			Defenses = {},
-			LastCheckedResourceAmount = 0
+			LastCheckedResourceAmount = 0,
+			LastBaseUnderAttackNotificationTick = 0
 		}
 	end)
 
