@@ -503,8 +503,11 @@ BindProximityEvents = function()
 				if pi ~= nil then -- A human player
 					if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
 						local tokenToRevoke = pi.ProximityEventTokens[building.Type]
-						pi.PurchaseTerminal.RevokeCondition(tokenToRevoke)
-						pi.ProximityEventTokens[building.Type] = -1
+
+						if tokenToRevoke ~= nil then
+							pi.PurchaseTerminal.RevokeCondition(tokenToRevoke)
+							pi.ProximityEventTokens[building.Type] = -1
+						end
 					end
 				end
 			end)
