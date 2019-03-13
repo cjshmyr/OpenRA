@@ -326,6 +326,12 @@ BindBaseEvents = function()
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
 			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
 			GrantRewardOnKilled(self, killer, "building")
+
+			if not ti.Radar.IsDead then
+				Utils.Do(ti.Players, function(pi)
+					pi.PurchaseTerminal.RevokeCondition(pi.RadarConditionToken)
+				end)
+			end
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
