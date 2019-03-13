@@ -26,6 +26,13 @@ JEEP:
 		PipCount: 2
 		EjectOnDeath: true
 
+APC:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 4
+		EjectOnDeath: true
+
 1TNK:
 	Cargo:
 		Types: Infantry
@@ -38,13 +45,6 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 2
 		PipCount: 2
-		EjectOnDeath: true
-
-APC:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 4
-		PipCount: 4
 		EjectOnDeath: true
 
 ARTY:

@@ -233,7 +233,7 @@ buy.vehicle.mnly:
 		Name: Minelayer
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: ~canbuy, ~vehicle
+		Prerequisites: ~notimplemented # Currently disabled
 		Queue: Vehicle
 	RenderSprites:
 		Image: mnly
@@ -250,6 +250,19 @@ buy.vehicle.jeep:
 		Queue: Vehicle
 	RenderSprites:
 		Image: jeep
+
+buy.vehicle.apc:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Armored Personnel Carrier
+	Buildable:
+		BuildPaletteOrder: 35
+		Prerequisites: ~canbuy, ~vehicle
+		Queue: Vehicle
+	RenderSprites:
+		Image: apc
 
 buy.vehicle.arty:
 	Inherits: ^buy.default

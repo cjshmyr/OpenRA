@@ -1,25 +1,35 @@
 --[[
-Todo:
-	Turret damage increased.
-	Minelayer mine damage reduced.
+Balance:
+	Rebalance money rewards.
+	Rebalance point rewards.
+	Rebalance unit costs.
+	Check advanced infantry unit balance.
+	Turret dps should be close to tesla.
+	Chronotank needs teleport cooldown reduction.
+	Enable minelayers, add mine limit.
+	Enable missing advanced infantry units.
+	Enable air units.
+	Enable sea units.
+
+Gameplay:
 	Only allow purchasing while not mobile? Can remove jittery infantry buying.
+	Fix AI Harvesters to follow a waypoint path after death.
 
-	AI Harvesters are stupid after they die.
-	Enable minelayers, mine limits, mine rebalancing.
-
+	Victory condition on timer or points.
 	Building under attack notifications.
 	Building lost notification (sound).
 	Buying vehicles when WF is dead.
-	Invulnerability on spawn?
-	Better scoreboard (current rank, etc).
-	Victory condition on timer or points.
+	Buying advanced infantry when Barracks is dead.
+	Better scoreboard (show current rank in the game, team score).
 
-	Add locking to vehicles that aren't yours (so they aren't stolen)
+	Add locking to vehicles that aren't yours (so they aren't stolen).
 	Better spawn points. Allow players to choose.
+	Toggling of nametags, scoreboard.
 
 Bugs:
 	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
 	Buying new infantry may result in lower health than expected.
+	Possibly? Killing a neutral vehicle owned by the other team may result in money or not.
 
 Refactor:
 	Score / points system.
@@ -27,7 +37,7 @@ Refactor:
 
 Lua ideas:
 	Expose score.
-	Expose better UI (scoreboard).
+	Expose better UI (scoreboard, spawning, toggling options).
 	Checking cell occupancy.
 	Getting damage values.
 	Probably more i've forgotten.
