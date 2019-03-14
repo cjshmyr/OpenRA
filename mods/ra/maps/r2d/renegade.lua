@@ -1,28 +1,30 @@
 --[[
 Balance:
+	Ensure medics/engineers/mechanics get points/score for their weapons.
 	Rebalance money rewards.
 	Rebalance point rewards.
-	Rebalance unit costs.
+	Rebalance unit costs?
 	Check advanced infantry unit balance.
 	Turret dps should be close to tesla.
-	Chronotank needs teleport cooldown reduction.
+	Chronotank probably needs teleport cooldown reduction.
 	Enable minelayers, add mine limit.
 	Enable missing advanced infantry units.
 	Enable air units.
 	Enable sea units.
 
 Gameplay:
+	Recalculate damage done.
+
 	Building under attack notifications.
 	Building lost notification (sound).
 	Buying vehicles when WF is dead.
-	Buying advanced infantry when Barracks is dead.
 	Victory condition on timer or points.
 	Better scoreboard (show current rank in the game, team score).
 
 	Add a camera on death, and increment respawn time.
 	Add locking to vehicles that aren't yours (so they aren't stolen).
 	Better spawn points. Allow players to choose.
-	Toggling of nametags, scoreboard.
+	Toggling of nametags, scoreboard (earth 4&7 nametags, stealth2.shp 10&15 scoreboard).
 	Fix AI Harvesters to follow a waypoint path after death.
 	Only allow purchasing while not mobile? Can remove jittery infantry buying.
 
@@ -75,20 +77,7 @@ PlayerHarvesterActorType = "harv"
 
 -- [[ Hacks that should be removed ]]
 MoveAiHarvestersToRefineryOnDeath = true
-ArmorTypes = {
-	{name = 'soft', types = { 'e1', 'e3', 'e6', 'medi', 'mech', 'e2', 'e4' }} ,
-	{name = 'medium', types = { 'jeep', 'arty', '1tnk', 'ctnk', 'ftrk', 'ttnk' }},
-	{name = 'hard', types = { 'harv', 'mnly', '2tnk', '3tnk', '4tnk', 'harv-ai' }}
-}
-WeaponTypes = {
-	{ name = 'heal', types = { 'medi', 'mech' }},
-	{ name = 'gun', types = { 'e1', 'e2', 'jeep', 'ftrk' }},
-	{ name = 'missile', types = { 'e3', 'ctnk' }},
-	{ name = 'smallShell', types = { 'e2', '1tnk' }},
-	{ name = 'bigShell', types = { 'arty', '2tnk', '3tnk', '4tnk'}},
-	{ name = 'fire', types = { 'e4' }},
-	{ name = 'zap', types = { 'ttnk' }}
-}
+HealthAfterOnDamageEventTable = { }
 
 WorldLoaded = function()
 	SetPlayerInfo()
@@ -147,7 +136,8 @@ SetPlayerInfo = function()
 			Deaths = 0,
 			PassengerOfVehicle = nil,
 			IsPilot = false,
-			ProximityEventTokens = { }
+			ProximityEventTokens = { },
+			HealthAfterLastDamageEvent = -1
 		}
 	end)
 end
@@ -221,6 +211,11 @@ AssignTeamBuildings = function()
 		if ArrayContains(DefenseActorTypes, actor.Type) then
 			local ti = TeamInfo[actor.Owner.InternalName]
 			ti.Defenses[#ti.Defenses+1] = actor
+		end
+
+		-- Damage hack
+		if pcall(function() HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health end) then
+			-- Wrapping with pcall handles errors (if an actor has no Health trait, there's an error. Couldn't figure out how to handle this better)
 		end
 	end)
 end
@@ -457,6 +452,9 @@ BindHeroEvents = function(hero)
 	Trigger.OnDamaged(hero, function(self, attacker)
 		GrantRewardOnDamage(self, attacker)
 	end)
+
+	-- Damage hack
+	HealthAfterOnDamageEventTable[tostring(hero)] = hero.Health
 end
 
 BindVehicleEvents = function()
@@ -515,6 +513,9 @@ BindVehicleEvents = function()
 				-- Name tag hack: Remove pilot info.
 				pi.IsPilot = false
 			end)
+
+			-- Damage hack
+			HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health
 		end)
 	end)
 end
@@ -713,19 +714,49 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 end
 
 GrantRewardOnDamage = function(self, attacker)
-	-- Ignore self/team damage
-	if self.Owner.Faction == attacker.Owner.Faction then
-		return
-	end
+	--[[
+		This is a fun state machine that calculates damage done.
+		It can be completely removed if Lua exposes that information.
 
-	local pi = PlayerInfo[attacker.Owner.InternalName]
+		We create a table of actor IDs.
+		This table stores health of all actors in the world, and changes after the OnDamage event.
 
-	-- AI might do the attacking.
-	if pi ~= nil then
-		local points = CalculatePoints(self, attacker)
+		TODO:
+			When anything in this world is created, we need to run a function that adds or updates this value
+			No points on self, team, or neutral unit damage.
 
-		pi.Score = pi.Score + points
-		pi.Player.Cash = pi.Player.Cash + points
+			Convert damage dealt into a sensible amount of points (idea: formula of their max health, and % of damage dealt)
+			There's an issue where a purchased infantry did not appear in the damage table.
+	]]
+
+	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
+
+	local previousHealth = HealthAfterOnDamageEventTable[actorId]
+
+	if previousHealth == nil then
+		DisplayMessage('Error! Fix me! ' .. actorId .. ' was not found in the damage table!')
+	else
+		local currentHealth = self.Health
+
+		local damageTaken = previousHealth - currentHealth
+
+		HealthAfterOnDamageEventTable[actorId] = currentHealth
+
+		-- Only grant points to players
+		local attackerpi = PlayerInfo[attacker.Owner.InternalName]
+		if attackerpi ~= nil then
+
+			local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
+
+			--local points = damageTaken / 100
+			DisplayMessage(tostring(percentageDamageDealt))
+			local points = percentageDamageDealt
+
+			--DisplayMessage('Damage taken: ' .. tostring(damageTaken) .. ' / points: ' .. tostring(points))
+
+			--attackerpi.Score = attackerpi.Score + points
+			--attackerpi.Player.Cash = attackerpi.Player.Cash + points
+		end
 	end
 end
 
