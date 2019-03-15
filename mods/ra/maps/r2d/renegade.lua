@@ -19,24 +19,48 @@ NotifyBaseUnderAttackSecondInterval = DateTime.Seconds(30)
 MoveAiHarvestersToRefineryOnDeath = true
 HealthAfterOnDamageEventTable = { }
 
---[[ Mod-specific ]]
-SpawnAsActorType = "e1"
-AlphaTeamPlayerName = "Allies"
-BetaTeamPlayerName = "Soviet"
-NeutralPlayerName = "Neutral"
+--[[ Mod-specific (see SetModVariables) ]]
+Mod = "ra"
+if Mod == "cnc" then
+	SpawnAsActorType = "e1"
+	AlphaTeamPlayerName = "GDI"
+	BetaTeamPlayerName = "Nod"
+	NeutralPlayerName = "Neutral"
+	ConstructionYardActorTypes = {"fact"}
+	RefineryActorTypes = {"proc"}
+	PowerplantActorTypes = {"nuk2"}
+	RadarActorTypes = {"hq"}
+	WarFactoryActorTypes = {"weap","afld"}
+	BarracksActorTypes = {"pyle","hand"}
+	ServiceDepotActorTypes = {"fix"}
+	DefenseActorTypes = {"gtwr","atwr","gun","obli"}
+	AiHarvesterActorType = "harv-ai"
+	PlayerHarvesterActorType = "harv"
+	NotificationBaseUnderAttack = "baseatk1.aud"
+	NotificationMissionAccomplished = "accom1.aud"
+	NotificationMissionFailed = "fail1.aud"
+elseif Mod == "ra" then
+	SpawnAsActorType = "e1"
+	AlphaTeamPlayerName = "Allies"
+	BetaTeamPlayerName = "Soviet"
+	NeutralPlayerName = "Neutral"
+	ConstructionYardActorTypes = {"fact"}
+	RefineryActorTypes = {"proc"}
+	PowerplantActorTypes = {"apwr"}
+	RadarActorTypes = {"dome"}
+	WarFactoryActorTypes = {"weap"}
+	BarracksActorTypes = {"barr","tent"}
+	ServiceDepotActorTypes = {"fix"}
+	DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
+	AiHarvesterActorType = "harv-ai"
+	PlayerHarvesterActorType = "harv"
+	NotificationBaseUnderAttack = "baseatk1.aud"
+	NotificationMissionAccomplished = "misnwon1.aud"
+	NotificationMissionFailed = "misnlst1.aud"
+end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
 NeutralPlayer = Player.GetPlayer(NeutralPlayerName)
-ConstructionYardActorTypes = {"fact"}
-RefineryActorTypes = {"proc"}
-PowerplantActorTypes = {"apwr"}
-RadarActorTypes = {"dome"}
-WarFactoryActorTypes = {"weap"}
-BarracksActorTypes = {"barr","tent"}
-ServiceDepotActorTypes = {"fix"}
-DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
-AiHarvesterActorType = "harv-ai"
-PlayerHarvesterActorType = "harv"
 
 WorldLoaded = function()
 	SetPlayerInfo()
