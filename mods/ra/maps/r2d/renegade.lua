@@ -1,48 +1,7 @@
 --[[
-Balance:
-	Ensure medics/engineers/mechanics get points/score for their weapons.
-	Rebalance money rewards.
-	Rebalance point rewards.
-	Rebalance unit costs?
-	Check advanced infantry unit balance.
-	Turret dps should be close to tesla.
-	Chronotank probably needs teleport cooldown reduction.
-	Enable minelayers, add mine limit.
-	Enable missing advanced infantry units.
-	Enable air units.
-	Enable sea units.
-
-Gameplay:
-	Recalculate damage done.
-
-	Building under attack notifications.
-	Building lost notification (sound).
-	Buying vehicles when WF is dead.
-	Victory condition on timer or points.
-	Better scoreboard (show current rank in the game, team score).
-
-	Add a camera on death, and increment respawn time.
-	Add locking to vehicles that aren't yours (so they aren't stolen).
-	Better spawn points. Allow players to choose.
-	Toggling of nametags, scoreboard (earth 4&7 nametags, stealth2.shp 10&15 scoreboard).
-	Fix AI Harvesters to follow a waypoint path after death.
-	Only allow purchasing while not mobile? Can remove jittery infantry buying.
-
-Bugs:
-	Players can be squished by Neutral units (war factory spawns, leaving harvesters).
-	Buying new infantry may result in lower health than expected.
-	Possibly? Killing a neutral vehicle owned by the other team may result in money or not.
-
-Refactor:
-	Score / points system.
-	Harvester waypoints for FindResources.
-
-Lua ideas:
-	Expose score.
-	Expose better UI (scoreboard, spawning, toggling options).
-	Checking cell occupancy.
-	Getting damage values.
-	Probably more i've forgotten.
+	'Renegade 2D' Lua script by @hamb
+	Version: not public
+	Engine: OpenRA release-20190314
 ]]
 
 --[[ General ]]
@@ -55,6 +14,10 @@ PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
 NotifyBaseUnderAttackSecondInterval = DateTime.Seconds(30)
+
+-- [[ Hacks that should be removed ]]
+MoveAiHarvestersToRefineryOnDeath = true
+HealthAfterOnDamageEventTable = { }
 
 --[[ Mod-specific ]]
 SpawnAsActorType = "e1"
@@ -75,14 +38,11 @@ DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 AiHarvesterActorType = "harv-ai"
 PlayerHarvesterActorType = "harv"
 
--- [[ Hacks that should be removed ]]
-MoveAiHarvestersToRefineryOnDeath = true
-HealthAfterOnDamageEventTable = { }
-
 WorldLoaded = function()
 	SetPlayerInfo()
 	SetTeamInfo()
 
+	InitializeDamageTableHack()
 	AssignTeamBuildings()
 
 	BindBaseEvents()
@@ -113,7 +73,7 @@ Tick = function()
 	HackyStopNeutralHarvesters()
 end
 
---[[ World loaded ]]
+--[[ World Loaded / Gameplay ]]
 SetPlayerInfo = function()
 	local humanPlayers = Player.GetPlayers(function(p)
 		return PlayerIsHuman(p)
@@ -143,7 +103,6 @@ SetPlayerInfo = function()
 end
 
 SetTeamInfo = function()
-	-- Could combine w/ SetPlayerInfo.
 	local teams = Player.GetPlayers(function (p) return PlayerIsTeamAi(p) end)
 
 	Utils.Do(teams, function(team)
@@ -175,6 +134,27 @@ SetTeamInfo = function()
 		Utils.Do(ti.Players, function(pi)
 			pi.Team = ti
 		end)
+	end)
+end
+
+InitializeDamageTableHack = function()
+	--[[
+		This hack exists because Lua currently doesn't give us damage dealt in the OnDamage event.
+
+		Implementation:
+		- A global table is defined, using something similar to actor's ID as the key.
+			- e.g. calling tostring(actor) returns 'Actor (e1 52)'.
+		- Any actors in the world when the game is created are added to this table.
+		- Any actors that are created are added to this table.
+		- The value stored in this table for an actor is their current HP after an OnDamage event.
+			- This allows for subsequent OnDamage events to calculate damage done.
+	]]
+	Utils.Do(Map.ActorsInWorld, function(actor)
+		-- Damage hack
+		if pcall(function() HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health end) then
+			-- Wrapping with pcall handles errors
+			-- If an actor has no Health trait, there's an error. Could probably handle this better.
+		end
 	end)
 end
 
@@ -212,11 +192,6 @@ AssignTeamBuildings = function()
 			local ti = TeamInfo[actor.Owner.InternalName]
 			ti.Defenses[#ti.Defenses+1] = actor
 		end
-
-		-- Damage hack
-		if pcall(function() HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health end) then
-			-- Wrapping with pcall handles errors (if an actor has no Health trait, there's an error. Couldn't figure out how to handle this better)
-		end
 	end)
 end
 
@@ -246,7 +221,6 @@ BindPurchaseTerminals = function()
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")
 
 			Trigger.OnProduction(pt, function(producer, produced)
-				-- DisplayMessage(producer.Owner.Name .. " purchased " .. produced.Type)
 				BuildPurchaseTerminalItem(pi, produced.Type)
 			end)
 		end
@@ -433,7 +407,7 @@ end
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
 		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name .. "!")
-		GrantRewardOnKilled(self, killer, "unit")
+		GrantRewardOnKilled(self, killer, "hero")
 
 		-- Increment K/D
 		local selfPi = PlayerInfo[self.Owner.InternalName]
@@ -468,7 +442,7 @@ BindVehicleEvents = function()
 				GrantRewardOnKilled(self, killer, "unit")
 			end)
 
-			-- New vehicles belong to Neutral (except harvesters...)
+			-- New vehicles belong to Neutral (except AI harvesters...)
 			if produced.Type ~= AiHarvesterActorType then
 				produced.Owner = NeutralPlayer
 			else
@@ -508,6 +482,7 @@ BindVehicleEvents = function()
 
 				local pi = PlayerInfo[passenger.Owner.InternalName]
 
+				-- Set passenger state
 				pi.PassengerOfVehicle = nil
 
 				-- Name tag hack: Remove pilot info.
@@ -515,7 +490,7 @@ BindVehicleEvents = function()
 			end)
 
 			-- Damage hack
-			HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health
+			HealthAfterOnDamageEventTable[tostring(produced)] = actor.Health
 		end)
 	end)
 end
@@ -583,7 +558,7 @@ end
 InitializeAiHarvester = function(harv, wasPurchased)
 	if wasPurchased and MoveAiHarvestersToRefineryOnDeath then
 		-- Map-specific hack: In some cases, we need to tell purchased the ore truck to move near the refinery, then find resources.
-		-- TODO: Potential crash if this thing dies while this happens. Replace this with a waypoint.
+		-- TODO: Potential crash if this thing dies while this happens. Replace this with a waypoint, or cache the location at start.
 		local ti = TeamInfo[harv.Owner.InternalName]
 		harv.Move(ti.Refinery.Location, 5)
 	end
@@ -596,6 +571,105 @@ InitializeAiHarvester = function(harv, wasPurchased)
 			ti.WarFactory.Produce(AiHarvesterActorType)
 		end
 	end)
+end
+
+BuildPurchaseTerminalItem = function(pi, actorType)
+	local hero = pi.Hero;
+
+	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
+		local type = actorType:gsub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off; assume there's an actor type defined without that prefix.
+
+		-- We don't init the health because it's percentage based.
+		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
+		newHero.Health = hero.Health
+		newHero.IsInWorld = true
+
+		pi.Hero = newHero
+
+		-- Doesn't look that great if moving.
+		hero.Stop()
+		hero.IsInWorld = false
+		hero.Destroy()
+
+		BindHeroEvents(newHero)
+	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
+		local type = actorType:gsub(PurchaseTerminalVehicleActorTypePrefix, "")
+
+		local ti = pi.Team
+		if not ti.WarFactory.IsDead then
+			ti.WarFactory.Produce(type)
+		end
+	end
+end
+
+GrantRewardOnDamage = function(self, attacker)
+	--[[
+		This is a fun state machine that calculates damage done.
+		It can be completely removed if Lua exposes that information.
+
+		We create a table of actor IDs.
+		This table stores health of all actors in the world, and changes after the OnDamage event.
+
+		TODO:
+			No points on self, team, or neutral unit damage.
+			There's an issue where a purchased infantry did not appear in the damage table.
+	]]
+	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
+		return
+	end
+	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
+		return
+	end
+
+	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
+
+	local previousHealth = HealthAfterOnDamageEventTable[actorId]
+
+	if previousHealth == nil then
+		DisplayMessage('Error! Fix me! ' .. actorId .. ' was not found in the damage table!')
+	else
+		local currentHealth = self.Health
+
+		local damageTaken = previousHealth - currentHealth
+
+		HealthAfterOnDamageEventTable[actorId] = currentHealth
+
+		local attackerpi = PlayerInfo[attacker.Owner.InternalName]
+		if attackerpi ~= nil then -- Is a player
+
+			-- Points are calculated as a percentage of damage done against a unit's max HP.
+			-- If a unit has 5000 health, and the attack dealt 1500, this is 30% (so 30 points).
+			-- Percentages are rounded up (23.3% of health as damage rewards 24 points)
+			local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
+			local points = percentageDamageDealt
+			points = math.ceil(points + 0.5) -- Round up
+
+			attackerpi.Score = attackerpi.Score + points
+			attackerpi.Player.Cash = attackerpi.Player.Cash + points
+		end
+	end
+end
+
+GrantRewardOnKilled = function(self, killer, actorCategory)
+	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
+		return
+	end
+	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
+		return
+	end
+
+	local killerpi = PlayerInfo[killer.Owner.InternalName]
+	if killerpi ~= nil then -- Is a player
+		local points = 0
+		if actorCategory == "hero" then	points = 100
+		elseif actorCategory == "unit" then	points = 50
+		elseif actorCategory == "defense" then points = 200
+		elseif actorCategory == "building" then	points = 300
+		end
+
+		killerpi.Score = killerpi.Score + points
+		killerpi.Player.Cash = killerpi.Player.Cash + points
+	end
 end
 
 --[[ Ticking ]]
@@ -649,7 +723,7 @@ DrawScoreboard = function()
 end
 
 DrawNameTags = function()
-	-- This is a horrible hack until WithTextDecoration is usable.
+	-- This is a hack until WithTextDecoration can be used.
 	Utils.Do(PlayerInfo, function(pi)
 		if pi.Hero ~= nil and pi.Hero.IsInWorld then
 			local name = pi.Player.Name
@@ -683,152 +757,6 @@ HackyStopNeutralHarvesters = function()
 	end)
 end
 
---[[ Game logic ]]
-BuildPurchaseTerminalItem = function(pi, actorType)
-	local hero = pi.Hero;
-
-	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off, we assume there's an actor without that prefix.
-
-		-- We don't init the health because it's percentage based.
-		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
-		newHero.Health = hero.Health
-		newHero.IsInWorld = true
-
-		pi.Hero = newHero
-
-		-- Doesn't look that great if moving.
-		hero.Stop()
-		hero.IsInWorld = false
-		hero.Destroy()
-
-		BindHeroEvents(newHero)
-	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalVehicleActorTypePrefix, "")
-
-		local ti = pi.Team
-		if not ti.WarFactory.IsDead then
-			ti.WarFactory.Produce(type)
-		end
-	end
-end
-
-GrantRewardOnDamage = function(self, attacker)
-	--[[
-		This is a fun state machine that calculates damage done.
-		It can be completely removed if Lua exposes that information.
-
-		We create a table of actor IDs.
-		This table stores health of all actors in the world, and changes after the OnDamage event.
-
-		TODO:
-			When anything in this world is created, we need to run a function that adds or updates this value
-			No points on self, team, or neutral unit damage.
-
-			Convert damage dealt into a sensible amount of points (idea: formula of their max health, and % of damage dealt)
-			There's an issue where a purchased infantry did not appear in the damage table.
-	]]
-
-	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
-
-	local previousHealth = HealthAfterOnDamageEventTable[actorId]
-
-	if previousHealth == nil then
-		DisplayMessage('Error! Fix me! ' .. actorId .. ' was not found in the damage table!')
-	else
-		local currentHealth = self.Health
-
-		local damageTaken = previousHealth - currentHealth
-
-		HealthAfterOnDamageEventTable[actorId] = currentHealth
-
-		-- Only grant points to players
-		local attackerpi = PlayerInfo[attacker.Owner.InternalName]
-		if attackerpi ~= nil then
-
-			local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
-
-			--local points = damageTaken / 100
-			DisplayMessage(tostring(percentageDamageDealt))
-			local points = percentageDamageDealt
-
-			--DisplayMessage('Damage taken: ' .. tostring(damageTaken) .. ' / points: ' .. tostring(points))
-
-			--attackerpi.Score = attackerpi.Score + points
-			--attackerpi.Player.Cash = attackerpi.Player.Cash + points
-		end
-	end
-end
-
-GrantRewardOnKilled = function(self, killer, actorCategory)
-	local points = 0
-	if actorCategory == "unit" then
-		points = 100
-	elseif actorCategory == "defense" then
-		points = 200
-	elseif actorCategory == "building" then
-		points = 300
-	end
-
-	-- Ignore self/team killing
-	if self.Owner.Faction == killer.Owner.Faction then
-		return
-	end
-
-	local pi = PlayerInfo[killer.Owner.InternalName]
-
-	-- AI might do the killing.
-	if pi ~= nil then
-		pi.Score = pi.Score + points
-		pi.Player.Cash = pi.Player.Cash + points
-	end
-end
-
-CalculatePoints = function(self, attacker)
-	-- Unfortunately there's no way to get damage done in Lua yet.
-	-- Instead a bad rock-paper-scissors ish point system has been made.
-	local selfArmorType = ''
-	local attackerWeaponType = ''
-	for i, v in pairs(ArmorTypes) do
-		if ArrayContains(v.types, self.Type) then selfArmorType = v.name end
-	end
-	for i, v in pairs(WeaponTypes) do
-		if ArrayContains(v.types, attacker.Type) then attackerWeaponType = v.name end
-	end
-
-	local points = 5
-	if selfArmorType == 'soft' then
-		if attackerWeaponType == 'heal' then points = 5
-		elseif attackerWeaponType == 'gun' then points = 25
-		elseif attackerWeaponType == 'missle' then points = 5
-		elseif attackerWeaponType == 'smallShell' then points = 5
-		elseif attackerWeaponType == 'bigShell' then points = 5
-		elseif attackerWeaponType == 'fire' then points = 25
-		elseif attackerWeaponType == 'zap' then points = 100
-		end
-	elseif selfArmorType == 'medium' then
-		if attackerWeaponType == 'heal' then points = 5
-		elseif attackerWeaponType == 'gun' then points = 2
-		elseif attackerWeaponType == 'missle' then points = 25
-		elseif attackerWeaponType == 'smallShell' then points = 25
-		elseif attackerWeaponType == 'bigShell' then points = 25
-		elseif attackerWeaponType == 'fire' then points = 2
-		elseif attackerWeaponType == 'zap' then points = 50
-		end
-	elseif selfArmorType == 'hard' then
-		if attackerWeaponType == 'heal' then points = 5
-		elseif attackerWeaponType == 'gun' then points = 1
-		elseif attackerWeaponType == 'missle' then points = 25
-		elseif attackerWeaponType == 'smallShell' then points = 15
-		elseif attackerWeaponType == 'bigShell' then points = 25
-		elseif attackerWeaponType == 'fire' then points = 1
-		elseif attackerWeaponType == 'zap' then points = 25
-		end
-	end
-
-	return points
-end
-
 --[[ Misc. ]]--
 DisplayMessage = function(message)
 	Media.DisplayMessage(message, "Console")
@@ -843,8 +771,8 @@ ArrayContains = function(collection, value)
 	return false
 end
 
--- Used for spawn logic, gets an annulus of two footprints
 GetCPosAnnulus = function(baseFootprintCells, expandedFootprintCells)
+	-- Used for spawn logic, gets an annulus of two footprints
 	local result = {}
 
 	for i, v in ipairs(expandedFootprintCells) do
