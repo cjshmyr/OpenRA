@@ -18,4 +18,45 @@ Players:
 		NonCombatant: True
 		Faction: Random
 Actors:
-Rules:
+	Actor3: proc
+		Owner: Neutral
+		Location: 17,26
+	Actor4: hq
+		Owner: Neutral
+		Location: 12,32
+	Actor5: fix
+		Owner: Neutral
+		Location: 22,32
+	Actor6: fact
+		Owner: Neutral
+		Location: 5,38
+	Actor7: weap
+		Owner: Neutral
+		Location: 17,38
+	Actor11: afld
+		Owner: Neutral
+		Location: 78,10
+	Actor12: fix
+		Owner: Neutral
+		Location: 72,15
+	Actor15: proc
+		Owner: Neutral
+		Location: 78,21
+	Actor13: hq
+		Owner: Neutral
+		Location: 86,15
+	Actor16: fact
+		Owner: Neutral
+		Location: 91,10
+	Actor14: nuk2
+		Owner: Neutral
+		Location: 72,4
+	Actor17: hand
+		Owner: Neutral
+		Location: 86,4
+	Actor18: pyle
+		Owner: Neutral
+		Location: 12,43
+	Actor19: nuk2
+		Owner: Neutral
+		Location: 23,43
