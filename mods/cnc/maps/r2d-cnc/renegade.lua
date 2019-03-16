@@ -358,7 +358,7 @@ BindBaseEvents = function()
 
 		-- Defenses
 		Utils.Do(ti.Defenses, function(building)
-			Trigger.OnKilled(building, function(self, attacker)
+			Trigger.OnKilled(building, function(self, killer)
 				-- TODO: Message?
 				GrantRewardOnKilled(self, killer, "defense")
 			end)
@@ -429,7 +429,7 @@ end
 
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
-		DisplayMessage(killer.Owner.Name .. " killed " .. self.Owner.Name .. "!")
+		DisplayMessage(killer.Owner.Name .. " was killed by " .. self.Owner.Name .. "!")
 		GrantRewardOnKilled(self, killer, "hero")
 
 		-- Increment K/D
