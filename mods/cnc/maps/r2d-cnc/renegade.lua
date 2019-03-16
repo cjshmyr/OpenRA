@@ -16,7 +16,7 @@ PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
 NotifyBaseUnderAttackSecondInterval = DateTime.Seconds(30)
 
 -- [[ Hacks that should be removed ]]
-MoveAiHarvestersToRefineryOnDeath = true
+HarvesterWaypoints = { }
 HealthAfterOnDamageEventTable = { }
 
 --[[ Mod-specific (see SetModVariables) ]]
@@ -572,6 +572,9 @@ end
 InitializeAiHarvesters = function()
 	-- Order all starting harvesters to find resources
 	Utils.Do(Map.ActorsInWorld, function (actor)
+		-- Hack: cache waypoint location to move harvester to
+		if actor.Type == 'waypoint' then HarvesterWaypoints[actor.Owner.Faction] = actor.Location end
+
 		if actor.Type == AiHarvesterActorType and PlayerIsTeamAi(actor.Owner) then
 			local wasPurchased = false
 			InitializeAiHarvester(actor, wasPurchased)
@@ -580,11 +583,9 @@ InitializeAiHarvesters = function()
 end
 
 InitializeAiHarvester = function(harv, wasPurchased)
-	if wasPurchased and MoveAiHarvestersToRefineryOnDeath then
-		-- Map-specific hack: In some cases, we need to tell purchased the ore truck to move near the refinery, then find resources.
-		-- TODO: Potential crash if this thing dies while this happens. Replace this with a waypoint, or cache the location at start.
-		local ti = TeamInfo[harv.Owner.InternalName]
-		harv.Move(ti.Refinery.Location, 5)
+	if not wasPurchased then
+		local waypointLocation = HarvesterWaypoints[harv.Owner.Faction]
+		harv.Move(waypointLocation, 3)
 	end
 
 	harv.FindResources()

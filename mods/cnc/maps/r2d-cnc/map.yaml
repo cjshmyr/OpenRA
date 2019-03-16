@@ -347,6 +347,12 @@ Actors:
 	Actor84: t11
 		Owner: Neutral
 		Location: 3,2
+	Actor85: waypoint
+		Owner: GDI
+		Location: 35,38
+	Actor86: waypoint
+		Owner: Nod
+		Location: 62,38
 Rules: cnc/rules.yaml,cnc/infantry.yaml,cnc/vehicles.yaml,cnc/structures.yaml
 Sequences: cnc/sequences.yaml
 Weapons: cnc/weapons.yaml
