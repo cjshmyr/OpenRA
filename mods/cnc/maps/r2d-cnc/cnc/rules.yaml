@@ -122,7 +122,7 @@ buy.infantry.e1:
 		Name: Minigunner
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: ~canbuy, ~infantry
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E1
@@ -133,7 +133,7 @@ buy.infantry.e3:
 		Name: Rocket Soldier
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: ~canbuy, ~infantry
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E3
@@ -144,10 +144,54 @@ buy.infantry.e6:
 		Name: Engineer
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: ~canbuy, ~infantry
+		Prerequisites: ~canbuy
 		Queue: Infantry
 	RenderSprites:
 		Image: E6
+
+buy.infantry.e2:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Grenadier
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~infantry, ~gdi
+		Queue: Infantry
+	RenderSprites:
+		Image: E2
+
+buy.infantry.rmbo:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Commando
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~infantry, ~gdi
+		Queue: Infantry
+	RenderSprites:
+		Image: rmbo
+
+buy.infantry.e4:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Flamethrower
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~infantry, ~nod
+		Queue: Infantry
+	RenderSprites:
+		Image: E4
+
+buy.infantry.e5:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Chem Warrior
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~infantry, ~nod
+		Queue: Infantry
+	RenderSprites:
+		Image: E5
 
 buy.vehicle.jeep:
 	Inherits: ^buy.default

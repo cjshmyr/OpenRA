@@ -7,19 +7,19 @@
 --[[ General ]]
 PlayerInfo = { }
 TeamInfo = { }
+HarvesterWaypoints = { }
 PlayerHarvesters = { } -- Exists due to a hack.
 CashPerSecond = 2 -- Cash given per second.
 CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
-NotifyBaseUnderAttackSecondInterval = DateTime.Seconds(30)
+NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 
 -- [[ Hacks that should be removed ]]
-HarvesterWaypoints = { }
 HealthAfterOnDamageEventTable = { }
 
---[[ Mod-specific (see SetModVariables) ]]
+--[[ Mod-specific ]]
 Mod = "cnc"
 if Mod == "cnc" then
 	SpawnAsActorType = "e1"
