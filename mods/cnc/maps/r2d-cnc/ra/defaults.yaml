@@ -33,6 +33,6 @@
 		BlinkPattern: Off, On
 
 # AI's purchased vehicles cost nothing.
-^Vehicles:
+^Vehicle:
 	Valued:
 		Cost: 0
