@@ -16,3 +16,15 @@ OBLI:
 ATWR:
 	Power: # Powered defense
 		Amount: -1
+
+HQ:
+	-DetectCloaked: # Only defenses should detect cloaked.
+	-RenderDetectionCircle:
+
+EYE:
+	-DetectCloaked: # Only defenses should detect cloaked.
+	-RenderDetectionCircle:
+
+TMPL:
+	-DetectCloaked: # Only defenses should detect cloaked.
+	-RenderDetectionCircle:

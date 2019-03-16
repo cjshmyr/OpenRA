@@ -3,81 +3,58 @@ HARV-AI:
 	Inherits: HARV
 	-Cargo:
 
-HARV:
+^OnePassenger:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
 		EjectOnDeath: true
-	Harvester:
-		SearchOnCreation: false
 
-JEEP:
+^TwoPassengers:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
 		PipCount: 2
 		EjectOnDeath: true
 
-APC:
+^FourPassengers:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 4
 		EjectOnDeath: true
 
+HARV:
+	Inherits@Passengers: ^OnePassenger
+	Harvester:
+		SearchOnCreation: false
+
+JEEP:
+	Inherits@Passengers: ^TwoPassengers
+
+APC:
+	Inherits@Passengers: ^FourPassengers
+
 MLRS:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-		EjectOnDeath: true
+	Inherits@Passengers: ^OnePassenger
 
 MTNK:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 2
-		PipCount: 2
-		EjectOnDeath: true
+	Inherits@Passengers: ^TwoPassengers
 
 HTNK:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 2
-		PipCount: 2
-		EjectOnDeath: true
+	Inherits@Passengers: ^TwoPassengers
 
 BGGY:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 2
-		PipCount: 2
-		EjectOnDeath: true
+	Inherits@Passengers: ^TwoPassengers
 
 ARTY:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-		EjectOnDeath: true
+	Inherits@Passengers: ^OnePassenger
 
 LTNK:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-		EjectOnDeath: true
+	Inherits@Passengers: ^OnePassenger
 
 FTNK:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 2
-		PipCount: 2
-		EjectOnDeath: true
+	Inherits@Passengers: ^TwoPassengers
 
 STNK:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-		EjectOnDeath: true
+	Inherits@Passengers: ^OnePassenger

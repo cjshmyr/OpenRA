@@ -11,8 +11,11 @@
 		RequiresCondition: damaged
 		TargetTypes: Repair
 
+# Infantry can see cloaked units.
 # Allow infantry to auto-heal close enough to base buildings
 ^Infantry:
+	DetectCloaked:
+		Range: 4c0
 	ExternalCondition@NEARALLYBUILDING:
 		Condition: nearallybuilding
 	GrantCondition@INBASE:
@@ -32,10 +35,13 @@
 		BlinkInterval: 32
 		BlinkPattern: Off, On
 
+# Vehicles can see cloaked units.
 # AI's purchased vehicles cost nothing.
 # Vehicles have a condition when damaged.
 # Vehicles can be repaired by engineers.
 ^Vehicle:
+	DetectCloaked:
+		Range: 4c0
 	Valued:
 		Cost: 0
 	GrantConditionOnDamageState@DAMAGED:

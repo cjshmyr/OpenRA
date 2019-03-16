@@ -1,20 +1,44 @@
+^TierOneInfantry:
+	Health:
+		HP: 10000
+	Mobile:
+		Speed: 56
+
+^TierTwoInfantry:
+	Health:
+		HP: 15000
+	Mobile:
+		Speed: 60
+
+^TierThreeInfantry:
+	Health:
+		HP: 20000
+	Mobile:
+		Speed: 64
+
 E1:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E2:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierTwoInfantry
 
 E3:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E4:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierTwoInfantry
 
 E5:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierThreeInfantry
 
 E6:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierOneInfantry
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	-EngineerRepair:
@@ -38,3 +62,5 @@ E6:
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@InfantryTier: ^TierThreeInfantry
+	-Demolition:
