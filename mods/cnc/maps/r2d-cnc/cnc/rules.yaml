@@ -151,6 +151,8 @@ buy.infantry.e6:
 
 buy.infantry.e2:
 	Inherits: ^buy.default
+	Valued:
+		Cost: 300
 	Tooltip:
 		Name: Grenadier
 	Buildable:
@@ -162,6 +164,8 @@ buy.infantry.e2:
 
 buy.infantry.rmbo:
 	Inherits: ^buy.default
+	Valued:
+		Cost: 600
 	Tooltip:
 		Name: Commando
 	Buildable:
@@ -173,6 +177,8 @@ buy.infantry.rmbo:
 
 buy.infantry.e4:
 	Inherits: ^buy.default
+	Valued:
+		Cost: 300
 	Tooltip:
 		Name: Flamethrower
 	Buildable:
@@ -184,6 +190,8 @@ buy.infantry.e4:
 
 buy.infantry.e5:
 	Inherits: ^buy.default
+	Valued:
+		Cost: 600
 	Tooltip:
 		Name: Chem Warrior
 	Buildable:
