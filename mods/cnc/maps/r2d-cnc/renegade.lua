@@ -450,8 +450,9 @@ BindHeroEvents = function(hero)
 		GrantRewardOnDamage(self, attacker)
 	end)
 
-	-- Damage hack
-	HealthAfterOnDamageEventTable[tostring(hero)] = hero.Health
+	-- Damage hack (delayed since tostring(hero) can give us a not in world msg)
+	-- We chould parse it out instead.
+	Trigger.AfterDelay(1, function() HealthAfterOnDamageEventTable[tostring(hero)] = hero.Health end)
 end
 
 BindVehicleEvents = function()
