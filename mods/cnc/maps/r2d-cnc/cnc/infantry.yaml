@@ -15,6 +15,26 @@ E5:
 
 E6:
 	Inherits@HeroUnit: ^HeroUnit
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	-EngineerRepair:
+	-RepairsBridges:
+	-CaptureManager:
+	-Captures@SABOTAGE:
+	-Captures@CAPTURES:
+	AttackFrontal:
+		Voice: Action
+	Armament:
+		Weapon: RepairGun
+		Cursor: repair
+		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Repair
+	WithInfantryBody:
+		DefaultAttackSequence: idle1
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit

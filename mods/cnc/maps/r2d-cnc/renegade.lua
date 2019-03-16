@@ -739,7 +739,7 @@ DrawScoreboard = function()
 	Utils.Do(PlayerInfo, function(pi)
 		if pi.Player.IsLocalPlayer then
 			local scoreboard =
-				pi.Player.Name
+				"\n" .. pi.Player.Name
 				.. " -- Score: " .. tostring(pi.Score)
 				.. " (K/D: " .. tostring(pi.Kills) .. "/" .. tostring(pi.Deaths) .. ")"
 			UserInterface.SetMissionText(scoreboard)

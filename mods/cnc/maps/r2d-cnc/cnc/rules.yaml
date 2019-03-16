@@ -206,7 +206,7 @@ buy.vehicle.jeep:
 	Valued:
 		Cost: 350
 	Tooltip:
-		Name: Jeep
+		Name: Hum-Vee
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~vehicle, ~gdi

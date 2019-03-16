@@ -1,1 +1,22 @@
-#empty
+RepairGun:
+	ReloadDelay: 40
+	Range: 2c0
+	Report: fixit1.aud # Doesn't play yet
+	ValidTargets: Repair
+	Projectile: Bullet
+		Speed: 1c682
+	#Projectile: LaserZap
+	#Width: 85
+	#HitAnim: laserfire
+	#Color: 0000FF
+	#ZOffset: 1024
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: -2000
+		ValidTargets: Repair
+		ValidStances: Ally
+
+# For testing purposes
+Rockets:
+	Warhead@1Dam: SpreadDamage
+		Damage: 25000
