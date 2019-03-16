@@ -12,51 +12,134 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Faction: Random
+		Faction: gdi
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Faction: Random
+		Faction: gdi
+		Enemies: Allies, Soviet, A0, A1, S0, S1
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: gdi
+		Color: F5D378
+		Team: 1
+		Allies: GDI, A0, A1
+		Enemies: Creeps, Nod, B0, B1
+	PlayerReference@Nod:
+		Name: Nod
+		Faction: nod
+		Color: FE1100
+		Team: 2
+		Allies: Nod, B0, B1
+		Enemies: Creeps, GDI, A0, A1
+	PlayerReference@A0:
+		Name: A0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		Color: F5D378
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, GDI, A0, A1
+		Enemies: Creeps, Nod, B0, B1
+	PlayerReference@A1:
+		Name: A1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		Color: F5D378
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, GDI, A0, A1
+		Enemies: Creeps, Nod, B0, B1
+	PlayerReference@S0:
+		Name: S0
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: nod
+		LockColor: True
+		Color: FE1100
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Nod, B0, B1
+		Enemies: Creeps, GDI, A0, A1
+	PlayerReference@S1:
+		Name: S1
+		AllowBots: False
+		Playable: True
+		LockFaction: True
+		Faction: nod
+		LockColor: True
+		Color: FE1100
+		LockSpawn: True
+		LockTeam: True
+		Team: 1
+		Allies: Neutral, Nod, B0, B1
+		Enemies: Creeps, GDI, A0, A1
 Actors:
-	Actor3: proc
-		Owner: Neutral
-		Location: 17,26
-	Actor4: hq
-		Owner: Neutral
-		Location: 12,32
-	Actor5: fix
-		Owner: Neutral
-		Location: 22,32
-	Actor6: fact
-		Owner: Neutral
-		Location: 5,38
-	Actor7: weap
-		Owner: Neutral
-		Location: 17,38
 	Actor11: afld
-		Owner: Neutral
 		Location: 78,10
+		Owner: Nod
 	Actor12: fix
-		Owner: Neutral
 		Location: 72,15
+		Owner: Nod
 	Actor15: proc
-		Owner: Neutral
 		Location: 78,21
+		Owner: Nod
 	Actor13: hq
-		Owner: Neutral
 		Location: 86,15
+		Owner: Nod
 	Actor16: fact
-		Owner: Neutral
 		Location: 91,10
+		Owner: Nod
 	Actor14: nuk2
-		Owner: Neutral
 		Location: 72,4
+		Owner: Nod
 	Actor17: hand
-		Owner: Neutral
 		Location: 86,4
-	Actor18: pyle
-		Owner: Neutral
-		Location: 12,43
-	Actor19: nuk2
-		Owner: Neutral
-		Location: 23,43
+		Owner: Nod
+	Actor21: fact
+		Location: 4,10
+		Owner: GDI
+	Actor22: hq
+		Location: 10,15
+		Owner: GDI
+	Actor19: fix
+		Location: 23,15
+		Owner: GDI
+	Actor24: nuk2
+		Location: 24,4
+		Owner: GDI
+	Actor23: pyle
+		Location: 10,4
+		Owner: GDI
+	Actor18: weap
+		Location: 16,10
+		Owner: GDI
+	Actor25: proc
+		Location: 16,21
+		Owner: GDI
+	Actor20: atwr
+		Owner: GDI
+		Location: 25,27
+		TurretFacing: 92
+	Actor26: gtwr
+		Owner: GDI
+		Location: 23,25
+		TurretFacing: 92
+	Actor27: gun
+		Owner: Nod
+		Location: 75,26
+		TurretFacing: 92
+	Actor28: obli
+		Owner: Nod
+		Location: 73,28
+Rules: cnc/rules.yaml

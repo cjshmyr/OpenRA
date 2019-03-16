@@ -1,0 +1,126 @@
+World:
+	LuaScript:
+		Scripts: renegade.lua
+	-SpawnMPUnits:
+	-MPStartLocations:
+	CrateSpawner:
+		CheckboxLocked: true
+		CheckboxEnabled: false
+	MapOptions:
+		TechLevel: unrestricted
+		TechLevelDropdownLocked: true
+		TechLevelDropdownEnabled: false
+		TechLevelDropdownVisible: false
+		ShortGameCheckboxLocked: true
+		ShortGameCheckboxEnabled: false
+		ShortGameCheckboxVisible: false
+	MapBuildRadius:
+		BuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: false
+		BuildRadiusCheckboxVisible: false
+		AllyBuildRadiusCheckboxLocked: true
+		AllyBuildRadiusCheckboxEnabled: false
+		AllyBuildRadiusCheckboxVisible: false
+	ResourceType@green-tib:
+		ValuePerUnit: 15 # ??? per load
+	ResourceType@blue-tib:
+		ValuePerUnit: 30 # ??? per load
+
+Player:
+	-ConquestVictoryConditions:
+	-AllyRepair:
+	Shroud:
+		FogCheckboxLocked: true
+		FogCheckboxEnabled: true
+		FogCheckboxVisible: false
+		ExploredMapCheckboxLocked: true
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxVisible: false
+	PlayerResources:
+		DefaultCashDropdownLocked: true
+		DefaultCashDropdownVisible: false
+		DefaultCash: 800
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: false
+		Visible: false
+
+PurchaseTerminal:
+	ScriptTriggers:
+	ConditionManager:
+	RenderSpritesEditorOnly:
+		Image: waypoint
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	Production:
+		Produces: Building, Vehicle, Infantry
+	ProductionBar@Infantry:
+		ProductionType: Infantry
+	ProductionQueue@Infantry:
+		Type: Infantry
+		Group: Infantry
+	Exit:
+	ExternalCondition@building:
+		Condition: building
+	ExternalCondition@vehicle:
+		Condition: vehicle
+	ExternalCondition@infantry:
+		Condition: infantry
+	ExternalCondition@gdi:
+		Condition: gdi
+	ExternalCondition@nod:
+		Condition: nod
+	ExternalCondition@radar:
+		Condition: radar
+	ProvidesPrerequisite@building:
+		Prerequisite: building
+		RequiresCondition: building
+	ProvidesPrerequisite@vehicle:
+		Prerequisite: vehicle
+		RequiresCondition: vehicle
+	ProvidesPrerequisite@infantry:
+		Prerequisite: infantry
+		RequiresCondition: infantry
+	ProvidesPrerequisite@gdi:
+		Prerequisite: gdi
+		RequiresCondition: gdi
+	ProvidesPrerequisite@nod:
+		Prerequisite: nod
+		RequiresCondition: nod
+	ProvidesRadar:
+		RequiresCondition: radar
+
+^HeroUnit:
+	ExternalCondition@canbuy:
+		Condition: canbuy
+	ProvidesPrerequisite@canbuy:
+		Prerequisite: canbuy
+		RequiresCondition: canbuy
+
+E1:
+	Inherits@HeroUnit: ^HeroUnit
+
+^buy.default:
+	AlwaysVisible:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: Not Implemented
+	Buildable:
+		BuildPaletteOrder: 1
+		Prerequisites: building
+		Queue: Building
+		BuildDuration: 0
+	Valued:
+		Cost: 0
+
+buy.infantry.e1:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Minigunner
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy
+		Queue: Infantry
+	RenderSprites:
+		Image: E1

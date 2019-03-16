@@ -20,7 +20,7 @@ MoveAiHarvestersToRefineryOnDeath = true
 HealthAfterOnDamageEventTable = { }
 
 --[[ Mod-specific (see SetModVariables) ]]
-Mod = "ra"
+Mod = "cnc"
 if Mod == "cnc" then
 	SpawnAsActorType = "e1"
 	AlphaTeamPlayerName = "GDI"
@@ -110,11 +110,11 @@ SetPlayerInfo = function()
 			Team = nil,
 			Hero = nil,
 			PurchaseTerminal = nil,
-			CanBuyConditionToken = -1,
-			BuildingConditionToken = -1,
-			VehicleConditionToken = -1,
-			InfantryConditionToken = -1,
-			RadarConditionToken = -1,
+			CanBuyConditionToken = -1, -- hero
+			BuildingConditionToken = -1, -- pt
+			VehicleConditionToken = -1, -- pt
+			InfantryConditionToken = -1, -- pt
+			RadarConditionToken = -1, -- pt
 			Score = 0,
 			Kills = 0,
 			Deaths = 0,
@@ -222,9 +222,8 @@ end
 AddPurchaseTerminals = function()
 	Utils.Do(PlayerInfo, function(pi)
 		-- Hacky, but create all purchase terminals at 0,0.
-		-- The side effect is a unit forcibly moving if a purchase is made, while standing on it.
-		local spawnpoint = CPos.New(0, 0)
-		Actor.Create(PurchaseTerminalActorType, true, { Owner = pi.Player, Location = spawnpoint })
+		-- The side effect is a unit nudging if a purchase is made while standing on it.
+		Actor.Create(PurchaseTerminalActorType, true, { Owner = pi.Player, Location = CPos.New(0, 0) })
 	end)
 end
 
@@ -546,7 +545,7 @@ BindProximityEvents = function()
 						local tokenToRevoke = pi.ProximityEventTokens[building.Type]
 
 						if tokenToRevoke ~= nil then
-							pi.PurchaseTerminal.RevokeCondition(tokenToRevoke)
+							pi.Hero.RevokeCondition(tokenToRevoke)
 							pi.ProximityEventTokens[building.Type] = -1
 						end
 					end
@@ -559,7 +558,7 @@ BindProximityEvents = function()
 
 					if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
 						if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
-							pi.ProximityEventTokens[building.Type] = pi.PurchaseTerminal.GrantCondition("canbuy") -- e.g. table['fact'] = token
+							pi.ProximityEventTokens[building.Type] = pi.Hero.GrantCondition("canbuy") -- e.g. table['fact'] = token
 						end
 					end
 				end
@@ -638,7 +637,7 @@ GrantRewardOnDamage = function(self, attacker)
 			No points on self, team, or neutral unit damage.
 			There's an issue where a purchased infantry did not appear in the damage table.
 	]]
-	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
+	if self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team.
 		return
 	end
 	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
