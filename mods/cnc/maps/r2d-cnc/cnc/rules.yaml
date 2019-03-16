@@ -59,6 +59,11 @@ PurchaseTerminal:
 	ProductionQueue@Infantry:
 		Type: Infantry
 		Group: Infantry
+	ProductionBar@Vehicle:
+		ProductionType: Vehicle
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		Group: Vehicle
 	Exit:
 	ExternalCondition@building:
 		Condition: building
@@ -97,9 +102,6 @@ PurchaseTerminal:
 		Prerequisite: canbuy
 		RequiresCondition: canbuy
 
-E1:
-	Inherits@HeroUnit: ^HeroUnit
-
 ^buy.default:
 	AlwaysVisible:
 	Interactable:
@@ -120,7 +122,159 @@ buy.infantry.e1:
 		Name: Minigunner
 	Buildable:
 		BuildPaletteOrder: 10
-		Prerequisites: ~canbuy
+		Prerequisites: ~canbuy, ~infantry
 		Queue: Infantry
 	RenderSprites:
 		Image: E1
+
+buy.infantry.e3:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Rocket Soldier
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy, ~infantry
+		Queue: Infantry
+	RenderSprites:
+		Image: E3
+
+buy.infantry.e6:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Engineer
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~infantry
+		Queue: Infantry
+	RenderSprites:
+		Image: E6
+
+buy.vehicle.jeep:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 350
+	Tooltip:
+		Name: Jeep
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: jeep
+
+buy.vehicle.apc:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Armored Personnel Carrier
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy, ~vehicle
+		Queue: Vehicle
+	RenderSprites:
+		Image: apc
+
+buy.vehicle.mlrs:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Multiple Launch Rocket System
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: mlrs
+
+buy.vehicle.mtnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medium Tank
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: mtnk
+
+buy.vehicle.htnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Mammoth Tank
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: htnk
+
+buy.vehicle.bggy:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Buggy
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: bggy
+
+buy.vehicle.arty:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Artillery
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: arty
+
+buy.vehicle.ltnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Light Tank
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: ltnk
+
+buy.vehicle.ftnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Flame Tank
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: ftnk
+
+buy.vehicle.stnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Stealth Tank
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: stnk

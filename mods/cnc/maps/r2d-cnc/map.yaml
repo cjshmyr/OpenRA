@@ -142,4 +142,6 @@ Actors:
 	Actor28: obli
 		Owner: Nod
 		Location: 73,28
-Rules: cnc/rules.yaml
+Rules: cnc/rules.yaml,cnc/infantry.yaml,cnc/vehicles.yaml,cnc/structures.yaml
+Sequences: cnc/sequences.yaml
+Weapons: cnc/weapons.yaml

@@ -1,0 +1,15 @@
+harv-ai:
+	idle: harv
+		Facings: 32
+		UseClassicFacingFudge: True
+	harvest: harv
+		Start: 32
+		Length: 4
+		Facings: 8
+		Tick: 60
+	dock: harvdump
+		Length: 7
+	dock-loop: harvdump
+		Start: 7
+	icon: harvicnh.tem
+		AddExtension: False

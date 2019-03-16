@@ -513,7 +513,7 @@ BindVehicleEvents = function()
 			end)
 
 			-- Damage hack
-			HealthAfterOnDamageEventTable[tostring(produced)] = actor.Health
+			HealthAfterOnDamageEventTable[tostring(produced)] = produced.Health
 		end)
 	end)
 end

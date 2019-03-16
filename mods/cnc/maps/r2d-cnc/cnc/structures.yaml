@@ -1,0 +1,18 @@
+NUK2:
+	Power: # "Unlimited" power for AI buildings.
+		Amount: 999999
+
+PROC:
+	StoresResources: # "Unlimited" $ for AI buildings.
+		PipCount: 0
+		Capacity: 999999
+	FreeActor: # Use the AI specific harvester.
+		Actor: HARV-AI
+
+OBLI:
+	Power: # Powered defense
+		Amount: -1
+
+ATWR:
+	Power: # Powered defense
+		Amount: -1

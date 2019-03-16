@@ -1,0 +1,8 @@
+E1:
+	Inherits@HeroUnit: ^HeroUnit
+
+E3:
+	Inherits@HeroUnit: ^HeroUnit
+
+E6:
+	Inherits@HeroUnit: ^HeroUnit
