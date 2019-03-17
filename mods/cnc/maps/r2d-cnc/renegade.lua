@@ -14,9 +14,10 @@
 --[[ General ]]
 PlayerInfo = { }
 TeamInfo = { }
-HealthAfterOnDamageEventTable = { }
+HealthAfterOnDamageEventTable = { } -- HACK: We store damage dealt since last instance, since OnDamage doesn't tell us.
 HarvesterWaypoints = { }
-PlayerHarvesters = { } -- Exists due to a hack.
+PlayerHarvesters = { } -- HACK: We have to repeatedly tell harvesters to stop moving, or they forever FindResources.
+TypeNameTable = { } -- HACK: We don't have a nice way of getting an actor's name (e.g. hand -> Hand of Nod), except for this.
 CashPerSecond = 2 -- Cash given per second.
 CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
@@ -50,6 +51,19 @@ if Mod == "cnc" then
 	AlphaBeaconType = "ion-sw"
 	BetaBeaconType = "nuke-sw"
 	BeaconDeploySound = "target3.aud"
+	TypeNameTable['fact'] = 'Construction Yard'
+	TypeNameTable['proc'] = 'Tiberium Refinery'
+	TypeNameTable['nuk2'] = 'Power Plant'
+	TypeNameTable['hq'] = 'Communications Center'
+	TypeNameTable['weap'] = 'Weapons Factory'
+	TypeNameTable['afld'] = 'Airfield'
+	TypeNameTable['pyle'] = 'Barracks'
+	TypeNameTable['hand'] = 'Hand of Nod'
+	TypeNameTable['fix'] = 'Repair Bay'
+	TypeNameTable['gtwr'] = 'Guard Tower'
+	TypeNameTable['atwr'] = 'Advanced Guard Tower'
+	TypeNameTable['gun'] = 'Turret'
+	TypeNameTable['obli'] = 'Obelisk'
 elseif Mod == "ra" then
 	SpawnAsActorType = "e1"
 	AlphaTeamPlayerName = "Allies"
@@ -71,6 +85,19 @@ elseif Mod == "ra" then
 	AlphaBeaconType = "nuke-sw"
 	BetaBeaconType = "nuke-sw"
 	BeaconDeploySound = "bleep9.aud"
+	TypeNameTable['fact'] = 'Construction Yard'
+	TypeNameTable['proc'] = 'Ore Refinery'
+	TypeNameTable['apwr'] = 'Power Plant'
+	TypeNameTable['dome'] = 'Radar Dome'
+	TypeNameTable['weap'] = 'War Factory'
+	TypeNameTable['barr'] = 'Barracks'
+	TypeNameTable['tent'] = 'Barracks'
+	TypeNameTable['fix'] = 'Service Depot'
+	TypeNameTable['pbox'] = 'Pillbox'
+	TypeNameTable['hbox'] = 'Camoflauged Pillbox'
+	TypeNameTable['gun'] = 'Turret'
+	TypeNameTable['ftur'] = 'Flame Tower'
+	TypeNameTable['tsla'] = 'Tesla Coil'
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
@@ -244,38 +271,34 @@ BindPurchaseTerminals = function()
 end
 
 BindBaseEvents = function()
-	-- Mod-agnostic polish fixes:
-	-- This should say "Allied" instead of "Allies" for the team name.
-	-- Building names shouldn't be hardcoded here (War Factory / Weapons Factory / Airfield, Barracks / Hand of Nod)
 	Utils.Do(TeamInfo, function(ti)
-
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Construction Yard was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Refinery was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
 				ti.Refinery.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Barracks was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
@@ -286,13 +309,13 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Barracks.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " War Factory was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
@@ -303,13 +326,13 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.WarFactory.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Radar Dome was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
 			Utils.Do(ti.Players, function(pi)
@@ -320,13 +343,13 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Radar.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Powerplant was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
 			if not ti.Radar.IsDead then
@@ -339,39 +362,60 @@ BindBaseEvents = function()
 			if not ti.ConstructionYard.IsDead then
 				ti.Powerplant.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
-			DisplayMessage(self.Owner.Name .. " Service Depot was destroyed by " .. killer.Owner.Name)
+			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
 			if not ti.ConstructionYard.IsDead then
 				ti.ServiceDepot.StartBuildingRepairs()
 			end
-			GrantRewardOnDamage(self, attacker)
 			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamage(self, attacker)
 		end)
 
 		-- Defenses
 		Utils.Do(ti.Defenses, function(building)
 			Trigger.OnKilled(building, function(self, killer)
-				-- TODO: Message?
+				NotifyBuildingDestroyed(self, killer)
 				GrantRewardOnKilled(self, killer, "defense")
 			end)
 			Trigger.OnDamaged(building, function(self, attacker)
 				if not ti.ConstructionYard.IsDead then
 					ti.ServiceDepot.StartBuildingRepairs()
 				end
-				GrantRewardOnDamage(self, attacker)
 				NotifyBaseUnderAttack(self)
+				GrantRewardOnDamage(self, attacker)
 			end)
 		end)
 
 	end)
+end
+
+NotifyBuildingDestroyed = function(self, killer)
+	DisplayMessage(self.Owner.Name .. " " .. TypeNameTable[self.Type] .. " was destroyed by " .. killer.Owner.Name .. "!")
+end
+
+NotifyBaseUnderAttack = function(self)
+	local ti = TeamInfo[self.Owner.InternalName]
+	if ti.TicksSinceLastBuildingDamage >= NotifyBaseUnderAttackInterval then
+		-- Only display a message and play audio to that team
+		Utils.Do(ti.Players, function(pi)
+			if pi.Player.IsLocalPlayer then
+				DisplayMessage("Your base is under attack!")
+				Media.PlaySound(NotificationBaseUnderAttack)
+			end
+		end)
+
+		ti.LastBaseUnderAttackNotificationTick = NotifyBaseUnderAttackInterval
+	end
+
+	ti.TicksSinceLastBuildingDamage = 0
 end
 
 SpawnHero = function(player)
@@ -769,23 +813,6 @@ GrantRewardOnKilled = function(self, killer, actorCategory)
 		killerpi.Score = killerpi.Score + points
 		killerpi.Player.Cash = killerpi.Player.Cash + points
 	end
-end
-
-NotifyBaseUnderAttack = function(self)
-	local ti = TeamInfo[self.Owner.InternalName]
-	if ti.TicksSinceLastBuildingDamage >= NotifyBaseUnderAttackInterval then
-		-- Only display a message and play audio to that team
-		Utils.Do(ti.Players, function(pi)
-			if pi.Player.IsLocalPlayer then
-				DisplayMessage("Your base is under attack!")
-				Media.PlaySound(NotificationBaseUnderAttack)
-			end
-		end)
-
-		ti.LastBaseUnderAttackNotificationTick = NotifyBaseUnderAttackInterval
-	end
-
-	ti.TicksSinceLastBuildingDamage = 0
 end
 
 --[[ Ticking ]]
