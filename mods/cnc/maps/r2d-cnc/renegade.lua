@@ -674,6 +674,10 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		pi.Hero = newHero
 
+		-- HACK: Add their current health to damage table
+		local actorId = tostring(newHero)
+		HealthAfterOnDamageEventTable[actorId] = newHero.Health
+
 		-- Doesn't look that great if moving.
 		hero.Stop()
 		hero.IsInWorld = false
@@ -754,36 +758,41 @@ GrantRewardOnDamage = function(self, attacker)
 		We create a table of actor IDs.
 		This table stores health of all actors in the world, and changes after the OnDamage event.
 	]]
-	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
-		return
-	end
-
 	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
-
 	local previousHealth = HealthAfterOnDamageEventTable[actorId]
 
 	if previousHealth == nil then
-		-- If an actor isn't in the damage table, they haven't taken damage yet.
-		-- So assume their previous health was max HP.
+		-- If an actor isn't in the damage table, they haven't taken damage yet
+		-- (or they were purchased, in which case we set their current hp there)
+		-- Assume previous health was max HP.
 		previousHealth = self.MaxHealth
 	end
 
 	local currentHealth = self.Health
+	HealthAfterOnDamageEventTable[actorId] = currentHealth
 
+	-- Granting points happens below
 	local damageTaken = previousHealth - currentHealth
 
-	if damageTaken > 0 and self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team when damage is greater than 0 (friendly heals are rewarded)
+	if damageTaken == 0 then -- No damage taken (can happen)
+		return
+	elseif self.Owner.InternalName == NeutralPlayerName then -- Ignore attacking neutral units.
+		return
+	elseif damageTaken > 0 and self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team when damage is greater than 0.
+		return
+	elseif self.Owner.InternalName == attacker.Owner.InternalName then -- Ignore self heal/damage in all cases.
 		return
 	end
 
-	HealthAfterOnDamageEventTable[actorId] = currentHealth
-
 	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
 	if attackerpi ~= nil then -- Is a player
-
 		-- Points are calculated as a percentage of damage done against a unit's max HP.
 		-- If a unit has 5000 health, and the attack dealt 1500, this is 30% (so 30 points).
 		-- Percentages are rounded up (23.3% of health as damage rewards 24 points)
+
+		-- If the damage dealt was negative, this is a heal
+		damageTaken = math.abs(damageTaken)
+
 		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
 		local points = percentageDamageDealt
 		points = math.ceil(points + 0.5) -- Round up
@@ -794,10 +803,10 @@ GrantRewardOnDamage = function(self, attacker)
 end
 
 GrantRewardOnKilled = function(self, killer, actorCategory)
-	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
+	if self.Owner.InternalName == NeutralPlayerName then -- Ignore destroying neutral units.
 		return
 	end
-	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
+	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
 		return
 	end
 
