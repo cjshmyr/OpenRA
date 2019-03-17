@@ -13,3 +13,19 @@ harv-ai:
 		Start: 7
 	icon: harvicnh.tem
 		AddExtension: False
+
+ion:
+	idle: scrate
+		Start: 0
+		Length: 1
+		ZOffset: -511
+	icon: ionicnh.tem
+		AddExtension: False
+
+nuke:
+	idle: scrate
+		Start: 0
+		Length: 1
+		ZOffset: -511
+	icon: atomicnh.tem
+		AddExtension: False

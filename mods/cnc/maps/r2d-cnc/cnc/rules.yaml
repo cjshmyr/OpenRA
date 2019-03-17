@@ -39,7 +39,7 @@ Player:
 	PlayerResources:
 		DefaultCashDropdownLocked: true
 		DefaultCashDropdownVisible: false
-		DefaultCash: 800
+		DefaultCash: 1800
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Enabled: false
 		Visible: false
@@ -53,7 +53,7 @@ PurchaseTerminal:
 	Immobile:
 		OccupiesSpace: false
 	Production:
-		Produces: Building, Vehicle, Infantry
+		Produces: Infantry, Vehicle
 	ProductionBar@Infantry:
 		ProductionType: Infantry
 	ProductionQueue@Infantry:
@@ -96,11 +96,24 @@ PurchaseTerminal:
 		RequiresCondition: radar
 
 ^HeroUnit:
+	Production:
+		Produces: Building
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionQueue@Building:
+		Type: Building
+		Group: Building
+	Exit:
 	ExternalCondition@canbuy:
 		Condition: canbuy
 	ProvidesPrerequisite@canbuy:
 		Prerequisite: canbuy
 		RequiresCondition: canbuy
+	ExternalCondition@hasbeacon:
+		Condition: hasbeacon
+	ProvidesPrerequisite@hasbeacon:
+		Prerequisite: hasbeacon
+		RequiresCondition: hasbeacon
 
 ^buy.default:
 	AlwaysVisible:
@@ -330,3 +343,101 @@ buy.vehicle.stnk:
 		Queue: Vehicle
 	RenderSprites:
 		Image: stnk
+
+buy.beacon.ion-sw:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Ion Cannon Beacon
+	Buildable:
+		BuildPaletteOrder: 999
+		Prerequisites: ~canbuy, ~gdi, ~!hasbeacon
+		Queue: Infantry
+	RenderSprites:
+		Image: ion
+
+buy.beacon.nuke-sw:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Nuclear Strike Beacon
+	Buildable:
+		BuildPaletteOrder: 999
+		Prerequisites: ~canbuy, ~nod, ~!hasbeacon
+		Queue: Infantry
+	RenderSprites:
+		Image: nuke
+
+# TODO: Shouldn't be able to place beacons while moving.
+buy.placebeacon.ion-sw:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Place Ion Cannon Beacon
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~hasbeacon, ~gdi
+		Queue: Building
+		BuildDuration: 125 # Idea: Add global sound when this is building.
+		BuildDurationModifier: 100
+	RenderSprites:
+		Image: ion
+
+buy.placebeacon.nuke-sw:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Place Nuclear Strike Beacon
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~hasbeacon, ~nod
+		Queue: Building
+		#BuildDuration: 125 # Idea: Add global sound when this is building.
+		#BuildDurationModifier: 100
+	RenderSprites:
+		Image: nuke
+
+^beacon:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
+	OwnerLostAction:
+		Action: Kill
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 24,24
+	Health:
+		HP: 50000
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		TerrainTypes: Clear,Road
+	RevealsShroud:
+		Range: 3c0
+	WithSpriteBody:
+	FrozenUnderFog:
+	Targetable:
+		TargetTypes: DisarmBeacon
+	TimedConditionBar:
+		Condition: beacontimer
+	ExternalCondition@BeaconTimer:
+		Condition: beacontimer
+
+ion-sw:
+	Inherits: ^beacon
+	Tooltip:
+		Name: Ion Cannon Beacon
+	RenderSprites:
+		Image: ion
+
+nuke-sw:
+	Inherits: ^beacon
+	Tooltip:
+		Name: Nuclear Strike Beacon
+	RenderSprites:
+		Image: nuke

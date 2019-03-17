@@ -1,6 +1,6 @@
 --[[
-	'Renegade 2D' Lua script by @hamb
-	Version: not public
+	Renegade 2D Lua script by @hamb
+	Version: unfinished
 	Engine: OpenRA release-20190314
 ]]
 
@@ -14,6 +14,8 @@ CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
+PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
+PurchaseTerminalPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 
 --[[ Mod-specific ]]
@@ -36,6 +38,8 @@ if Mod == "cnc" then
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "accom1.aud"
 	NotificationMissionFailed = "fail1.aud"
+	AlphaBeaconType = "ion-sw"
+	BetaBeaconType = "nuke-sw"
 elseif Mod == "ra" then
 	SpawnAsActorType = "e1"
 	AlphaTeamPlayerName = "Allies"
@@ -54,6 +58,8 @@ elseif Mod == "ra" then
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "misnwon1.aud"
 	NotificationMissionFailed = "misnlst1.aud"
+	AlphaBeaconType = "nuke-sw"
+	BetaBeaconType = "nuke-sw"
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
@@ -80,18 +86,16 @@ WorldLoaded = function()
 		InitializeAiHarvesters()
 	end)
 
-	-- General ticking events
+	-- Tick interval > 1
 	IncrementPlayerCash()
-
 	DistributeGatheredResources()
 end
 
 Tick = function()
+	-- Tick interval = 1
 	IncrementTicksSinceLastBuildingDamage()
-
 	DrawScoreboard()
 	DrawNameTags()
-
 	HackyStopNeutralHarvesters()
 end
 
@@ -109,6 +113,7 @@ SetPlayerInfo = function()
 			Hero = nil,
 			PurchaseTerminal = nil,
 			CanBuyConditionToken = -1, -- hero
+			HasBeaconConditionToken = -1, -- hero
 			BuildingConditionToken = -1, -- pt
 			VehicleConditionToken = -1, -- pt
 			InfantryConditionToken = -1, -- pt
@@ -362,7 +367,14 @@ SpawnHero = function(player)
 	local spawnpoint = GetAvailableSpawnPoint(player)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
-	PlayerInfo[player.InternalName].Hero = hero
+	local pi = PlayerInfo[player.InternalName]
+	pi.Hero = hero
+
+	-- Revoke any inventory tokens
+	if pi.HasBeaconConditionToken > -1 then
+		hero.RevokeCondition(pi.HasBeaconConditionToken)
+		pi.HasBeaconConditionToken = -1
+	end
 
     FocusLocalCameraOnActor(hero)
 	BindHeroEvents(hero)
@@ -427,12 +439,39 @@ BindHeroEvents = function(hero)
 			killerPi.Kills = killerPi.Kills + 1
 		end
 
-		-- Polish idea: notify respawn time, leave a death cam, increase respawn time.
+		-- Polish idea: notify respawn time, leave a death camera, increase respawn time.
 		Trigger.AfterDelay(25, function() SpawnHero(self.Owner) end)
 	end)
 
 	Trigger.OnDamaged(hero, function(self, attacker)
 		GrantRewardOnDamage(self, attacker)
+	end)
+
+	-- Beacons
+	Trigger.OnProduction(hero, function(producer, produced)
+
+		-- Move into another function similar to BuildPurchaseTerminalItem?
+		local actorType = produced.Type
+
+		if string.find(actorType, PurchaseTerminalPlaceBeaconActorTypePrefix) then
+			local type = actorType:gsub(PurchaseTerminalPlaceBeaconActorTypePrefix, "")
+
+			Actor.Create(type, true, { Owner = producer.Owner, Location = producer.Location })
+
+			DisplayMessage('TODO - Beacon placed message')
+		end
+
+		--[[
+			Remaining work:
+				- Notification of
+				- Refactor function to be similar to BuildPurchaseTerminalItem (BuildHeroItem, rename vars appropriately)
+				- Figure out why this isn't firing
+				- Remove beacon from inventory after placement
+				- Apply timed beacontimer condition to beacon
+				- Apply lua timer to cause warhead to happen (give weapon to beacons?)
+				- Allow only engineers to target and disarm it
+				- Maybe move superweapons out of rules.yaml
+		]]
 	end)
 end
 
@@ -517,6 +556,12 @@ BindProximityEvents = function()
 			-- thus the order of token removal/addition is proper
 
 			Trigger.OnExitedProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
+				-- HACK: Beacons may also trip this.
+				-- Need to stop assuming that the actor is a hero, etc.
+				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
+					do return end
+				end
+
 				local pi = PlayerInfo[actor.Owner.InternalName]
 
 				if pi ~= nil then -- A human player
@@ -532,6 +577,12 @@ BindProximityEvents = function()
 			end)
 
 			Trigger.OnEnteredProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
+				-- HACK: Beacons may also trip this.
+				-- Need to stop assuming that the actor is a hero, etc.
+				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
+					do return end
+				end
+
 				if not building.IsDead then
 					local pi = PlayerInfo[actor.Owner.InternalName]
 
@@ -602,6 +653,10 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 		if not ti.WarFactory.IsDead then
 			ti.WarFactory.Produce(type)
 		end
+	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
+		local type = actorType:gsub(PurchaseTerminalBeaconActorTypePrefix, "")
+
+		pi.HasBeaconConditionToken = hero.GrantCondition("hasbeacon")
 	end
 end
 
