@@ -16,9 +16,6 @@ PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 
--- [[ Hacks that should be removed ]]
-HealthAfterOnDamageEventTable = { }
-
 --[[ Mod-specific ]]
 Mod = "cnc"
 if Mod == "cnc" then
@@ -66,7 +63,6 @@ WorldLoaded = function()
 	SetPlayerInfo()
 	SetTeamInfo()
 
-	InitializeDamageTableHack()
 	AssignTeamBuildings()
 
 	BindBaseEvents()
@@ -91,6 +87,8 @@ WorldLoaded = function()
 end
 
 Tick = function()
+	IncrementTicksSinceLastBuildingDamage()
+
 	DrawScoreboard()
 	DrawNameTags()
 
@@ -149,7 +147,7 @@ SetTeamInfo = function()
 			ServiceDepot = nil,
 			Defenses = {},
 			LastCheckedResourceAmount = 0,
-			LastBaseUnderAttackNotificationTick = 0
+			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval
 		}
 	end)
 
@@ -158,27 +156,6 @@ SetTeamInfo = function()
 		Utils.Do(ti.Players, function(pi)
 			pi.Team = ti
 		end)
-	end)
-end
-
-InitializeDamageTableHack = function()
-	--[[
-		This hack exists because Lua currently doesn't give us damage dealt in the OnDamage event.
-
-		Implementation:
-		- A global table is defined, using something similar to actor's ID as the key.
-			- e.g. calling tostring(actor) returns 'Actor (e1 52)'.
-		- Any actors in the world when the game is created are added to this table.
-		- Any actors that are created are added to this table.
-		- The value stored in this table for an actor is their current HP after an OnDamage event.
-			- This allows for subsequent OnDamage events to calculate damage done.
-	]]
-	Utils.Do(Map.ActorsInWorld, function(actor)
-		-- Damage hack
-		if pcall(function() HealthAfterOnDamageEventTable[tostring(actor)] = actor.Health end) then
-			-- Wrapping with pcall handles errors
-			-- If an actor has no Health trait, there's an error. Could probably handle this better.
-		end
 	end)
 end
 
@@ -264,6 +241,7 @@ BindBaseEvents = function()
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Refinery
@@ -276,6 +254,7 @@ BindBaseEvents = function()
 				ti.Refinery.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Barracks
@@ -292,6 +271,7 @@ BindBaseEvents = function()
 				ti.Barracks.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- War Factory
@@ -308,6 +288,7 @@ BindBaseEvents = function()
 				ti.WarFactory.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Radar
@@ -324,6 +305,7 @@ BindBaseEvents = function()
 				ti.Radar.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Powerplant
@@ -342,6 +324,7 @@ BindBaseEvents = function()
 				ti.Powerplant.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Service Depot
@@ -354,6 +337,7 @@ BindBaseEvents = function()
 				ti.ServiceDepot.StartBuildingRepairs()
 			end
 			GrantRewardOnDamage(self, attacker)
+			NotifyBaseUnderAttack(self)
 		end)
 
 		-- Defenses
@@ -367,6 +351,7 @@ BindBaseEvents = function()
 					ti.ServiceDepot.StartBuildingRepairs()
 				end
 				GrantRewardOnDamage(self, attacker)
+				NotifyBaseUnderAttack(self)
 			end)
 		end)
 
@@ -449,10 +434,6 @@ BindHeroEvents = function(hero)
 	Trigger.OnDamaged(hero, function(self, attacker)
 		GrantRewardOnDamage(self, attacker)
 	end)
-
-	-- Damage hack (delayed since tostring(hero) can give us a not in world msg)
-	-- We chould parse it out instead.
-	Trigger.AfterDelay(1, function() HealthAfterOnDamageEventTable[tostring(hero)] = hero.Health end)
 end
 
 BindVehicleEvents = function()
@@ -512,9 +493,6 @@ BindVehicleEvents = function()
 				-- Name tag hack: Remove pilot info.
 				pi.IsPilot = false
 			end)
-
-			-- Damage hack
-			HealthAfterOnDamageEventTable[tostring(produced)] = produced.Health
 		end)
 	end)
 end
@@ -634,10 +612,6 @@ GrantRewardOnDamage = function(self, attacker)
 
 		We create a table of actor IDs.
 		This table stores health of all actors in the world, and changes after the OnDamage event.
-
-		TODO:
-			No points on self, team, or neutral unit damage.
-			There's an issue where a purchased infantry did not appear in the damage table.
 	]]
 	if self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team.
 		return
@@ -651,27 +625,29 @@ GrantRewardOnDamage = function(self, attacker)
 	local previousHealth = HealthAfterOnDamageEventTable[actorId]
 
 	if previousHealth == nil then
-		DisplayMessage('Error! Fix me! ' .. actorId .. ' was not found in the damage table!')
-	else
-		local currentHealth = self.Health
+		-- If an actor isn't in the damage table, they haven't taken damage yet.
+		-- So assume their previous health was max HP.
+		previousHealth = self.MaxHealth
+	end
 
-		local damageTaken = previousHealth - currentHealth
+	local currentHealth = self.Health
 
-		HealthAfterOnDamageEventTable[actorId] = currentHealth
+	local damageTaken = previousHealth - currentHealth
 
-		local attackerpi = PlayerInfo[attacker.Owner.InternalName]
-		if attackerpi ~= nil then -- Is a player
+	HealthAfterOnDamageEventTable[actorId] = currentHealth
 
-			-- Points are calculated as a percentage of damage done against a unit's max HP.
-			-- If a unit has 5000 health, and the attack dealt 1500, this is 30% (so 30 points).
-			-- Percentages are rounded up (23.3% of health as damage rewards 24 points)
-			local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
-			local points = percentageDamageDealt
-			points = math.ceil(points + 0.5) -- Round up
+	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
+	if attackerpi ~= nil then -- Is a player
 
-			attackerpi.Score = attackerpi.Score + points
-			attackerpi.Player.Cash = attackerpi.Player.Cash + points
-		end
+		-- Points are calculated as a percentage of damage done against a unit's max HP.
+		-- If a unit has 5000 health, and the attack dealt 1500, this is 30% (so 30 points).
+		-- Percentages are rounded up (23.3% of health as damage rewards 24 points)
+		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
+		local points = percentageDamageDealt
+		points = math.ceil(points + 0.5) -- Round up
+
+		attackerpi.Score = attackerpi.Score + points
+		attackerpi.Player.Cash = attackerpi.Player.Cash + points
 	end
 end
 
@@ -695,6 +671,23 @@ GrantRewardOnKilled = function(self, killer, actorCategory)
 		killerpi.Score = killerpi.Score + points
 		killerpi.Player.Cash = killerpi.Player.Cash + points
 	end
+end
+
+NotifyBaseUnderAttack = function(self)
+	local ti = TeamInfo[self.Owner.InternalName]
+	if ti.TicksSinceLastBuildingDamage >= NotifyBaseUnderAttackInterval then
+		-- Only display a message and play audio to that team
+		Utils.Do(ti.Players, function(pi)
+			if pi.Player.IsLocalPlayer then
+				DisplayMessage("Your base is under attack!")
+				Media.PlaySound(NotificationBaseUnderAttack)
+			end
+		end)
+
+		ti.LastBaseUnderAttackNotificationTick = NotifyBaseUnderAttackInterval
+	end
+
+	ti.TicksSinceLastBuildingDamage = 0
 end
 
 --[[ Ticking ]]
@@ -729,6 +722,12 @@ DistributeGatheredResources = function()
 	end)
 
 	Trigger.AfterDelay(5, DistributeGatheredResources)
+end
+
+IncrementTicksSinceLastBuildingDamage = function()
+	Utils.Do(TeamInfo, function(ti)
+		ti.TicksSinceLastBuildingDamage = ti.TicksSinceLastBuildingDamage + 1
+	end)
 end
 
 DrawScoreboard = function()
