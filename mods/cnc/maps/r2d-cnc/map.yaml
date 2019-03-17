@@ -58,8 +58,8 @@ Players:
 		Team: 1
 		Allies: Neutral, GDI, A0, A1
 		Enemies: Creeps, Nod, B0, B1
-	PlayerReference@S0:
-		Name: S0
+	PlayerReference@B0:
+		Name: B0
 		AllowBots: False
 		Playable: True
 		LockFaction: True
@@ -71,8 +71,8 @@ Players:
 		Team: 1
 		Allies: Neutral, Nod, B0, B1
 		Enemies: Creeps, GDI, A0, A1
-	PlayerReference@S1:
-		Name: S1
+	PlayerReference@B1:
+		Name: B1
 		AllowBots: False
 		Playable: True
 		LockFaction: True

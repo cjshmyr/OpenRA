@@ -2,6 +2,11 @@
 	Renegade 2D Lua script by @hamb
 	Version: unfinished
 	Engine: OpenRA release-20190314
+
+	Bugs:
+		- Harvesters can squish friendly units.
+		- Purchased vehicles can squish friendly units.
+		- Stealth units have nametags
 ]]
 
 --[[ General ]]
