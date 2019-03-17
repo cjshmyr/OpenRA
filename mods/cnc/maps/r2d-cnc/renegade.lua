@@ -7,11 +7,14 @@
 		- Harvesters can squish friendly units.
 		- Purchased vehicles can squish friendly units.
 		- Stealth units have nametags
+		- Dying in range of a building messes with removing tokens
+			(shouldn't have to? Could set them to -1 on death to be safe)
 ]]
 
 --[[ General ]]
 PlayerInfo = { }
 TeamInfo = { }
+HealthAfterOnDamageEventTable = { }
 HarvesterWaypoints = { }
 PlayerHarvesters = { } -- Exists due to a hack.
 CashPerSecond = 2 -- Cash given per second.
@@ -20,8 +23,9 @@ PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
 PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
-PurchaseTerminalPlaceBeaconActorTypePrefix = "buy.placebeacon."
+HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
+BeaconTimeLimit = DateTime.Seconds(30)
 
 --[[ Mod-specific ]]
 Mod = "cnc"
@@ -45,6 +49,7 @@ if Mod == "cnc" then
 	NotificationMissionFailed = "fail1.aud"
 	AlphaBeaconType = "ion-sw"
 	BetaBeaconType = "nuke-sw"
+	BeaconDeploySound = "target3.aud"
 elseif Mod == "ra" then
 	SpawnAsActorType = "e1"
 	AlphaTeamPlayerName = "Allies"
@@ -65,6 +70,7 @@ elseif Mod == "ra" then
 	NotificationMissionFailed = "misnlst1.aud"
 	AlphaBeaconType = "nuke-sw"
 	BetaBeaconType = "nuke-sw"
+	BeaconDeploySound = "bleep9.aud"
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
@@ -240,7 +246,7 @@ end
 BindBaseEvents = function()
 	-- Mod-agnostic polish fixes:
 	-- This should say "Allied" instead of "Allies" for the team name.
-	-- Building names shouldn't be hardcoded here.
+	-- Building names shouldn't be hardcoded here (War Factory / Weapons Factory / Airfield, Barracks / Hand of Nod)
 	Utils.Do(TeamInfo, function(ti)
 
 		-- Construction Yard
@@ -454,29 +460,8 @@ BindHeroEvents = function(hero)
 
 	-- Beacons
 	Trigger.OnProduction(hero, function(producer, produced)
-
-		-- Move into another function similar to BuildPurchaseTerminalItem?
-		local actorType = produced.Type
-
-		if string.find(actorType, PurchaseTerminalPlaceBeaconActorTypePrefix) then
-			local type = actorType:gsub(PurchaseTerminalPlaceBeaconActorTypePrefix, "")
-
-			Actor.Create(type, true, { Owner = producer.Owner, Location = producer.Location })
-
-			DisplayMessage('TODO - Beacon placed message')
-		end
-
-		--[[
-			Remaining work:
-				- Notification of
-				- Refactor function to be similar to BuildPurchaseTerminalItem (BuildHeroItem, rename vars appropriately)
-				- Figure out why this isn't firing
-				- Remove beacon from inventory after placement
-				- Apply timed beacontimer condition to beacon
-				- Apply lua timer to cause warhead to happen (give weapon to beacons?)
-				- Allow only engineers to target and disarm it
-				- Maybe move superweapons out of rules.yaml
-		]]
+		local pi = PlayerInfo[hero.Owner.InternalName]
+		BuildHeroItem(pi, produced.Type)
 	end)
 end
 
@@ -564,7 +549,7 @@ BindProximityEvents = function()
 				-- HACK: Beacons may also trip this.
 				-- Need to stop assuming that the actor is a hero, etc.
 				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
-					do return end
+					return
 				end
 
 				local pi = PlayerInfo[actor.Owner.InternalName]
@@ -585,7 +570,7 @@ BindProximityEvents = function()
 				-- HACK: Beacons may also trip this.
 				-- Need to stop assuming that the actor is a hero, etc.
 				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
-					do return end
+					return
 				end
 
 				if not building.IsDead then
@@ -665,6 +650,58 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	end
 end
 
+BuildHeroItem = function(pi, actorType)
+	if string.find(actorType, HeroItemPlaceBeaconActorTypePrefix) then
+		local type = actorType:gsub(HeroItemPlaceBeaconActorTypePrefix, "")
+
+		-- Create beacon at current location (hero gets nudged)
+		local beacon = Actor.Create(type, true, { Owner = pi.Player, Location = pi.Hero.Location })
+		beacon.GrantCondition('beacontimer', BeaconTimeLimit)
+
+		-- TODO: Unhardcode names
+		if type == 'ion-sw' then
+			DisplayMessage('Ion Cannon Beacon deployed!')
+		else
+			DisplayMessage('Nuclear Strike Beacon deployed!')
+		end
+
+		-- Remove beacon ownership
+		pi.Hero.RevokeCondition(pi.HasBeaconConditionToken)
+		pi.HasBeaconConditionToken = -1
+
+		-- Notify all players
+		Media.PlaySound(BeaconDeploySound)
+		Utils.Do(TeamInfo, function(ti)
+			Utils.Do(ti.Players, function(pi)
+				local pingColor = HSLColor.Red
+
+				if pi.Player.Faction == beacon.Owner.Faction then
+					pingColor = HSLColor.Green
+				end
+
+				-- Pings may linger after beacon is destroyed.
+				Radar.Ping(pi.Player, beacon.CenterPosition, pingColor, BeaconTimeLimit)
+			end)
+		end)
+
+		Trigger.OnKilled(beacon, function(actor, killer)
+			-- Don't display a disarm message if killing self.
+			if actor.Owner.InternalName ~= killer.Owner.InternalName then
+				DisplayMessage('Beacon disarmed!')
+			end
+		end)
+
+		-- Set up warhead
+		Trigger.AfterDelay(BeaconTimeLimit, function()
+			if beacon.IsInWorld then
+				-- Calling .Kill() to force their explosion
+				-- A beacon should technically have a projectile come first.
+				beacon.Kill()
+			end
+		end)
+	end
+end
+
 GrantRewardOnDamage = function(self, attacker)
 	--[[
 		This is a fun state machine that calculates damage done.
@@ -673,9 +710,6 @@ GrantRewardOnDamage = function(self, attacker)
 		We create a table of actor IDs.
 		This table stores health of all actors in the world, and changes after the OnDamage event.
 	]]
-	if self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team.
-		return
-	end
 	if self.Owner.InternalName == NeutralPlayerName then -- Ignore neutral units.
 		return
 	end
@@ -693,6 +727,10 @@ GrantRewardOnDamage = function(self, attacker)
 	local currentHealth = self.Health
 
 	local damageTaken = previousHealth - currentHealth
+
+	if damageTaken > 0 and self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team when damage is greater than 0 (friendly heals are rewarded)
+		return
+	end
 
 	HealthAfterOnDamageEventTable[actorId] = currentHealth
 

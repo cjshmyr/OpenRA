@@ -381,7 +381,7 @@ buy.placebeacon.ion-sw:
 		BuildPaletteOrder: 10
 		Prerequisites: ~hasbeacon, ~gdi
 		Queue: Building
-		BuildDuration: 125 # Idea: Add global sound when this is building.
+		BuildDuration: 50 # Idea: Add global sound when this is building.
 		BuildDurationModifier: 100
 	RenderSprites:
 		Image: ion
@@ -396,8 +396,8 @@ buy.placebeacon.nuke-sw:
 		BuildPaletteOrder: 10
 		Prerequisites: ~hasbeacon, ~nod
 		Queue: Building
-		#BuildDuration: 125 # Idea: Add global sound when this is building.
-		#BuildDurationModifier: 100
+		BuildDuration: 50 # Idea: Add global sound when this is building.
+		BuildDurationModifier: 100
 	RenderSprites:
 		Image: nuke
 
@@ -412,7 +412,7 @@ buy.placebeacon.nuke-sw:
 	Selectable:
 		Bounds: 24,24
 	Health:
-		HP: 50000
+		HP: 20000
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -425,7 +425,7 @@ buy.placebeacon.nuke-sw:
 		TargetTypes: DisarmBeacon
 	TimedConditionBar:
 		Condition: beacontimer
-	ExternalCondition@BeaconTimer:
+	ExternalCondition@beacontimer:
 		Condition: beacontimer
 
 ion-sw:
@@ -434,6 +434,9 @@ ion-sw:
 		Name: Ion Cannon Beacon
 	RenderSprites:
 		Image: ion
+	Explodes:
+		Weapon: IonCannonBeacon
+		DamageSource: Killer
 
 nuke-sw:
 	Inherits: ^beacon
@@ -441,3 +444,6 @@ nuke-sw:
 		Name: Nuclear Strike Beacon
 	RenderSprites:
 		Image: nuke
+	Explodes:
+		Weapon: AtomicBeacon
+		DamageSource: Killer

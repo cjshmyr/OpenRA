@@ -20,6 +20,7 @@ ATWR:
 HQ:
 	-DetectCloaked: # Only defenses should detect cloaked.
 	-RenderDetectionCircle:
+	-AirstrikePower: # No airstrike power
 
 EYE:
 	-DetectCloaked: # Only defenses should detect cloaked.

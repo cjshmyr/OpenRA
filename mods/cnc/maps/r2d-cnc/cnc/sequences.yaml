@@ -29,3 +29,10 @@ nuke:
 		ZOffset: -511
 	icon: atomicnh.tem
 		AddExtension: False
+
+custom_explosion:
+	Defaults:
+		Length: *
+		Offset: 0, -78
+		ZOffset: 1023
+	ion_explosion: ionsfx
