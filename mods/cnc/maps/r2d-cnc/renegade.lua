@@ -2,13 +2,6 @@
 	Renegade 2D Lua script by @hamb
 	Version: unfinished
 	Engine: OpenRA release-20190314
-
-	Bugs:
-		- Harvesters can squish friendly units.
-		- Purchased vehicles can squish friendly units.
-		- Stealth units have nametags
-		- Dying in range of a building messes with removing tokens
-			(shouldn't have to? Could set them to -1 on death to be safe)
 ]]
 
 --[[ General ]]
@@ -407,7 +400,7 @@ NotifyBaseUnderAttack = function(self)
 		-- Only display a message and play audio to that team
 		Utils.Do(ti.Players, function(pi)
 			if pi.Player.IsLocalPlayer then
-				DisplayMessage("Your base is under attack!")
+				DisplayMessage(self.Owner.Name .. " " .. TypeNameTable[self.Type] .. " is under attack!")
 				Media.PlaySound(NotificationBaseUnderAttack)
 			end
 		end)
