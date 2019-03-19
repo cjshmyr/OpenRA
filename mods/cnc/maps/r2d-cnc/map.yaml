@@ -617,3 +617,4 @@ Actors:
 Rules: cnc/rules.yaml,cnc/defaults.yaml,cnc/infantry.yaml,cnc/vehicles.yaml,cnc/structures.yaml
 Sequences: cnc/sequences.yaml
 Weapons: cnc/weapons.yaml
+Voices: cnc/voices.yaml
