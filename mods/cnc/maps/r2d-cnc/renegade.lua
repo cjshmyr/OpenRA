@@ -8,7 +8,7 @@
 PlayerInfo = { }
 TeamInfo = { }
 HealthAfterOnDamageEventTable = { } -- HACK: We store damage dealt since last instance, since OnDamage doesn't tell us.
-HarvesterWaypoints = { }
+HarvesterWaypoints = { } -- Waypoints used to guide harvesters near their ore field.
 PlayerHarvesters = { } -- HACK: We have to repeatedly tell harvesters to stop moving, or they forever FindResources.
 TypeNameTable = { } -- HACK: We don't have a nice way of getting an actor's name (e.g. hand -> Hand of Nod), except for this.
 CashPerSecond = 2 -- Cash given per second.
@@ -20,6 +20,9 @@ PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 BeaconTimeLimit = DateTime.Seconds(30)
+RespawnTime = DateTime.Seconds(3)
+LocalPlayer = nil -- HACK: Used for nametags.
+EnemyNametagsHiddenForTypes = { "stnk" } -- HACK: Used for nametags.
 
 --[[ Mod-specific ]]
 Mod = "cnc"
@@ -137,6 +140,8 @@ SetPlayerInfo = function()
 	end)
 
 	Utils.Do(humanPlayers, function(p)
+		if p.IsLocalPlayer then	LocalPlayer = p	end
+
 		PlayerInfo[p.InternalName] =
 		{
 			Player = p,
@@ -474,7 +479,7 @@ end
 
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
-		DisplayMessage(killer.Owner.Name .. " was killed by " .. self.Owner.Name .. "!")
+		DisplayMessage(self.Owner.Name .. " was killed by " .. killer.Owner.Name .. "!")
 		GrantRewardOnKilled(self, killer, "hero")
 
 		-- Increment K/D
@@ -487,8 +492,7 @@ BindHeroEvents = function(hero)
 			killerPi.Kills = killerPi.Kills + 1
 		end
 
-		-- Polish idea: notify respawn time, leave a death camera, increase respawn time.
-		Trigger.AfterDelay(25, function() SpawnHero(self.Owner) end)
+		Trigger.AfterDelay(RespawnTime, function() SpawnHero(self.Owner) end)
 	end)
 
 	Trigger.OnDamaged(hero, function(self, attacker)
@@ -874,26 +878,45 @@ DrawScoreboard = function()
 end
 
 DrawNameTags = function()
-	-- This is a hack until WithTextDecoration can be used.
-	Utils.Do(PlayerInfo, function(pi)
-		if pi.Hero ~= nil and pi.Hero.IsInWorld then
-			local name = pi.Player.Name
-			name = name:sub(0,10) -- truncate to 10 chars
+	--[[
+		This is a hack until WithTextDecoration is used.
 
-			local pos = WPos.New(pi.Hero.CenterPosition.X, pi.Hero.CenterPosition.Y - 1250, 0)
-			Media.FloatingText(name, pos, 1, pi.Player.Color)
-		end
+		Units that can cloak will never show their nametag to enemies,
+		since we can't track that state in Lua.
+	]]
+	Utils.Do(TeamInfo, function(ti)
+		local sameTeam = LocalPlayer.Faction == ti.AiPlayer.Faction
 
-		if pi.IsPilot then
-			local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
-			local passengerCount = pi.PassengerOfVehicle.PassengerCount
-			local name = pi.Player.Name
-			name = name:sub(0,10) -- truncate to 10 chars
-			if passengerCount > 1 then
-				name = name .. " (+" .. passengerCount - 1 .. ")"
+		Utils.Do(ti.Players, function(pi)
+			if pi.Hero ~= nil and pi.Hero.IsInWorld then
+				-- HACK: Don't show nametags on enemy units with cloak
+				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type))
+
+				if showTag then
+					local name = pi.Player.Name
+					name = name:sub(0,10) -- truncate to 10 chars
+
+					local pos = WPos.New(pi.Hero.CenterPosition.X, pi.Hero.CenterPosition.Y - 1250, 0)
+					Media.FloatingText(name, pos, 1, pi.Player.Color)
+				end
 			end
-			Media.FloatingText(name, pos, 1, pi.Player.Color)
-		end
+
+			if pi.IsPilot then
+				-- HACK: Don't show nametags on enemy units with cloak
+				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type))
+
+				if showTag then
+					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
+					local passengerCount = pi.PassengerOfVehicle.PassengerCount
+					local name = pi.Player.Name
+					name = name:sub(0,10) -- truncate to 10 chars
+					if passengerCount > 1 then
+						name = name .. " (+" .. passengerCount - 1 .. ")"
+					end
+					Media.FloatingText(name, pos, 1, pi.Player.Color)
+				end
+			end
+		end)
 	end)
 end
 
