@@ -483,7 +483,12 @@ end
 
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
-		DisplayMessage(self.Owner.Name .. " was killed by " .. killer.Owner.Name .. "!")
+		if self.Owner.Name == killer.Owner.Name then
+			DisplayMessage(self.Owner.Name .. " killed themselves!")
+		else
+			DisplayMessage(self.Owner.Name .. " was killed by " .. killer.Owner.Name .. "!")
+		end
+
 		GrantRewardOnKilled(self, killer, "hero")
 
 		-- Increment K/D
