@@ -1,4 +1,6 @@
 World:
+	MissionData:
+		Briefing: Renegade 2D (v0.5) by hamb\nControl a single unit in a shared base with your team; pilot vehicles, defend your base, and destroy the enemy!\n> Stand near base buildings to make purchases.\n> Base buildings provide various benefits to your team, protect them!\n> Vehicles require a pilot to be operated; many vehicles hold multiple passengers.\n> Engineers can repair vehicles, buildings, and disarm beacons.\n> Gathered Resources are distributed among your team; you have your own wallet.\n> Earn $ for your team by purchasing a harvester and gathering resources.\n> Earn $ by damaging or killing enemy units and structures.\n> Win by destroying the enemy base!
 	LuaScript:
 		Scripts: renegade.lua
 	-SpawnMPUnits:
@@ -22,9 +24,9 @@ World:
 		AllyBuildRadiusCheckboxEnabled: false
 		AllyBuildRadiusCheckboxVisible: false
 	ResourceType@green-tib:
-		ValuePerUnit: 15 # ??? per load
+		ValuePerUnit: 15 # 300 per load
 	ResourceType@blue-tib:
-		ValuePerUnit: 30 # ??? per load
+		ValuePerUnit: 30 # 600 per load
 
 Player:
 	-ConquestVictoryConditions:
