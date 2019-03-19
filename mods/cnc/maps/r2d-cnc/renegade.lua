@@ -743,9 +743,14 @@ BuildHeroItem = function(pi, actorType)
 			end)
 		end)
 
+		Trigger.OnDamage(beacon, function(actor, attacker)
+			GrantRewardOnDamage(actor, attacker);
+		end)
+
 		Trigger.OnKilled(beacon, function(actor, killer)
 			-- Don't display a disarm message if killing self.
 			if actor.Owner.InternalName ~= killer.Owner.InternalName then
+				GrantRewardOnKilled(actor, killer, "beacon");
 				DisplayMessage('Beacon disarmed!')
 			end
 		end)
@@ -828,6 +833,7 @@ GrantRewardOnKilled = function(self, killer, actorCategory)
 		elseif actorCategory == "unit" then	points = 50
 		elseif actorCategory == "defense" then points = 200
 		elseif actorCategory == "building" then	points = 300
+		elseif actorCategory == "beacon" then points = 300
 		end
 
 		killerpi.Score = killerpi.Score + points
