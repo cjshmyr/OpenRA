@@ -41,6 +41,7 @@ if Mod == "cnc" then
 	DefenseActorTypes = {"gtwr","atwr","gun","obli"}
 	AiHarvesterActorType = "harv-ai"
 	PlayerHarvesterActorType = "harv"
+	NotificationMissionStarted = "bombit1.aud"
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "accom1.aud"
 	NotificationMissionFailed = "fail1.aud"
@@ -75,6 +76,7 @@ elseif Mod == "ra" then
 	DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 	AiHarvesterActorType = "harv-ai"
 	PlayerHarvesterActorType = "harv"
+	NotificationMissionStarted = "newopt1.aud"
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "misnwon1.aud"
 	NotificationMissionFailed = "misnlst1.aud"
@@ -100,6 +102,8 @@ BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
 NeutralPlayer = Player.GetPlayer(NeutralPlayerName)
 
 WorldLoaded = function()
+	Media.PlaySound(NotificationMissionStarted)
+
 	SetPlayerInfo()
 	SetTeamInfo()
 

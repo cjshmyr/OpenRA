@@ -8,6 +8,7 @@ World:
 	CrateSpawner:
 		CheckboxLocked: true
 		CheckboxEnabled: false
+		CheckboxVisible: false
 	MapOptions:
 		TechLevel: unrestricted
 		TechLevelDropdownLocked: true
@@ -39,9 +40,8 @@ Player:
 		ExploredMapCheckboxEnabled: true
 		ExploredMapCheckboxVisible: false
 	PlayerResources:
-		DefaultCashDropdownLocked: true
-		DefaultCashDropdownVisible: false
-		DefaultCash: 1800
+		DefaultCash: 100
+		SelectableCash: 100, 300, 600, 2000, 99999
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Enabled: false
 		Visible: false
@@ -61,11 +61,13 @@ PurchaseTerminal:
 	ProductionQueue@Infantry:
 		Type: Infantry
 		Group: Infantry
+		ReadyAudio: KeepEmComin #UnitReady
 	ProductionBar@Vehicle:
 		ProductionType: Vehicle
 	ProductionQueue@Vehicle:
 		Type: Vehicle
 		Group: Vehicle
+		ReadyAudio: KeepEmComin #UnitReady
 	Exit:
 	ExternalCondition@building:
 		Condition: building
@@ -414,7 +416,7 @@ buy.placebeacon.nuke-sw:
 	Selectable:
 		Bounds: 24,24
 	Health:
-		HP: 20000
+		HP: 10000
 	Building:
 		Footprint: x
 		Dimensions: 1,1

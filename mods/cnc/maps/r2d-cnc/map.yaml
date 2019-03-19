@@ -6,7 +6,7 @@ Tileset: TEMPERAT
 MapSize: 98,50
 Bounds: 1,1,96,48
 Visibility: Lobby
-Categories: Conquest
+Categories: Renegade 2D
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -617,4 +617,4 @@ Actors:
 Rules: cnc/rules.yaml,cnc/defaults.yaml,cnc/infantry.yaml,cnc/vehicles.yaml,cnc/structures.yaml
 Sequences: cnc/sequences.yaml
 Weapons: cnc/weapons.yaml
-Voices: cnc/voices.yaml
+Notifications: cnc/notifications.yaml
