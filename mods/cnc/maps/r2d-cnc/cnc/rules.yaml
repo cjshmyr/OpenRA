@@ -348,7 +348,7 @@ buy.vehicle.stnk:
 	RenderSprites:
 		Image: stnk
 
-buy.beacon.ion-sw:
+buy.beacon.ion-beacon:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 1000
@@ -361,7 +361,7 @@ buy.beacon.ion-sw:
 	RenderSprites:
 		Image: ion
 
-buy.beacon.nuke-sw:
+buy.beacon.nuke-beacon:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 1000
@@ -375,7 +375,7 @@ buy.beacon.nuke-sw:
 		Image: nuke
 
 # TODO: Shouldn't be able to place beacons while moving.
-buy.placebeacon.ion-sw:
+buy.placebeacon.ion-beacon:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 0
@@ -390,7 +390,7 @@ buy.placebeacon.ion-sw:
 	RenderSprites:
 		Image: ion
 
-buy.placebeacon.nuke-sw:
+buy.placebeacon.nuke-beacon:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 0
@@ -432,7 +432,7 @@ buy.placebeacon.nuke-sw:
 	ExternalCondition@beacontimer:
 		Condition: beacontimer
 
-ion-sw:
+ion-beacon:
 	Inherits: ^beacon
 	Tooltip:
 		Name: Ion Cannon Beacon
@@ -442,7 +442,7 @@ ion-sw:
 		Weapon: IonCannonBeacon
 		DamageSource: Killer
 
-nuke-sw:
+nuke-beacon:
 	Inherits: ^beacon
 	Tooltip:
 		Name: Nuclear Strike Beacon

@@ -11,6 +11,7 @@ HealthAfterOnDamageEventTable = { } -- HACK: We store damage dealt since last in
 HarvesterWaypoints = { } -- Waypoints used to guide harvesters near their ore field.
 PlayerHarvesters = { } -- HACK: We have to repeatedly tell harvesters to stop moving, or they forever FindResources.
 TypeNameTable = { } -- HACK: We don't have a nice way of getting an actor's name (e.g. hand -> Hand of Nod), except for this.
+BeaconSoundsTable = { }
 CashPerSecond = 2 -- Cash given per second.
 CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
@@ -19,6 +20,7 @@ PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
 PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
+NotifyHarvesterUnderAttackInterval = DateTime.Seconds(30)
 BeaconTimeLimit = DateTime.Seconds(30)
 RespawnTime = DateTime.Seconds(3)
 LocalPlayer = nil -- HACK: Used for nametags.
@@ -45,8 +47,8 @@ if Mod == "cnc" then
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "accom1.aud"
 	NotificationMissionFailed = "fail1.aud"
-	AlphaBeaconType = "ion-sw"
-	BetaBeaconType = "nuke-sw"
+	AlphaBeaconType = "ion-beacon"
+	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "target3.aud"
 	TypeNameTable['fact'] = 'Construction Yard'
 	TypeNameTable['proc'] = 'Tiberium Refinery'
@@ -61,6 +63,10 @@ if Mod == "cnc" then
 	TypeNameTable['atwr'] = 'Advanced Guard Tower'
 	TypeNameTable['gun'] = 'Turret'
 	TypeNameTable['obli'] = 'Obelisk'
+	TypeNameTable['ion-beacon'] = 'Ion Cannon Beacon'
+	TypeNameTable['nuke-beacon'] = 'Nuclear Strike Beacon'
+	BeaconSoundsTable['ion-beacon'] = 'ionchrg1.aud'
+	BeaconSoundsTable['nuke-beacon'] = 'nuke1.aud'
 elseif Mod == "ra" then
 	SpawnAsActorType = "e1"
 	AlphaTeamPlayerName = "Allies"
@@ -80,8 +86,8 @@ elseif Mod == "ra" then
 	NotificationBaseUnderAttack = "baseatk1.aud"
 	NotificationMissionAccomplished = "misnwon1.aud"
 	NotificationMissionFailed = "misnlst1.aud"
-	AlphaBeaconType = "nuke-sw"
-	BetaBeaconType = "nuke-sw"
+	AlphaBeaconType = "nuke-beacon"
+	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "bleep9.aud"
 	TypeNameTable['fact'] = 'Construction Yard'
 	TypeNameTable['proc'] = 'Ore Refinery'
@@ -96,6 +102,8 @@ elseif Mod == "ra" then
 	TypeNameTable['gun'] = 'Turret'
 	TypeNameTable['ftur'] = 'Flame Tower'
 	TypeNameTable['tsla'] = 'Tesla Coil'
+	TypeNameTable['nuke-beacon'] = 'Nuclear Strike Beacon'
+	BeaconSoundsTable['nuke-beacon'] = 'aprep1.aud'
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
@@ -131,7 +139,7 @@ end
 
 Tick = function()
 	-- Tick interval = 1
-	IncrementTicksSinceLastBuildingDamage()
+	IncrementUnderAttackNotificationTicks()
 	DrawScoreboard()
 	DrawNameTags()
 	HackyStopNeutralHarvesters()
@@ -192,7 +200,8 @@ SetTeamInfo = function()
 			ServiceDepot = nil,
 			Defenses = {},
 			LastCheckedResourceAmount = 0,
-			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval
+			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval,
+			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval
 		}
 	end)
 
@@ -282,7 +291,7 @@ BindBaseEvents = function()
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			ti.ConstructionYard.StartBuildingRepairs()
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Refinery
@@ -295,7 +304,7 @@ BindBaseEvents = function()
 				ti.Refinery.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Barracks
@@ -312,7 +321,7 @@ BindBaseEvents = function()
 				ti.Barracks.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- War Factory
@@ -329,7 +338,7 @@ BindBaseEvents = function()
 				ti.WarFactory.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Radar
@@ -346,7 +355,7 @@ BindBaseEvents = function()
 				ti.Radar.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Powerplant
@@ -365,7 +374,7 @@ BindBaseEvents = function()
 				ti.Powerplant.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Service Depot
@@ -378,7 +387,7 @@ BindBaseEvents = function()
 				ti.ServiceDepot.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
-			GrantRewardOnDamage(self, attacker)
+			GrantRewardOnDamaged(self, attacker)
 		end)
 
 		-- Defenses
@@ -392,7 +401,7 @@ BindBaseEvents = function()
 					ti.ServiceDepot.StartBuildingRepairs()
 				end
 				NotifyBaseUnderAttack(self)
-				GrantRewardOnDamage(self, attacker)
+				GrantRewardOnDamaged(self, attacker)
 			end)
 		end)
 
@@ -406,18 +415,31 @@ end
 NotifyBaseUnderAttack = function(self)
 	local ti = TeamInfo[self.Owner.InternalName]
 	if ti.TicksSinceLastBuildingDamage >= NotifyBaseUnderAttackInterval then
-		-- Only display a message and play audio to that team
+		-- Only display a message and play audio to that team (radar pings are handled by engine)
 		Utils.Do(ti.Players, function(pi)
 			if pi.Player.IsLocalPlayer then
 				DisplayMessage(self.Owner.Name .. " " .. TypeNameTable[self.Type] .. " is under attack!")
 				Media.PlaySound(NotificationBaseUnderAttack)
 			end
 		end)
-
-		ti.LastBaseUnderAttackNotificationTick = NotifyBaseUnderAttackInterval
 	end
 
 	ti.TicksSinceLastBuildingDamage = 0
+end
+
+NotifyHarvesterUnderAttack = function(self)
+	local ti = TeamInfo[self.Owner.InternalName]
+	if ti.TicksSinceLastHarvesterDamage >= NotifyHarvesterUnderAttackInterval then
+		-- Only display a message and radar ping to that team
+		Utils.Do(ti.Players, function(pi)
+			if pi.Player.IsLocalPlayer then
+				DisplayMessage(self.Owner.Name .. " Harvester is under attack!")
+				Radar.Ping(pi.Player, self.CenterPosition, HSLColor.Red, DateTime.Seconds(5))
+			end
+		end)
+	end
+
+	ti.TicksSinceLastHarvesterDamage = 0
 end
 
 SpawnHero = function(player)
@@ -505,7 +527,7 @@ BindHeroEvents = function(hero)
 	end)
 
 	Trigger.OnDamaged(hero, function(self, attacker)
-		GrantRewardOnDamage(self, attacker)
+		GrantRewardOnDamaged(self, attacker)
 	end)
 
 	-- Beacons
@@ -520,7 +542,7 @@ BindVehicleEvents = function()
 		Trigger.OnProduction(ti.WarFactory, function(producer, produced)
 			-- Bind any events
 			Trigger.OnDamaged(produced, function(self, attacker)
-				GrantRewardOnDamage(self, attacker)
+				GrantRewardOnDamaged(self, attacker)
 			end)
 			Trigger.OnKilled(produced, function(self, killer)
 				GrantRewardOnKilled(self, killer, "unit")
@@ -664,6 +686,10 @@ InitializeAiHarvester = function(harv, wasPurchased)
 
 	harv.FindResources()
 
+	Trigger.OnDamaged(harv, function(self, killer)
+		NotifyHarvesterUnderAttack(self)
+	end)
+
 	Trigger.OnKilled(harv, function(self, killer)
 		local ti = TeamInfo[self.Owner.InternalName]
 		if not ti.WarFactory.IsDead and not ti.Refinery.IsDead then
@@ -717,12 +743,7 @@ BuildHeroItem = function(pi, actorType)
 		local beacon = Actor.Create(type, true, { Owner = pi.Player, Location = pi.Hero.Location })
 		beacon.GrantCondition('beacontimer', BeaconTimeLimit)
 
-		-- TODO: Unhardcode names
-		if type == 'ion-sw' then
-			DisplayMessage('Ion Cannon Beacon deployed!')
-		else
-			DisplayMessage('Nuclear Strike Beacon deployed!')
-		end
+		DisplayMessage(TypeNameTable[beacon.Type] .. ' deployed!')
 
 		-- Remove beacon ownership
 		pi.Hero.RevokeCondition(pi.HasBeaconConditionToken)
@@ -730,6 +751,8 @@ BuildHeroItem = function(pi, actorType)
 
 		-- Notify all players
 		Media.PlaySound(BeaconDeploySound)
+		Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySound(BeaconSoundsTable[beacon.Type]) end)
+
 		Utils.Do(TeamInfo, function(ti)
 			Utils.Do(ti.Players, function(pi)
 				local pingColor = HSLColor.Red
@@ -743,8 +766,8 @@ BuildHeroItem = function(pi, actorType)
 			end)
 		end)
 
-		Trigger.OnDamage(beacon, function(actor, attacker)
-			GrantRewardOnDamage(actor, attacker);
+		Trigger.OnDamaged(beacon, function(actor, attacker)
+			GrantRewardOnDamaged(actor, attacker);
 		end)
 
 		Trigger.OnKilled(beacon, function(actor, killer)
@@ -766,7 +789,7 @@ BuildHeroItem = function(pi, actorType)
 	end
 end
 
-GrantRewardOnDamage = function(self, attacker)
+GrantRewardOnDamaged = function(self, attacker)
 	--[[
 		This is a fun state machine that calculates damage done.
 		It can be completely removed if Lua exposes that information.
@@ -875,9 +898,10 @@ DistributeGatheredResources = function()
 	Trigger.AfterDelay(5, DistributeGatheredResources)
 end
 
-IncrementTicksSinceLastBuildingDamage = function()
+IncrementUnderAttackNotificationTicks = function()
 	Utils.Do(TeamInfo, function(ti)
 		ti.TicksSinceLastBuildingDamage = ti.TicksSinceLastBuildingDamage + 1
+		ti.TicksSinceLastHarvesterDamage = ti.TicksSinceLastHarvesterDamage + 1
 	end)
 end
 
