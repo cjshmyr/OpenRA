@@ -58,7 +58,7 @@ E6:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Repair
 	WithInfantryBody:
-		DefaultAttackSequence: idle2
+		DefaultAttackSequence: idle1
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit
