@@ -135,13 +135,13 @@ WorldLoaded = function()
 	-- Tick interval > 1
 	IncrementPlayerCash()
 	DistributeGatheredResources()
+	DrawScoreboard()
 end
 
 Tick = function()
 	-- Tick interval = 1
 	IncrementUnderAttackNotificationTicks()
-	DrawScoreboard()
-	DrawNameTags()
+	HackyDrawNameTags()
 	HackyStopNeutralHarvesters()
 end
 
@@ -679,18 +679,22 @@ InitializeAiHarvesters = function()
 end
 
 InitializeAiHarvester = function(harv, wasPurchased)
-	if not wasPurchased then
-		local waypointLocation = HarvesterWaypoints[harv.Owner.Faction]
-		harv.Move(waypointLocation, 3)
-	end
-
+	local waypointLocation = HarvesterWaypoints[harv.Owner.Faction]
+	harv.Move(waypointLocation, 3)
 	harv.FindResources()
 
-	Trigger.OnDamaged(harv, function(self, killer)
+	Trigger.OnDamaged(harv, function(self, attacker)
 		NotifyHarvesterUnderAttack(self)
+		if not wasPurchased then
+			GrantRewardOnDamaged(self, attacker)
+		end
 	end)
 
 	Trigger.OnKilled(harv, function(self, killer)
+		if not wasPurchased then
+			GrantRewardOnKilled(self, killer)
+		end
+
 		local ti = TeamInfo[self.Owner.InternalName]
 		if not ti.WarFactory.IsDead and not ti.Refinery.IsDead then
 			ti.WarFactory.Produce(AiHarvesterActorType)
@@ -898,6 +902,47 @@ DistributeGatheredResources = function()
 	Trigger.AfterDelay(5, DistributeGatheredResources)
 end
 
+DrawScoreboard = function()
+	--[[
+		This doesn't rank anyone, or display everyone yet.
+		Displaying everyone would require the position to not be centered on screen, or busier lines.
+	]]
+
+	local alphaTeamFaction = AlphaTeamPlayerName:lower()
+	local betaTeamFaction = BetaTeamPlayerName:lower()
+	local teamStats = { }
+	teamStats[alphaTeamFaction] = { Score = 0, Kills = 0, Deaths = 0 }
+	teamStats[betaTeamFaction] = { Score = 0, Kills = 0, Deaths = 0 }
+	local localPlayer = nil
+
+	Utils.Do(PlayerInfo, function(pi)
+		local ts = teamStats[pi.Player.Faction]
+
+		ts.Score = ts.Score + pi.Score
+		ts.Kills = ts.Kills + pi.Kills
+		ts.Deaths = ts.Deaths + pi.Deaths
+
+		if pi.Player.IsLocalPlayer then -- Only care about the current player's stats (real estate)
+			localPlayer = pi
+		end
+	end)
+
+	local scoreboard =
+		'\n' .. '\n' .. '\n' .. '\n'
+		.. AlphaTeamPlayerName .. ': ' .. tostring(teamStats[alphaTeamFaction].Score) .. ' points - '
+		.. tostring(teamStats[alphaTeamFaction].Kills) .. '/' .. tostring(teamStats[alphaTeamFaction].Deaths) .. ' (k/d)'
+		.. '\n'
+		.. BetaTeamPlayerName .. ': ' .. tostring(teamStats[betaTeamFaction].Score) .. ' points - '
+		.. tostring(teamStats[betaTeamFaction].Kills) .. '/' .. tostring(teamStats[betaTeamFaction].Deaths)
+		.. '\n'
+		.. localPlayer.Player.Name .. ': ' .. tostring(localPlayer.Score) .. ' points - '
+		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths)
+
+	UserInterface.SetMissionText(scoreboard)
+
+	Trigger.AfterDelay(25, DrawScoreboard)
+end
+
 IncrementUnderAttackNotificationTicks = function()
 	Utils.Do(TeamInfo, function(ti)
 		ti.TicksSinceLastBuildingDamage = ti.TicksSinceLastBuildingDamage + 1
@@ -905,23 +950,7 @@ IncrementUnderAttackNotificationTicks = function()
 	end)
 end
 
-DrawScoreboard = function()
-	--local scoreboard = "Players\n"
-	--Utils.Do(PlayerInfo, function(pi)
-		--scoreboard = scoreboard .. "\n" .. pi.Player.Name
-	--end)
-	Utils.Do(PlayerInfo, function(pi)
-		if pi.Player.IsLocalPlayer then
-			local scoreboard =
-				"\n" .. pi.Player.Name
-				.. " -- Score: " .. tostring(pi.Score)
-				.. " (K/D: " .. tostring(pi.Kills) .. "/" .. tostring(pi.Deaths) .. ")"
-			UserInterface.SetMissionText(scoreboard)
-		end
-	end)
-end
-
-DrawNameTags = function()
+HackyDrawNameTags = function()
 	--[[
 		This is a hack until WithTextDecoration is used.
 
