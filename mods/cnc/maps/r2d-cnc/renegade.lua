@@ -552,6 +552,11 @@ end
 BindProducedVehicleEvents = function(produced)
 	-- Damage/killed events
 	Trigger.OnDamaged(produced, function(self, attacker)
+		-- HACK - See issue with attacking neutral vehicles at OnCapture.
+		if self.Owner.InternalName == NeutralPlayerName then
+			self.Stop()
+		end
+
 		GrantRewardOnDamaged(self, attacker)
 	end)
 	Trigger.OnKilled(produced, function(self, killer)
@@ -565,6 +570,20 @@ BindProducedVehicleEvents = function(produced)
 		local wasPurchased = true
 		InitializeAiHarvester(produced, wasPurchased)
 	end
+
+	-- HACK: Neutral vehicles are not allied with players, because this would cause vision to be shared.
+	-- As of this engine we cannot enter neutral vehicles.
+	-- Instead initiate a capture, capture the vehicle, and through Lua swap ownership back, and enter it.
+	-- This bypasses the order targeter restriction.
+	-- Side effects:
+	-- - Infantry can no longer destroy neutral vehicles as a side effect.
+	-- - Neutral vehicles will chase their attacker (mitigated slightly with another hack)
+	Trigger.OnCapture(produced, function(self, captor, oldOwner, newOwner)
+		-- Change owner back to neutral
+		self.Owner = NeutralPlayer
+		-- Order player to enter the vehicle (delay it a tick since owner changing cancels it)
+		Trigger.AfterDelay(1, function() captor.EnterTransport(self) end)
+	end)
 
 	-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
 	Trigger.OnPassengerEntered(produced, function(transport, passenger)
