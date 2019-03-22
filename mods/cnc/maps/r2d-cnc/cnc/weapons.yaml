@@ -53,4 +53,4 @@ IonCannonBeacon:
 # For testing purposes
 Rockets:
 	Warhead@1Dam: SpreadDamage
-		Damage: 25000
+		Damage: 50000

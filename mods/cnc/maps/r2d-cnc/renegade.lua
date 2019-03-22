@@ -195,6 +195,7 @@ SetTeamInfo = function()
 			Refinery = nil,
 			Barracks = nil,
 			WarFactory = nil,
+			WarFactoryActorLocation = nil,
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
@@ -229,6 +230,7 @@ AssignTeamBuildings = function()
 
 		if ArrayContains(WarFactoryActorTypes, actor.Type) then
 			TeamInfo[actor.Owner.InternalName].WarFactory = actor
+			TeamInfo[actor.Owner.InternalName].WarFactoryActorLocation = actor.Location
 		end
 
 		if ArrayContains(BarracksActorTypes, actor.Type) then
@@ -332,6 +334,7 @@ BindBaseEvents = function()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.VehicleConditionToken)
+				pi.PurchaseTerminal.GrantCondition('vehicle-penalty') -- Don't ever need to revoke it.
 			end)
 		end)
 		Trigger.OnDamaged(ti.WarFactory, function(self, attacker)
@@ -541,61 +544,65 @@ end
 BindVehicleEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 		Trigger.OnProduction(ti.WarFactory, function(producer, produced)
-			-- Bind any events
-			Trigger.OnDamaged(produced, function(self, attacker)
-				GrantRewardOnDamaged(self, attacker)
-			end)
-			Trigger.OnKilled(produced, function(self, killer)
-				GrantRewardOnKilled(self, killer, "unit")
-			end)
-
-			-- New vehicles belong to Neutral (except AI harvesters...)
-			if produced.Type ~= AiHarvesterActorType then
-				produced.Owner = NeutralPlayer
-			else
-				local wasPurchased = true
-				InitializeAiHarvester(produced, wasPurchased)
-			end
-
-			-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
-			Trigger.OnPassengerEntered(produced, function(transport, passenger)
-				if transport.PassengerCount == 1 then
-					transport.Owner = passenger.Owner
-				end
-				local pi = PlayerInfo[passenger.Owner.InternalName]
-
-				-- Set passenger state
-				pi.PassengerOfVehicle = transport
-
-				-- Name tag hack: Setting the driver to display the proper pilot name.
-				if transport.PassengerCount == 1 then
-					pi.IsPilot = true
-				end
-
-				-- Harvester hack: Also adding to list of harvesters.
-				if transport.Type == PlayerHarvesterActorType then
-					PlayerHarvesters[#PlayerHarvesters+1] = transport
-				end
-			end)
-
-			-- If it's empty, transfer ownership back to neutral (current engine behavior makes everyone evacuate).
-			Trigger.OnPassengerExited(produced, function(transport, passenger)
-				if transport.PassengerCount == 0 then
-					transport.Owner = NeutralPlayer
-				end
-
-				-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
-				transport.Stop()
-
-				local pi = PlayerInfo[passenger.Owner.InternalName]
-
-				-- Set passenger state
-				pi.PassengerOfVehicle = nil
-
-				-- Name tag hack: Remove pilot info.
-				pi.IsPilot = false
-			end)
+			BindProducedVehicleEvents(produced)
 		end)
+	end)
+end
+
+BindProducedVehicleEvents = function(produced)
+	-- Damage/killed events
+	Trigger.OnDamaged(produced, function(self, attacker)
+		GrantRewardOnDamaged(self, attacker)
+	end)
+	Trigger.OnKilled(produced, function(self, killer)
+		GrantRewardOnKilled(self, killer, "unit")
+	end)
+
+	-- New vehicles belong to Neutral (except AI harvesters...)
+	if produced.Type ~= AiHarvesterActorType then
+		produced.Owner = NeutralPlayer
+	else
+		local wasPurchased = true
+		InitializeAiHarvester(produced, wasPurchased)
+	end
+
+	-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
+	Trigger.OnPassengerEntered(produced, function(transport, passenger)
+		if transport.PassengerCount == 1 then
+			transport.Owner = passenger.Owner
+		end
+		local pi = PlayerInfo[passenger.Owner.InternalName]
+
+		-- Set passenger state
+		pi.PassengerOfVehicle = transport
+
+		-- Name tag hack: Setting the driver to display the proper pilot name.
+		if transport.PassengerCount == 1 then
+			pi.IsPilot = true
+		end
+
+		-- Harvester hack: Also adding to list of harvesters.
+		if transport.Type == PlayerHarvesterActorType then
+			PlayerHarvesters[#PlayerHarvesters+1] = transport
+		end
+	end)
+
+	-- If it's empty, transfer ownership back to neutral (current engine behavior makes everyone evacuate).
+	Trigger.OnPassengerExited(produced, function(transport, passenger)
+		if transport.PassengerCount == 0 then
+			transport.Owner = NeutralPlayer
+		end
+
+		-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
+		transport.Stop()
+
+		local pi = PlayerInfo[passenger.Owner.InternalName]
+
+		-- Set passenger state
+		pi.PassengerOfVehicle = nil
+
+		-- Name tag hack: Remove pilot info.
+		pi.IsPilot = false
 	end)
 end
 
@@ -729,6 +736,25 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 		local ti = pi.Team
 		if not ti.WarFactory.IsDead then
 			ti.WarFactory.Produce(type)
+		else
+			-- Actors will be reinforced by transport helicopter from the top of the map,
+			-- relative to where their war factory was.
+			-- We exit out the other end not to cause traffic jams!
+			-- This will need un-hardcoding if the map is not symmetrical.
+			-- And looks hilariously glitchy on map borders.
+			local enterFrom = CPos.New(ti.WarFactoryActorLocation.X + 1, 0) -- Location offset +1, to get the "center"
+			local dropOffAt = ti.WarFactoryActorLocation + CVec.New(1, 1) -- Offset again
+			local exitAt = CPos.New(enterFrom.X, 999)
+
+			local produced = Reinforcements.ReinforceWithTransport(
+				NeutralPlayer,				-- Player owner
+				"tran-ai", 					-- Transport type
+				{ type }, 					-- Actor(s) in transport
+				{ enterFrom, dropOffAt },	-- Entry path
+				{ exitAt }   				-- Exit path
+			)[2][1]
+
+			BindProducedVehicleEvents(produced)
 		end
 	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
 		pi.HasBeaconConditionToken = hero.GrantCondition("hasbeacon")
@@ -936,7 +962,7 @@ DrawScoreboard = function()
 
 	UserInterface.SetMissionText(scoreboard)
 
-	Trigger.AfterDelay(25, DrawScoreboard)
+	Trigger.AfterDelay(5, DrawScoreboard)
 end
 
 IncrementUnderAttackNotificationTicks = function()

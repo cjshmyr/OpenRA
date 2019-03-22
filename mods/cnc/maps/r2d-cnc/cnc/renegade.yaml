@@ -25,6 +25,8 @@ PurchaseTerminal:
 		Condition: building
 	ExternalCondition@vehicle:
 		Condition: vehicle
+	ExternalCondition@vehicle-penalty:
+		Condition: vehicle-penalty
 	ExternalCondition@infantry:
 		Condition: infantry
 	ExternalCondition@infantry-penalty:
@@ -41,6 +43,9 @@ PurchaseTerminal:
 	ProvidesPrerequisite@vehicle:
 		Prerequisite: vehicle
 		RequiresCondition: vehicle
+	ProvidesPrerequisite@vehicle-penalty:
+		Prerequisite: vehicle-penalty
+		RequiresCondition: vehicle-penalty
 	ProvidesPrerequisite@infantry:
 		Prerequisite: infantry
 		RequiresCondition: infantry
