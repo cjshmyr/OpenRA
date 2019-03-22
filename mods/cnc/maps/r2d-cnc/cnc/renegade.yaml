@@ -1,0 +1,405 @@
+PurchaseTerminal:
+	ScriptTriggers:
+	ConditionManager:
+	RenderSpritesEditorOnly:
+		Image: waypoint
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	Production:
+		Produces: Infantry, Vehicle
+	ProductionBar@Infantry:
+		ProductionType: Infantry
+	ProductionQueue@Infantry:
+		Type: Infantry
+		Group: Infantry
+		ReadyAudio: KeepEmComin #UnitReady
+	ProductionBar@Vehicle:
+		ProductionType: Vehicle
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		Group: Vehicle
+		ReadyAudio: KeepEmComin #UnitReady
+	Exit:
+	ExternalCondition@building:
+		Condition: building
+	ExternalCondition@vehicle:
+		Condition: vehicle
+	ExternalCondition@infantry:
+		Condition: infantry
+	ExternalCondition@gdi:
+		Condition: gdi
+	ExternalCondition@nod:
+		Condition: nod
+	ExternalCondition@radar:
+		Condition: radar
+	ProvidesPrerequisite@building:
+		Prerequisite: building
+		RequiresCondition: building
+	ProvidesPrerequisite@vehicle:
+		Prerequisite: vehicle
+		RequiresCondition: vehicle
+	ProvidesPrerequisite@infantry:
+		Prerequisite: infantry
+		RequiresCondition: infantry
+	ProvidesPrerequisite@gdi:
+		Prerequisite: gdi
+		RequiresCondition: gdi
+	ProvidesPrerequisite@nod:
+		Prerequisite: nod
+		RequiresCondition: nod
+	ProvidesRadar:
+		RequiresCondition: radar
+
+^HeroUnit:
+	Production:
+		Produces: Building
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionQueue@Building:
+		Type: Building
+		Group: Building
+	Exit:
+	ExternalCondition@canbuy:
+		Condition: canbuy
+	ProvidesPrerequisite@canbuy:
+		Prerequisite: canbuy
+		RequiresCondition: canbuy
+	ExternalCondition@hasbeacon:
+		Condition: hasbeacon
+	ProvidesPrerequisite@hasbeacon:
+		Prerequisite: hasbeacon
+		RequiresCondition: hasbeacon
+
+^buy.default:
+	AlwaysVisible:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: Not Implemented
+	Buildable:
+		BuildPaletteOrder: 1
+		Prerequisites: building
+		Queue: Building
+		BuildDuration: 0
+	Valued:
+		Cost: 0
+
+buy.infantry.e1:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Minigunner
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy
+		Queue: Infantry
+	RenderSprites:
+		Image: E1
+
+buy.infantry.e3:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Rocket Soldier
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy
+		Queue: Infantry
+	RenderSprites:
+		Image: E3
+
+buy.infantry.e6:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Engineer
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy
+		Queue: Infantry
+	RenderSprites:
+		Image: E6
+
+buy.infantry.e2:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Grenadier
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~infantry, ~gdi
+		Queue: Infantry
+	RenderSprites:
+		Image: E2
+
+buy.infantry.rmbo:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Commando
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~infantry, ~gdi
+		Queue: Infantry
+	RenderSprites:
+		Image: rmbo
+
+buy.infantry.e4:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Flamethrower
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~infantry, ~nod
+		Queue: Infantry
+	RenderSprites:
+		Image: E4
+
+buy.infantry.e5:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Chem Warrior
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~infantry, ~nod
+		Queue: Infantry
+	RenderSprites:
+		Image: E5
+
+buy.vehicle.jeep:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 350
+	Tooltip:
+		Name: Hum-Vee
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: jeep
+
+buy.vehicle.apc:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Armored Personnel Carrier
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy, ~vehicle
+		Queue: Vehicle
+	RenderSprites:
+		Image: apc
+
+buy.vehicle.mlrs:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Multiple Launch Rocket System
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: mlrs
+
+buy.vehicle.mtnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medium Tank
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: mtnk
+
+buy.vehicle.htnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Mammoth Tank
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle, ~gdi
+		Queue: Vehicle
+	RenderSprites:
+		Image: htnk
+
+buy.vehicle.bggy:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Buggy
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: bggy
+
+buy.vehicle.arty:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Artillery
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: arty
+
+buy.vehicle.ltnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Light Tank
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: ltnk
+
+buy.vehicle.ftnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Flame Tank
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: ftnk
+
+buy.vehicle.stnk:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Stealth Tank
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: ~canbuy, ~vehicle, ~nod
+		Queue: Vehicle
+	RenderSprites:
+		Image: stnk
+
+buy.beacon.ion-beacon:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Ion Cannon Beacon
+	Buildable:
+		BuildPaletteOrder: 999
+		Prerequisites: ~canbuy, ~gdi, ~!hasbeacon
+		Queue: Infantry
+	RenderSprites:
+		Image: ion
+
+buy.beacon.nuke-beacon:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Nuclear Strike Beacon
+	Buildable:
+		BuildPaletteOrder: 999
+		Prerequisites: ~canbuy, ~nod, ~!hasbeacon
+		Queue: Infantry
+	RenderSprites:
+		Image: nuke
+
+# TODO: Shouldn't be able to place beacons while moving.
+buy.placebeacon.ion-beacon:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Place Ion Cannon Beacon
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~hasbeacon, ~gdi
+		Queue: Building
+		BuildDuration: 50 # Idea: Add global sound when this is building.
+		BuildDurationModifier: 100
+	RenderSprites:
+		Image: ion
+
+buy.placebeacon.nuke-beacon:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 0
+	Tooltip:
+		Name: Place Nuclear Strike Beacon
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~hasbeacon, ~nod
+		Queue: Building
+		BuildDuration: 50 # Idea: Add global sound when this is building.
+		BuildDurationModifier: 100
+	RenderSprites:
+		Image: nuke
+
+^beacon:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
+	OwnerLostAction:
+		Action: Kill
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 24,24
+	Health:
+		HP: 10000
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+		TerrainTypes: Clear,Road
+	RevealsShroud:
+		Range: 3c0
+	WithSpriteBody:
+	FrozenUnderFog:
+	Targetable:
+		TargetTypes: DisarmBeacon
+	TimedConditionBar:
+		Condition: beacontimer
+	ExternalCondition@beacontimer:
+		Condition: beacontimer
+
+ion-beacon:
+	Inherits: ^beacon
+	Tooltip:
+		Name: Ion Cannon Beacon
+	RenderSprites:
+		Image: ion
+	Explodes:
+		Weapon: IonCannonBeacon
+		DamageSource: Killer
+
+nuke-beacon:
+	Inherits: ^beacon
+	Tooltip:
+		Name: Nuclear Strike Beacon
+	RenderSprites:
+		Image: nuke
+	Explodes:
+		Weapon: AtomicBeacon
+		DamageSource: Killer
