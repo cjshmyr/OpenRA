@@ -216,6 +216,14 @@ buy.vehicle.jeep:
 	RenderSprites:
 		Image: jeep
 
+buy.vehicle.penalty.jeep:
+	Inherits: buy.vehicle.jeep
+	Valued:
+		Cost: 700
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~gdi
+
 buy.vehicle.apc:
 	Inherits: ^buy.default
 	Valued:
@@ -228,6 +236,14 @@ buy.vehicle.apc:
 		Queue: Vehicle
 	RenderSprites:
 		Image: apc
+
+buy.vehicle.penalty.apc:
+	Inherits: buy.vehicle.apc
+	Valued:
+		Cost: 1000
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy, ~vehicle-penalty
 
 buy.vehicle.mlrs:
 	Inherits: ^buy.default
@@ -242,6 +258,14 @@ buy.vehicle.mlrs:
 	RenderSprites:
 		Image: mlrs
 
+buy.vehicle.penalty.mlrs:
+	Inherits: buy.vehicle.mlrs
+	Valued:
+		Cost: 900
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~gdi
+
 buy.vehicle.mtnk:
 	Inherits: ^buy.default
 	Valued:
@@ -254,6 +278,14 @@ buy.vehicle.mtnk:
 		Queue: Vehicle
 	RenderSprites:
 		Image: mtnk
+
+buy.vehicle.penalty.mtnk:
+	Inherits: buy.vehicle.mtnk
+	Valued:
+		Cost: 1600
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~gdi
 
 buy.vehicle.htnk:
 	Inherits: ^buy.default
@@ -268,6 +300,14 @@ buy.vehicle.htnk:
 	RenderSprites:
 		Image: htnk
 
+buy.vehicle.penalty.htnk:
+	Inherits: buy.vehicle.htnk
+	Valued:
+		Cost: 3000
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~gdi
+
 buy.vehicle.bggy:
 	Inherits: ^buy.default
 	Valued:
@@ -280,6 +320,14 @@ buy.vehicle.bggy:
 		Queue: Vehicle
 	RenderSprites:
 		Image: bggy
+
+buy.vehicle.penalty.bggy:
+	Inherits: buy.vehicle.bggy
+	Valued:
+		Cost: 600
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
 
 buy.vehicle.arty:
 	Inherits: ^buy.default
@@ -294,6 +342,14 @@ buy.vehicle.arty:
 	RenderSprites:
 		Image: arty
 
+buy.vehicle.penalty.arty:
+	Inherits: buy.vehicle.arty
+	Valued:
+		Cost: 900
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
+
 buy.vehicle.ltnk:
 	Inherits: ^buy.default
 	Valued:
@@ -306,6 +362,14 @@ buy.vehicle.ltnk:
 		Queue: Vehicle
 	RenderSprites:
 		Image: ltnk
+
+buy.vehicle.penalty.ltnk:
+	Inherits: buy.vehicle.ltnk
+	Valued:
+		Cost: 1200
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
 
 buy.vehicle.ftnk:
 	Inherits: ^buy.default
@@ -320,6 +384,14 @@ buy.vehicle.ftnk:
 	RenderSprites:
 		Image: ftnk
 
+buy.vehicle.penalty.ftnk:
+	Inherits: buy.vehicle.ftnk
+	Valued:
+		Cost: 1600
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
+
 buy.vehicle.stnk:
 	Inherits: ^buy.default
 	Valued:
@@ -332,6 +404,14 @@ buy.vehicle.stnk:
 		Queue: Vehicle
 	RenderSprites:
 		Image: stnk
+
+buy.vehicle.penalty.stnk:
+	Inherits: buy.vehicle.stnk
+	Valued:
+		Cost: 1800
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
 
 buy.beacon.ion-beacon:
 	Inherits: ^buy.default
