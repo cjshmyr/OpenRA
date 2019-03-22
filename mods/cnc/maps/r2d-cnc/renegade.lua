@@ -314,6 +314,7 @@ BindBaseEvents = function()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.InfantryConditionToken)
+				pi.PurchaseTerminal.GrantCondition('infantry-penalty') -- Don't ever need to revoke it.
 			end)
 		end)
 		Trigger.OnDamaged(ti.Barracks, function(self, attacker)

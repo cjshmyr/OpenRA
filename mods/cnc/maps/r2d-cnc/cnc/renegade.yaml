@@ -27,6 +27,8 @@ PurchaseTerminal:
 		Condition: vehicle
 	ExternalCondition@infantry:
 		Condition: infantry
+	ExternalCondition@infantry-penalty:
+		Condition: infantry-penalty
 	ExternalCondition@gdi:
 		Condition: gdi
 	ExternalCondition@nod:
@@ -42,6 +44,9 @@ PurchaseTerminal:
 	ProvidesPrerequisite@infantry:
 		Prerequisite: infantry
 		RequiresCondition: infantry
+	ProvidesPrerequisite@infantry-penalty:
+		Prerequisite: infantry-penalty
+		RequiresCondition: infantry-penalty
 	ProvidesPrerequisite@gdi:
 		Prerequisite: gdi
 		RequiresCondition: gdi
@@ -131,6 +136,13 @@ buy.infantry.e2:
 	RenderSprites:
 		Image: E2
 
+buy.infantry.penalty.e2:
+	Inherits: buy.infantry.e2
+	Valued:
+		Cost: 600
+	Buildable:
+		Prerequisites: ~canbuy, ~infantry-penalty, ~gdi
+
 buy.infantry.rmbo:
 	Inherits: ^buy.default
 	Valued:
@@ -143,6 +155,13 @@ buy.infantry.rmbo:
 		Queue: Infantry
 	RenderSprites:
 		Image: rmbo
+
+buy.infantry.penalty.rmbo:
+	Inherits: buy.infantry.rmbo
+	Valued:
+		Cost: 1200
+	Buildable:
+		Prerequisites: ~canbuy, ~infantry-penalty, ~gdi
 
 buy.infantry.e4:
 	Inherits: ^buy.default
@@ -157,6 +176,13 @@ buy.infantry.e4:
 	RenderSprites:
 		Image: E4
 
+buy.infantry.penalty.e4:
+	Inherits: buy.infantry.e4
+	Valued:
+		Cost: 600
+	Buildable:
+		Prerequisites: ~canbuy, ~infantry-penalty, ~nod
+
 buy.infantry.e5:
 	Inherits: ^buy.default
 	Valued:
@@ -169,6 +195,13 @@ buy.infantry.e5:
 		Queue: Infantry
 	RenderSprites:
 		Image: E5
+
+buy.infantry.penalty.e5:
+	Inherits: buy.infantry.e5
+	Valued:
+		Cost: 1200
+	Buildable:
+		Prerequisites: ~canbuy, ~infantry-penalty, ~nod
 
 buy.vehicle.jeep:
 	Inherits: ^buy.default
