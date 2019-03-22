@@ -705,10 +705,9 @@ end
 
 BuildPurchaseTerminalItem = function(pi, actorType)
 	local hero = pi.Hero;
+	local type = GetPurchasedActorType(actorType)
 
 	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalInfantryActorTypePrefix, "") -- strip buy prefix off; assume there's an actor type defined without that prefix.
-
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
 		newHero.Health = hero.Health
@@ -727,23 +726,19 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 		BindHeroEvents(newHero)
 	elseif string.find(actorType, PurchaseTerminalVehicleActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalVehicleActorTypePrefix, "")
-
 		local ti = pi.Team
 		if not ti.WarFactory.IsDead then
 			ti.WarFactory.Produce(type)
 		end
 	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
-		local type = actorType:gsub(PurchaseTerminalBeaconActorTypePrefix, "")
-
 		pi.HasBeaconConditionToken = hero.GrantCondition("hasbeacon")
 	end
 end
 
 BuildHeroItem = function(pi, actorType)
-	if string.find(actorType, HeroItemPlaceBeaconActorTypePrefix) then
-		local type = actorType:gsub(HeroItemPlaceBeaconActorTypePrefix, "")
+	local type = GetPurchasedActorType(actorType)
 
+	if string.find(actorType, HeroItemPlaceBeaconActorTypePrefix) then
 		-- Create beacon at current location (hero gets nudged)
 		local beacon = Actor.Create(type, true, { Owner = pi.Player, Location = pi.Hero.Location })
 		beacon.GrantCondition('beacontimer', BeaconTimeLimit)
@@ -1038,4 +1033,12 @@ end
 
 PlayerIsHuman = function(player)
 	return player.IsNonCombatant == false and PlayerIsTeamAi(player) == false
+end
+
+GetPurchasedActorType = function(actorType)
+	-- Returns the last item in a period delimited string.
+	-- e.g. 'buy.infantry.e1' returns 'e1'
+	local index = string.find(actorType, ".[^.]*$")
+	local purchasedType = string.sub(actorType, index + 1)
+	return purchasedType
 end
