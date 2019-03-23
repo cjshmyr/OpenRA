@@ -52,7 +52,7 @@ ARTY:
 	Inherits@Passengers: ^OnePassenger
 
 LTNK:
-	Inherits@Passengers: ^OnePassenger
+	Inherits@Passengers: ^TwoPassengers
 
 FTNK:
 	Inherits@Passengers: ^TwoPassengers
