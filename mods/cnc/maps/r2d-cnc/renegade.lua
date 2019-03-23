@@ -25,6 +25,7 @@ BeaconTimeLimit = DateTime.Seconds(30)
 RespawnTime = DateTime.Seconds(3)
 LocalPlayer = nil -- HACK: Used for nametags.
 EnemyNametagsHiddenForTypes = { "stnk" } -- HACK: Used for nametags.
+GameOver = false
 
 --[[ Mod-specific ]]
 Mod = "cnc"
@@ -43,10 +44,10 @@ if Mod == "cnc" then
 	DefenseActorTypes = {"gtwr","atwr","gun","obli"}
 	AiHarvesterActorType = "harv-ai"
 	PlayerHarvesterActorType = "harv"
-	NotificationMissionStarted = "bombit1.aud"
-	NotificationBaseUnderAttack = "baseatk1.aud"
-	NotificationMissionAccomplished = "accom1.aud"
-	NotificationMissionFailed = "fail1.aud"
+	SoundMissionStarted = "bombit1.aud"
+	SoundBaseUnderAttack = "baseatk1.aud"
+	SoundMissionAccomplished = "accom1.aud"
+	SoundMissionFailed = "fail1.aud"
 	AlphaBeaconType = "ion-beacon"
 	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "target3.aud"
@@ -55,7 +56,7 @@ if Mod == "cnc" then
 	TypeNameTable['nuk2'] = 'Power Plant'
 	TypeNameTable['hq'] = 'Communications Center'
 	TypeNameTable['weap'] = 'Weapons Factory'
-	TypeNameTable['afld'] = 'Airfield'
+	TypeNameTable['afld'] = 'Airstrip'
 	TypeNameTable['pyle'] = 'Barracks'
 	TypeNameTable['hand'] = 'Hand of Nod'
 	TypeNameTable['fix'] = 'Repair Bay'
@@ -82,10 +83,10 @@ elseif Mod == "ra" then
 	DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 	AiHarvesterActorType = "harv-ai"
 	PlayerHarvesterActorType = "harv"
-	NotificationMissionStarted = "newopt1.aud"
-	NotificationBaseUnderAttack = "baseatk1.aud"
-	NotificationMissionAccomplished = "misnwon1.aud"
-	NotificationMissionFailed = "misnlst1.aud"
+	SoundMissionStarted = "newopt1.aud"
+	SoundBaseUnderAttack = "baseatk1.aud"
+	SoundMissionAccomplished = "misnwon1.aud"
+	SoundMissionFailed = "misnlst1.aud"
 	AlphaBeaconType = "nuke-beacon"
 	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "bleep9.aud"
@@ -109,7 +110,7 @@ AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
 
 WorldLoaded = function()
-	Media.PlaySound(NotificationMissionStarted)
+	Media.PlaySound(SoundMissionStarted)
 
 	SetPlayerInfo()
 	SetTeamInfo()
@@ -134,6 +135,7 @@ WorldLoaded = function()
 	-- Tick interval > 1
 	IncrementPlayerCash()
 	DistributeGatheredResources()
+	CheckVictoryConditions()
 	DrawScoreboard()
 end
 
@@ -290,7 +292,9 @@ BindBaseEvents = function()
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
-			ti.ConstructionYard.StartBuildingRepairs()
+			if not self.IsDead then
+				self.StartBuildingRepairs()
+			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
 		end)
@@ -301,8 +305,8 @@ BindBaseEvents = function()
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.Refinery.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -319,8 +323,8 @@ BindBaseEvents = function()
 			end)
 		end)
 		Trigger.OnDamaged(ti.Barracks, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.Barracks.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -337,8 +341,8 @@ BindBaseEvents = function()
 			end)
 		end)
 		Trigger.OnDamaged(ti.WarFactory, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.WarFactory.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -354,8 +358,8 @@ BindBaseEvents = function()
 			end)
 		end)
 		Trigger.OnDamaged(ti.Radar, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.Radar.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -373,8 +377,8 @@ BindBaseEvents = function()
 			end
 		end)
 		Trigger.OnDamaged(ti.Powerplant, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.Powerplant.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -386,8 +390,8 @@ BindBaseEvents = function()
 			GrantRewardOnKilled(self, killer, "building")
 		end)
 		Trigger.OnDamaged(ti.ServiceDepot, function(self, attacker)
-			if not ti.ConstructionYard.IsDead then
-				ti.ServiceDepot.StartBuildingRepairs()
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
 			end
 			NotifyBaseUnderAttack(self)
 			GrantRewardOnDamaged(self, attacker)
@@ -400,8 +404,8 @@ BindBaseEvents = function()
 				GrantRewardOnKilled(self, killer, "defense")
 			end)
 			Trigger.OnDamaged(building, function(self, attacker)
-				if not ti.ConstructionYard.IsDead then
-					ti.ServiceDepot.StartBuildingRepairs()
+				if not self.IsDead and not ti.ConstructionYard.IsDead then
+					self.StartBuildingRepairs()
 				end
 				NotifyBaseUnderAttack(self)
 				GrantRewardOnDamaged(self, attacker)
@@ -422,7 +426,7 @@ NotifyBaseUnderAttack = function(self)
 		Utils.Do(ti.Players, function(pi)
 			if pi.Player.IsLocalPlayer then
 				DisplayMessage(self.Owner.Name .. " " .. TypeNameTable[self.Type] .. " is under attack!")
-				Media.PlaySound(NotificationBaseUnderAttack)
+				Media.PlaySound(SoundBaseUnderAttack)
 			end
 		end)
 	end
@@ -940,6 +944,52 @@ DistributeGatheredResources = function()
 	end)
 
 	Trigger.AfterDelay(5, DistributeGatheredResources)
+end
+
+CheckVictoryConditions = function()
+	local defeatedTeam = nil
+	Utils.Do(TeamInfo, function(ti)
+		if ti.ConstructionYard.IsDead
+			and ti.Refinery.IsDead
+			and ti.Barracks.IsDead
+			and ti.WarFactory.IsDead
+			and ti.Radar.IsDead
+			and ti.Powerplant.IsDead
+			and ti.ServiceDepot.IsDead then
+			defeatedTeam = ti
+		end
+	end)
+
+	if defeatedTeam ~= nil then
+		local winnerTeamName = ''
+		local winnerTeam = nil
+
+		for teamName, ti in pairs(TeamInfo) do
+			if ti.AiPlayer.InternalName ~= defeatedTeam.AiPlayer.InternalName then
+				winnerTeamName = teamName
+				winnerTeam = ti
+			end
+		end
+
+		Utils.Do(winnerTeam.Players, function(pi)
+			if pi.Player.IsLocalPlayer then
+				Media.PlaySound(SoundMissionAccomplished)
+			end
+		end)
+
+		Utils.Do(defeatedTeam.Players, function(pi)
+			if pi.Player.IsLocalPlayer then
+				Media.PlaySound(SoundMissionFailed)
+			end
+		end)
+
+		GameOver = true
+		DisplayMessage('Game over! ' .. winnerTeamName .. ' wins!')
+	end
+
+	if not GameOver then
+		Trigger.AfterDelay(25, CheckVictoryConditions)
+	end
 end
 
 DrawScoreboard = function()
