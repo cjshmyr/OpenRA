@@ -43,7 +43,6 @@ E6:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	-EngineerRepair:
 	-RepairsBridges:
-	-CaptureManager:
 	-Captures@SABOTAGE:
 	-Captures@CAPTURES:
 	AttackFrontal:

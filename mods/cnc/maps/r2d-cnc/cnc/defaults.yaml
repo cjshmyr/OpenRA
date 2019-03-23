@@ -24,7 +24,7 @@
 		Condition: inbase
 	SelfHealing@DAMAGEDINBASE:
 		Step: 500
-		Delay: 100
+		Delay: 25
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: damaged && inbase
@@ -33,10 +33,10 @@
 		Sequence: pip-heal
 		ReferencePoint: Bottom, Right
 		RequiresCondition: damaged && inbase
-		BlinkInterval: 32
+		BlinkInterval: 25
 		BlinkPattern: Off, On
 	CaptureManager:
-	Captures:
+	Captures@VEHICLES:
 		CaptureTypes: Vehicle
 		ConsumedByCapture: False
 
@@ -45,6 +45,7 @@
 # Vehicles have a condition when damaged.
 # Vehicles can be repaired by engineers.
 # HACK: Neutral vehicles can be captured. Can be removed if we can garrison neutrals.
+# All vehicles provide no vision if empty.
 ^Vehicle:
 	DetectCloaked:
 		Range: 4c0
@@ -63,3 +64,6 @@
 		Types: Vehicle
 		RequiresCondition: !occupied
 		ValidStances: Neutral
+	RevealsShroudMultiplier:
+		Modifier: 0
+		RequiresCondition: !occupied

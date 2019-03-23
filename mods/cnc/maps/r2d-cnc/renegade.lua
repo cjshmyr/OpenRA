@@ -1,6 +1,6 @@
 --[[
 	Renegade 2D Lua script by @hamb
-	Version: 0.5
+	Version: 0.90
 	Engine: OpenRA release-20190314
 ]]
 
@@ -107,7 +107,6 @@ elseif Mod == "ra" then
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
-NeutralPlayer = Player.GetPlayer(NeutralPlayerName)
 
 WorldLoaded = function()
 	Media.PlaySound(NotificationMissionStarted)
@@ -509,7 +508,7 @@ end
 
 BindHeroEvents = function(hero)
 	Trigger.OnKilled(hero, function(self, killer)
-		if self.Owner.Name == killer.Owner.Name then
+		if self.Owner.InternalName == killer.Owner.InternalName then
 			DisplayMessage(self.Owner.Name .. " killed themselves!")
 		else
 			DisplayMessage(self.Owner.Name .. " was killed by " .. killer.Owner.Name .. "!")
@@ -552,38 +551,37 @@ end
 BindProducedVehicleEvents = function(produced)
 	-- Damage/killed events
 	Trigger.OnDamaged(produced, function(self, attacker)
-		-- HACK - See issue with attacking neutral vehicles at OnCapture.
-		if self.Owner.InternalName == NeutralPlayerName then
-			self.Stop()
-		end
-
 		GrantRewardOnDamaged(self, attacker)
 	end)
 	Trigger.OnKilled(produced, function(self, killer)
 		GrantRewardOnKilled(self, killer, "unit")
 	end)
 
-	-- New vehicles belong to Neutral (except AI harvesters...)
+	-- New vehicles belong to appropriate team's Neutral (except AI harvesters...)
 	if produced.Type ~= AiHarvesterActorType then
-		produced.Owner = NeutralPlayer
+		produced.Owner = GetNeutralPlayerForActor(produced)
 	else
 		local wasPurchased = true
 		InitializeAiHarvester(produced, wasPurchased)
 	end
 
-	-- HACK: Neutral vehicles are not allied with players, because this would cause vision to be shared.
+	-- HACK: Neutral vehicles are assigned a specific neutral team.
+	-- This accomplishes allowing friendly units to 'enter' or damage/repair the vehicle.
 	-- As of this engine we cannot enter neutral vehicles.
-	-- Instead initiate a capture, capture the vehicle, and through Lua swap ownership back, and enter it.
-	-- This bypasses the order targeter restriction.
-	-- Side effects:
-	-- - Infantry can no longer destroy neutral vehicles as a side effect.
-	-- - Neutral vehicles will chase their attacker (mitigated slightly with another hack)
+	-- Unfortunate side-effect:
+	-- When we see an enemy vehicle, it has to be captured (switches to their team-specific neutral)
+	-- then it can be destroyed or repaired.
+	-- As of this engine version, there is no way to have a neutral actor capturable by both sides,
+	-- that does not mess with order targeters or cause shared vision problems.
 	Trigger.OnCapture(produced, function(self, captor, oldOwner, newOwner)
-		-- Change owner back to neutral
-		self.Owner = NeutralPlayer
-		-- Order player to enter the vehicle (delay it a tick since owner changing cancels it)
+		-- Change owner to captor's neutral team
+		self.Owner = GetNeutralPlayerForActor(captor)
+
+		-- Order player to enter the vehicle (delay it a tick since owner changing would cancel it)
 		Trigger.AfterDelay(1, function() captor.EnterTransport(self) end)
 	end)
+
+	-- TODO: Once a neutral vehicle has been entered, it should be immobile after someone exits it.
 
 	-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
 	Trigger.OnPassengerEntered(produced, function(transport, passenger)
@@ -606,10 +604,10 @@ BindProducedVehicleEvents = function(produced)
 		end
 	end)
 
-	-- If it's empty, transfer ownership back to neutral (current engine behavior makes everyone evacuate).
+	-- If it's empty, transfer ownership back to neutral.
 	Trigger.OnPassengerExited(produced, function(transport, passenger)
 		if transport.PassengerCount == 0 then
-			transport.Owner = NeutralPlayer
+			transport.Owner = GetNeutralPlayerForActor(passenger)
 		end
 
 		-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
@@ -761,12 +759,13 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 			-- We exit out the other end not to cause traffic jams!
 			-- This will need un-hardcoding if the map is not symmetrical.
 			-- And looks hilariously glitchy on map borders.
+			local neutralPlayer = GetNeutralPlayerForActor(pi.Hero)
 			local enterFrom = CPos.New(ti.WarFactoryActorLocation.X + 1, 0) -- Location offset +1, to get the "center"
 			local dropOffAt = ti.WarFactoryActorLocation + CVec.New(1, 1) -- Offset again
 			local exitAt = CPos.New(enterFrom.X, 999)
 
 			local produced = Reinforcements.ReinforceWithTransport(
-				NeutralPlayer,				-- Player owner
+				neutralPlayer,				-- Neutral owner
 				"tran-ai", 					-- Transport type
 				{ type }, 					-- Actor(s) in transport
 				{ enterFrom, dropOffAt },	-- Entry path
@@ -860,7 +859,7 @@ GrantRewardOnDamaged = function(self, attacker)
 
 	if damageTaken == 0 then -- No damage taken (can happen)
 		return
-	elseif self.Owner.InternalName == NeutralPlayerName then -- Ignore attacking neutral units.
+	elseif ActorIsNeutral(self) then -- Ignore attacking neutral units.
 		return
 	elseif damageTaken > 0 and self.Owner.Faction == attacker.Owner.Faction then -- Ignore self/team when damage is greater than 0.
 		return
@@ -887,7 +886,7 @@ GrantRewardOnDamaged = function(self, attacker)
 end
 
 GrantRewardOnKilled = function(self, killer, actorCategory)
-	if self.Owner.InternalName == NeutralPlayerName then -- Ignore destroying neutral units.
+	if ActorIsNeutral(self) then -- Ignore destroying neutral units.
 		return
 	end
 	if self.Owner.Faction == killer.Owner.Faction then -- Ignore self/team.
@@ -1039,7 +1038,7 @@ HackyStopNeutralHarvesters = function()
 	-- Simply stopping the harvester or asking it to wait will not work, we have to repeatedly tell the harvester to move in place.
 	Utils.Do(PlayerHarvesters, function(harv)
 		-- TODO: This will forever tick on harvesters that are dead, etc. We never are removing them from the list when whe should.
-		if not harv.IsDead and harv.Owner.InternalName == NeutralPlayerName then
+		if not harv.IsDead and ActorIsNeutral(harv) then
 			harv.Move(harv.Location)
 		end
 	end)
@@ -1086,4 +1085,14 @@ GetPurchasedActorType = function(actorType)
 	local index = string.find(actorType, ".[^.]*$")
 	local purchasedType = string.sub(actorType, index + 1)
 	return purchasedType
+end
+
+GetNeutralPlayerForActor = function(actor)
+	return Player.GetPlayer(NeutralPlayerName .. '-' .. actor.Owner.Faction)
+end
+
+ActorIsNeutral = function(actor)
+	-- A bit hacky, but assumes anyone with Neutral in their name being neutral.
+	-- Can go away with garrisoning logic.
+	return string.find(NeutralPlayerName, actor.Owner.InternalName)
 end
