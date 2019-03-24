@@ -136,7 +136,7 @@ buy.infantry.e6:
 buy.infantry.e2:
 	Inherits: ^buy.default
 	Valued:
-		Cost: 300
+		Cost: 250
 	Tooltip:
 		Name: Grenadier
 	Buildable:
@@ -150,14 +150,14 @@ buy.infantry.e2:
 buy.infantry.penalty.e2:
 	Inherits: buy.infantry.e2
 	Valued:
-		Cost: 600
+		Cost: 500
 	Buildable:
 		Prerequisites: ~canbuy, ~infantry-penalty, ~gdi
 
 buy.infantry.rmbo:
 	Inherits: ^buy.default
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Commando
 	Buildable:
@@ -171,14 +171,14 @@ buy.infantry.rmbo:
 buy.infantry.penalty.rmbo:
 	Inherits: buy.infantry.rmbo
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Buildable:
 		Prerequisites: ~canbuy, ~infantry-penalty, ~gdi
 
 buy.infantry.e4:
 	Inherits: ^buy.default
 	Valued:
-		Cost: 300
+		Cost: 250
 	Tooltip:
 		Name: Flamethrower
 	Buildable:
@@ -192,14 +192,14 @@ buy.infantry.e4:
 buy.infantry.penalty.e4:
 	Inherits: buy.infantry.e4
 	Valued:
-		Cost: 600
+		Cost: 500
 	Buildable:
 		Prerequisites: ~canbuy, ~infantry-penalty, ~nod
 
 buy.infantry.e5:
 	Inherits: ^buy.default
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Chem Warrior
 	Buildable:
@@ -213,7 +213,7 @@ buy.infantry.e5:
 buy.infantry.penalty.e5:
 	Inherits: buy.infantry.e5
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Buildable:
 		Prerequisites: ~canbuy, ~infantry-penalty, ~nod
 

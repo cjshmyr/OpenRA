@@ -6,13 +6,13 @@
 
 ^TierTwoInfantry:
 	Health:
-		HP: 15000
+		HP: 12500
 	Mobile:
 		Speed: 60
 
 ^TierThreeInfantry:
 	Health:
-		HP: 20000
+		HP: 15000
 	Mobile:
 		Speed: 64
 

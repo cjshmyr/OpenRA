@@ -1,31 +1,64 @@
-NUK2:
-	Power: # "Unlimited" power for AI buildings.
-		Amount: 999999
+^RenegadeBaseBuilding:
+	Health:
+		HP: 200000
+	Armor:
+		Type: Heavy
+
+^RenegadeSmallBuilding:
+	Health:
+		HP: 50000
+	Armor:
+		Type: Heavy
+
+FACT:
+	Inherits@Renegade: ^RenegadeBaseBuilding
 
 PROC:
+	Inherits@Renegade: ^RenegadeBaseBuilding
 	StoresResources: # "Unlimited" $ for AI buildings.
 		PipCount: 0
 		Capacity: 999999
 	FreeActor: # Use the AI specific harvester.
 		Actor: HARV-AI
 
-OBLI:
-	Power: # Powered defense
-		Amount: -1
-
-ATWR:
-	Power: # Powered defense
-		Amount: -1
+NUK2:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+	Power: # "Unlimited" power for AI buildings.
+		Amount: 999999
 
 HQ:
+	Inherits@Renegade: ^RenegadeBaseBuilding
 	-DetectCloaked: # Only defenses should detect cloaked.
 	-RenderDetectionCircle:
 	-AirstrikePower: # No airstrike power
 
-EYE:
-	-DetectCloaked: # Only defenses should detect cloaked.
-	-RenderDetectionCircle:
+WEAP:
+	Inherits@Renegade: ^RenegadeBaseBuilding
 
-TMPL:
-	-DetectCloaked: # Only defenses should detect cloaked.
-	-RenderDetectionCircle:
+AFLD:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+
+PYLE:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+
+HAND:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+
+FIX:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+
+GUN:
+	Inherits@Renegade: ^RenegadeSmallBuilding
+
+OBLI:
+	Inherits@Renegade: ^RenegadeSmallBuilding
+	Power: # Powered defense
+		Amount: -1
+
+GTWR:
+	Inherits@Renegade: ^RenegadeSmallBuilding
+
+ATWR:
+	Inherits@Renegade: ^RenegadeSmallBuilding
+	Power: # Powered defense
+		Amount: -1
