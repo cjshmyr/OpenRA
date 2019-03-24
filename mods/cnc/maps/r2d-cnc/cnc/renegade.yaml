@@ -435,6 +435,28 @@ buy.vehicle.penalty.stnk:
 		BuildPaletteOrder: 60
 		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
 
+buy.vehicle.harv:
+	Inherits: ^buy.default
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Harvester
+	Buildable:
+		BuildPaletteOrder: 100
+		Prerequisites: ~canbuy, ~vehicle
+		Queue: Vehicle
+		Description: Collects Tiberium for processing.\nThe entire team will receive $ for tiberium harvested.\nUnarmed.\nHolds 1 passenger.
+	RenderSprites:
+		Image: harv
+
+buy.vehicle.penalty.harv:
+	Inherits: buy.vehicle.harv
+	Valued:
+		Cost: 2000
+	Buildable:
+		BuildPaletteOrder: 100
+		Prerequisites: ~canbuy, ~vehicle-penalty, ~nod
+
 buy.beacon.ion-beacon:
 	Inherits: ^buy.default
 	Valued:
