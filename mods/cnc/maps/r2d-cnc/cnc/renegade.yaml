@@ -103,6 +103,7 @@ buy.infantry.e1:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy
 		Queue: Infantry
+		Description: Anti-infantry unit.
 	RenderSprites:
 		Image: E1
 
@@ -114,6 +115,7 @@ buy.infantry.e3:
 		BuildPaletteOrder: 20
 		Prerequisites: ~canbuy
 		Queue: Infantry
+		Description: Anti-armor unit.
 	RenderSprites:
 		Image: E3
 
@@ -125,6 +127,7 @@ buy.infantry.e6:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy
 		Queue: Infantry
+		Description: Repairs friendly structures and vehicles.\nDisarms beacons.\nUnarmed.
 	RenderSprites:
 		Image: E6
 
@@ -138,6 +141,7 @@ buy.infantry.e2:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~infantry, ~gdi
 		Queue: Infantry
+		Description: Advanced anti-armor unit.
 	RenderSprites:
 		Image: E2
 
@@ -158,6 +162,7 @@ buy.infantry.rmbo:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~infantry, ~gdi
 		Queue: Infantry
+		Description: Advanced anti-infantry unit.
 	RenderSprites:
 		Image: rmbo
 
@@ -178,6 +183,7 @@ buy.infantry.e4:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~infantry, ~nod
 		Queue: Infantry
+		Description: Advanced anti-infantry, anti-armor unit.
 	RenderSprites:
 		Image: E4
 
@@ -198,6 +204,7 @@ buy.infantry.e5:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~infantry, ~nod
 		Queue: Infantry
+		Description: Advanced anti-infantry unit.\nImmune to tiberium.
 	RenderSprites:
 		Image: E5
 
@@ -218,6 +225,7 @@ buy.vehicle.jeep:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~vehicle, ~gdi
 		Queue: Vehicle
+		Description: Anti-infantry vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: jeep
 
@@ -239,6 +247,7 @@ buy.vehicle.apc:
 		BuildPaletteOrder: 20
 		Prerequisites: ~canbuy, ~vehicle
 		Queue: Vehicle
+		Description: Anti-infantry vehicle.\nHolds 4 passengers.
 	RenderSprites:
 		Image: apc
 
@@ -260,6 +269,7 @@ buy.vehicle.mlrs:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~vehicle, ~gdi
 		Queue: Vehicle
+		Description: Anti-armor vehicle.\nHolds 1 passenger.
 	RenderSprites:
 		Image: mlrs
 
@@ -281,6 +291,7 @@ buy.vehicle.mtnk:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~vehicle, ~gdi
 		Queue: Vehicle
+		Description: Anti-armor vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: mtnk
 
@@ -302,6 +313,7 @@ buy.vehicle.htnk:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~vehicle, ~gdi
 		Queue: Vehicle
+		Description: Anti-armor vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: htnk
 
@@ -323,6 +335,7 @@ buy.vehicle.bggy:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
+		Description: Anti-infantry vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: bggy
 
@@ -344,6 +357,7 @@ buy.vehicle.arty:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
+		Description: Anti-armor vehicle.\nHolds 1 passenger.
 	RenderSprites:
 		Image: arty
 
@@ -365,6 +379,7 @@ buy.vehicle.ltnk:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
+		Description: Anti-armor vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: ltnk
 
@@ -386,6 +401,7 @@ buy.vehicle.ftnk:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
+		Description: Anti-infantry, anti-armor vehicle.\nHolds 2 passengers.
 	RenderSprites:
 		Image: ftnk
 
@@ -407,6 +423,7 @@ buy.vehicle.stnk:
 		BuildPaletteOrder: 60
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
+		Description: Anti-infantry, anti-armor vehicle.\nCloaked.\nHolds 1 passenger.
 	RenderSprites:
 		Image: stnk
 
@@ -428,6 +445,7 @@ buy.beacon.ion-beacon:
 		BuildPaletteOrder: 999
 		Prerequisites: ~canbuy, ~gdi, ~!hasbeacon
 		Queue: Infantry
+		Description: Purchase an Ion Cannon Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: ion
 
@@ -441,22 +459,23 @@ buy.beacon.nuke-beacon:
 		BuildPaletteOrder: 999
 		Prerequisites: ~canbuy, ~nod, ~!hasbeacon
 		Queue: Infantry
+		Description: Purchase a Nuclear Strike Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: nuke
 
-# TODO: Shouldn't be able to place beacons while moving.
 buy.placebeacon.ion-beacon:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 0
 	Tooltip:
-		Name: Place Ion Cannon Beacon
+		Name: Deploy Ion Cannon Beacon
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~hasbeacon, ~gdi
 		Queue: Building
-		BuildDuration: 50 # Idea: Add global sound when this is building.
+		BuildDuration: 50
 		BuildDurationModifier: 100
+		Description: Place an Ion Cannon Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, an Ion Cannon Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: ion
 
@@ -465,13 +484,14 @@ buy.placebeacon.nuke-beacon:
 	Valued:
 		Cost: 0
 	Tooltip:
-		Name: Place Nuclear Strike Beacon
+		Name: Deploy Nuclear Strike Beacon
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~hasbeacon, ~nod
 		Queue: Building
-		BuildDuration: 50 # Idea: Add global sound when this is building.
+		BuildDuration: 50
 		BuildDurationModifier: 100
+		Description: Deploy a Nuclear Strike Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, a Nuclear Missile Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: nuke
 
