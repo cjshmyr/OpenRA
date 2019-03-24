@@ -49,8 +49,3 @@ IonCannonBeacon:
 		Explosions: ion_explosion
 		ImpactSounds: ion1.aud
 		ImpactActors: false
-
-# For testing purposes
-Rockets:
-	Warhead@1Dam: SpreadDamage
-		Damage: 50000
