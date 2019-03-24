@@ -59,7 +59,7 @@ if Mod == "cnc" then
 	TypeNameTable['afld'] = 'Airstrip'
 	TypeNameTable['pyle'] = 'Barracks'
 	TypeNameTable['hand'] = 'Hand of Nod'
-	TypeNameTable['fix'] = 'Repair Bay'
+	TypeNameTable['fix'] = 'Repair Facility'
 	TypeNameTable['gtwr'] = 'Guard Tower'
 	TypeNameTable['atwr'] = 'Advanced Guard Tower'
 	TypeNameTable['gun'] = 'Turret'
@@ -163,7 +163,6 @@ SetPlayerInfo = function()
 			PurchaseTerminal = nil,
 			CanBuyConditionToken = -1, -- hero
 			HasBeaconConditionToken = -1, -- hero
-			BuildingConditionToken = -1, -- pt
 			VehicleConditionToken = -1, -- pt
 			InfantryConditionToken = -1, -- pt
 			RadarConditionToken = -1, -- pt
@@ -196,14 +195,14 @@ SetTeamInfo = function()
 			Refinery = nil,
 			Barracks = nil,
 			WarFactory = nil,
-			WarFactoryActorLocation = nil,
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
 			Defenses = {},
 			LastCheckedResourceAmount = 0,
 			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval,
-			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval
+			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval,
+			WarFactoryActorLocation = nil
 		}
 	end)
 
@@ -272,7 +271,6 @@ BindPurchaseTerminals = function()
 			-- NOTE: Team conditions should match the faction name.
 			pt.GrantCondition(pi.Player.Faction)
 
-			pi.BuildingConditionToken = pt.GrantCondition("building")
 			pi.RadarConditionToken = pt.GrantCondition("radar")
 			pi.InfantryConditionToken = pt.GrantCondition("infantry")
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")

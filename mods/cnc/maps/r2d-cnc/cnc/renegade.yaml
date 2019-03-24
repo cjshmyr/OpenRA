@@ -21,8 +21,6 @@ PurchaseTerminal:
 		Group: Vehicle
 		ReadyAudio: KeepEmComin #UnitReady
 	Exit:
-	ExternalCondition@building:
-		Condition: building
 	ExternalCondition@vehicle:
 		Condition: vehicle
 	ExternalCondition@vehicle-penalty:
@@ -37,9 +35,6 @@ PurchaseTerminal:
 		Condition: nod
 	ExternalCondition@radar:
 		Condition: radar
-	ProvidesPrerequisite@building:
-		Prerequisite: building
-		RequiresCondition: building
 	ProvidesPrerequisite@vehicle:
 		Prerequisite: vehicle
 		RequiresCondition: vehicle
@@ -63,13 +58,20 @@ PurchaseTerminal:
 
 ^HeroUnit:
 	Production:
-		Produces: Building
+		Produces: Building, Defence
 	ProductionBar@Building:
 		ProductionType: Building
 	ProductionQueue@Building:
 		Type: Building
 		Group: Building
+	ProductionBar@Defence:
+		ProductionType: Defence
+	ProductionQueue@Defence:
+		Type: Defence
+		Group: Defence
 	Exit:
+	ProvidesPrerequisite@cameo:
+		Prerequisite: cameo
 	ExternalCondition@canbuy:
 		Condition: canbuy
 	ProvidesPrerequisite@canbuy:
@@ -563,3 +565,112 @@ nuke-beacon:
 	Explodes:
 		Weapon: AtomicBeacon
 		DamageSource: Killer
+
+buy.cameo.fact:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Construction Yard
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~cameo
+		Queue: Defence
+		Description: When present:\n- Provides automatic repairs to all base buildings.
+		BuildLimit: -1
+	RenderSprites:
+		Image: fact
+
+buy.cameo.proc:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Tiberium Refinery
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~cameo
+		Queue: Defence
+		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.
+	RenderSprites:
+		Image: proc
+
+buy.cameo.nuk2:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Power Plant
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: ~cameo
+		Queue: Defence
+		Description: When present:\n- Provides power to base structures.\n\nWhen destroyed:\n- Powered base defenses are offline.\n- Radar is offline.
+	RenderSprites:
+		Image: nuk2
+
+buy.cameo.hq:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Communications Center
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: ~cameo
+		Queue: Defence
+		Description: When present:\n- Provides radar for the team.
+	RenderSprites:
+		Image: hq
+
+buy.cameo.weap:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Weapons Factory
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~cameo, ~gdi
+		Queue: Defence
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Weapons Factory stood.
+	RenderSprites:
+		Image: weap
+
+buy.cameo.afld:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Airstrip
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~cameo, ~nod
+		Queue: Defence
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Airstrip stood.
+	RenderSprites:
+		Image: afld
+
+buy.cameo.pyle:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Barracks
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: ~cameo, ~gdi
+		Queue: Defence
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.
+	RenderSprites:
+		Image: pyle
+
+buy.cameo.hand:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Hand of Nod
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: ~cameo, ~nod
+		Queue: Defence
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.
+	RenderSprites:
+		Image: hand
+
+buy.cameo.fix:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Repair Facility
+	Buildable:
+		BuildPaletteOrder: 70
+		Prerequisites: ~cameo
+		Queue: Defence
+		Description: When present:\n- Allows for repairing of vehicles.
+	RenderSprites:
+		Image: fix
