@@ -21,6 +21,11 @@ RepairGun:
 		ValidTargets: DisarmBeacon
 		#ValidStances: Enemy # Currently allow for disarming our own.
 
+227mm: #MLRS (Fires 12 rockets now!)
+	ReloadDelay: 200
+	Burst: 6
+	BurstDelays: 20
+
 AtomicBeacon:
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage

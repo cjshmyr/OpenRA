@@ -261,7 +261,7 @@ buy.vehicle.penalty.apc:
 		BuildPaletteOrder: 20
 		Prerequisites: ~canbuy, ~vehicle-penalty
 
-buy.vehicle.mlrs:
+buy.vehicle.msam:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 450
@@ -271,12 +271,12 @@ buy.vehicle.mlrs:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~vehicle, ~gdi
 		Queue: Vehicle
-		Description: Anti-armor vehicle.\nHolds 1 passenger.
+		Description: Artillery vehicle.\nHolds 1 passenger.
 	RenderSprites:
-		Image: mlrs
+		Image: msam
 
-buy.vehicle.penalty.mlrs:
-	Inherits: buy.vehicle.mlrs
+buy.vehicle.penalty.msam:
+	Inherits: buy.vehicle.msam
 	Valued:
 		Cost: 900
 	Buildable:
@@ -359,7 +359,7 @@ buy.vehicle.arty:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
-		Description: Anti-armor vehicle.\nHolds 1 passenger.
+		Description: Artillery vehicle.\nHolds 1 passenger.
 	RenderSprites:
 		Image: arty
 

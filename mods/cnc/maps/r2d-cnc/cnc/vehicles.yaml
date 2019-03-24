@@ -31,8 +31,12 @@ JEEP:
 APC:
 	Inherits@Passengers: ^FourPassengers
 
-MLRS:
+MSAM:
 	Inherits@Passengers: ^OnePassenger
+	Tooltip:
+		Name: Multiple Launch Rocket System
+	Armament@SECONDARY:
+		FireDelay: 10
 
 MTNK:
 	Inherits@Passengers: ^TwoPassengers
