@@ -137,6 +137,9 @@ WorldLoaded = function()
 	DistributeGatheredResources()
 	CheckVictoryConditions()
 	DrawScoreboard()
+
+	-- Any tests
+	DoTests()
 end
 
 Tick = function()
@@ -1143,4 +1146,13 @@ ActorIsNeutral = function(actor)
 	-- A bit hacky, but assumes anyone with Neutral in their name being neutral.
 	-- Can go away with garrisoning logic.
 	return string.find(NeutralPlayerName, actor.Owner.InternalName)
+end
+
+-- [[ Tests ]]
+DoTests = function()
+	local weaponTest = false
+	if weaponTest then
+		Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(32, 30) });
+		Actor.Create('e5', true, { Owner = BetaTeamPlayer, Location = CPos.New(35, 30) });
+	end
 end
