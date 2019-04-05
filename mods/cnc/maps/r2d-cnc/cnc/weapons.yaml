@@ -1,4 +1,4 @@
-RepairGun:
+RepairGun: #e6
 	ReloadDelay: 30
 	Range: 2c0
 	Report: tone16.aud
@@ -21,12 +21,34 @@ RepairGun:
 		ValidTargets: DisarmBeacon
 		#ValidStances: Enemy # Currently allow for disarming our own.
 
-227mm: #MLRS (Fires 12 rockets now!)
+227mm: #mlrs (fires 12 rockets, longer delay)
 	ReloadDelay: 200
 	Burst: 6
 	BurstDelays: 20
 
-AtomicBeacon:
+Grenade: #e2 (faster projectile, more accurate, more damage)
+	Projectile: Bullet
+		Speed: 204
+		Inaccuracy: 400
+	Warhead@1Dam: SpreadDamage
+		Damage: 7500
+
+Rambo: #rmbo (new weapon (heavy mg), more damage)
+	Inherits: ^HeavyMG
+	Warhead@1Dam: SpreadDamage
+		Damage: 4500
+
+Flamethrower: #e4 (longer range, more damage)
+	Range: 5c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 6000
+
+Chemspray: #e5 (longer range, more damage)
+	Range: 5c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 12000
+
+AtomicBeacon: #beacon
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
@@ -40,7 +62,7 @@ AtomicBeacon:
 		ImpactSounds: nukexplo.aud
 		ImpactActors: false
 
-IonCannonBeacon:
+IonCannonBeacon: #beacon
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512

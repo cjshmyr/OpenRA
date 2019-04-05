@@ -63,3 +63,5 @@ RMBO:
 	Inherits@HeroUnit: ^HeroUnit
 	Inherits@InfantryTier: ^TierThreeInfantry
 	-Demolition:
+	Armament:
+		Weapon: Rambo
