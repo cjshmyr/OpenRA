@@ -12,7 +12,6 @@ World:
 	MapOptions:
 		TechLevel: unrestricted
 		TechLevelDropdownLocked: true
-		TechLevelDropdownEnabled: false
 		TechLevelDropdownVisible: false
 		ShortGameCheckboxLocked: true
 		ShortGameCheckboxEnabled: false

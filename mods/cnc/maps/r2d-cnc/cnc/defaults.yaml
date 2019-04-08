@@ -71,3 +71,7 @@
 	RevealsShroudMultiplier:
 		Modifier: 0
 		RequiresCondition: !occupied
+
+# Hacky, but to satisfy OpenRA's lint
+^CivBuilding:
+	ConditionManager:

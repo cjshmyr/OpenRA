@@ -2,6 +2,7 @@
 HARV-AI:
 	Inherits: HARV
 	-Cargo:
+	-Capturable:
 	-RevealsShroudMultiplier:
 
 ^OnePassenger:

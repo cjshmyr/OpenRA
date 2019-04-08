@@ -3,4 +3,3 @@ TRAN-AI:
 	-Targetable@GROUND:
 	-Targetable@AIRBORNE:
 	WithFacingSpriteBody:
-		Image: tran

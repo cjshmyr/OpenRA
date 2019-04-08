@@ -545,6 +545,9 @@ buy.placebeacon.nuke-beacon:
 		Condition: beacontimer
 	ExternalCondition@beacontimer:
 		Condition: beacontimer
+	RevealsShroudMultiplier: # HACK: This is only done so lint doesn't complain.
+		Modifier: 0
+		RequiresCondition: beacontimer
 
 ion-beacon:
 	Inherits: ^beacon

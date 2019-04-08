@@ -65,3 +65,5 @@ RMBO:
 	-Demolition:
 	Armament:
 		Weapon: Rambo
+	Captures@VEHICLES:
+		Voice: Move
