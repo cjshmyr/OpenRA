@@ -1,6 +1,6 @@
 --[[
-	Renegade 2D Lua script by @hamb
-	Version: 0.90
+	Renegade 2D: Lua script by @hamb
+	Version: 0.9 Beta
 	Engine: OpenRA release-20190314
 ]]
 
