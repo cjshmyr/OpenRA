@@ -1150,7 +1150,7 @@ end
 
 -- [[ Tests ]]
 DoTests = function()
-	local weaponTest = true
+	local weaponTest = false
 	if weaponTest then
 		Actor.Create('gtwr', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) });
 		Actor.Create('htnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) });
