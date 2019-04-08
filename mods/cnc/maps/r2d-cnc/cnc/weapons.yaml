@@ -32,6 +32,10 @@ RepairGun: #e6
 			Wood: 80
 			Heavy: 60
 
+ArtilleryShell: #arty (more accuracy)
+	Projectile: Bullet
+		Inaccuracy: 1c0
+
 Grenade: #e2 (faster projectile, more accurate, more damage)
 	Projectile: Bullet
 		Speed: 204
