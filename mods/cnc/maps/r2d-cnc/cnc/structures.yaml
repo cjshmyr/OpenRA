@@ -49,16 +49,24 @@ FIX:
 
 GUN:
 	Inherits@Renegade: ^RenegadeSmallBuilding
+	DetectCloaked:
+		Range: 6c0
 
 OBLI:
 	Inherits@Renegade: ^RenegadeSmallBuilding
+	DetectCloaked:
+		Range: 6c0
 	Power: # Powered defense
 		Amount: -1
 
 GTWR:
 	Inherits@Renegade: ^RenegadeSmallBuilding
+	DetectCloaked:
+		Range: 6c0
 
 ATWR:
 	Inherits@Renegade: ^RenegadeSmallBuilding
+	DetectCloaked:
+		Range: 6c0
 	Power: # Powered defense
 		Amount: -1
