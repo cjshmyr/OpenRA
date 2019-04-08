@@ -1,7 +1,7 @@
 # Buildings provide a proximity condition for being nearby.
 # Buildings have a condition when damaged.
 # Buildings can be repaired by engineers.
-# Buildings (when being repaired by AI) repair rate is adjusted.
+# Buildings (when being repaired by AI) repair rate is adjusted, and costs nothing.
 ^Building:
 	ProximityExternalCondition:
 		Condition: nearallybuilding
@@ -13,6 +13,7 @@
 		TargetTypes: Repair
 	RepairableBuilding:
 		RepairInterval: 50
+		RepairPercent: 0
 
 # Infantry can see cloaked units.
 # Allow infantry to auto-heal close enough to base buildings
