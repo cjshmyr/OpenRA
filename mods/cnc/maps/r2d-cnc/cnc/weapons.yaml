@@ -54,9 +54,10 @@ Grenade: #e2 (faster projectile, more accurate, more damage)
 	Warhead@1Dam: SpreadDamage
 		Damage: 7500
 
-Rambo: #rmbo (new weapon (heavy mg), more damage)
+Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage)
 	Inherits: ^HeavyMG
 	Warhead@1Dam: SpreadDamage
+		Spread: 128
 		Damage: 4500
 
 Flamethrower: #e4 (longer range, more damage)
