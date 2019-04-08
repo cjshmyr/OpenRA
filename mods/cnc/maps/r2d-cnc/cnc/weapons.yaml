@@ -36,9 +36,8 @@ ArtilleryShell: #arty (more accuracy)
 	Projectile: Bullet
 		Inaccuracy: 1c0
 
-BigFlamer: #ftnk (faster reload, less range, no burst, damage adjusted to match new reload and double armaments, more damage vs heavy)
+BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs heavy)
 	ReloadDelay: 10
-	Range: 2c0
 	-Burst:
 	-BurstDelays:
 	Warhead@1Dam: SpreadDamage
