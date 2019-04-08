@@ -21,10 +21,16 @@ RepairGun: #e6
 		ValidTargets: DisarmBeacon
 		#ValidStances: Enemy # Currently allow for disarming our own.
 
-227mm: #mlrs (fires 12 rockets, longer delay)
-	ReloadDelay: 200
+227mm: #mlrs (fires 12 rockets, more accuracy, less rocket speed, more damage vs wood/heavy)
 	Burst: 6
 	BurstDelays: 20
+	Projectile:
+		Speed: 280
+		Inaccuracy: 400
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Wood: 80
+			Heavy: 60
 
 Grenade: #e2 (faster projectile, more accurate, more damage)
 	Projectile: Bullet
