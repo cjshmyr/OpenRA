@@ -125,5 +125,5 @@ HighV: #gtwr (made similar to TurretGun)
 
 TowerMissile: #atwr (made similar to Laser)
 	Range: 7c512
-	Warhead@1Dam:
+	Warhead@1Dam: SpreadDamage
 		Damage: 7500
