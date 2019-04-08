@@ -55,6 +55,11 @@ LTNK:
 
 FTNK:
 	Inherits@Passengers: ^TwoPassengers
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: BigFlamer
+		LocalOffset: 512,-128,42, 512,128,42
+		MuzzleSequence: muzzle
 
 STNK:
 	Inherits@Passengers: ^OnePassenger
