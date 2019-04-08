@@ -1150,9 +1150,12 @@ end
 
 -- [[ Tests ]]
 DoTests = function()
-	local weaponTest = false
+	local weaponTest = true
 	if weaponTest then
-		Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(32, 30) });
-		Actor.Create('e5', true, { Owner = BetaTeamPlayer, Location = CPos.New(35, 30) });
+		Actor.Create('gtwr', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) });
+		Actor.Create('htnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) });
+
+		Actor.Create('gun', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 40) });
+		Actor.Create('htnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 40) });
 	end
 end

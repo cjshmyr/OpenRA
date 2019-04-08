@@ -1,4 +1,4 @@
-RepairGun: #e6
+RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 	ReloadDelay: 30
 	Range: 2c0
 	Report: tone16.aud
@@ -20,6 +20,29 @@ RepairGun: #e6
 		Damage: 1000
 		ValidTargets: DisarmBeacon
 		#ValidStances: Enemy # Currently allow for disarming our own.
+
+Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage)
+	Inherits: ^HeavyMG
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 4500
+
+Grenade: #e2 (faster projectile, more accurate, more damage)
+	Projectile: Bullet
+		Speed: 204
+		Inaccuracy: 400
+	Warhead@1Dam: SpreadDamage
+		Damage: 7500
+
+Flamethrower: #e4 (longer range, more damage)
+	Range: 5c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 6000
+
+Chemspray: #e5 (longer range, more damage)
+	Range: 5c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 12000
 
 227mm: #mlrs (fires 12 rockets, more accuracy, less rocket speed, more damage vs wood/heavy)
 	Burst: 6
@@ -46,29 +69,6 @@ BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload a
 			Heavy: 75
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-
-Grenade: #e2 (faster projectile, more accurate, more damage)
-	Projectile: Bullet
-		Speed: 204
-		Inaccuracy: 400
-	Warhead@1Dam: SpreadDamage
-		Damage: 7500
-
-Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage)
-	Inherits: ^HeavyMG
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 4500
-
-Flamethrower: #e4 (longer range, more damage)
-	Range: 5c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 6000
-
-Chemspray: #e5 (longer range, more damage)
-	Range: 5c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 12000
 
 AtomicBeacon: #beacon
 	ValidTargets: Ground, Air, Trees
@@ -98,3 +98,32 @@ IonCannonBeacon: #beacon
 		Explosions: ion_explosion
 		ImpactSounds: ion1.aud
 		ImpactActors: false
+
+TurretGun: #gun (reduced vs heavy damage)
+	ReloadDelay: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 4000
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 75
+
+Laser: #obli (no changes)
+
+HighV: #gtwr (made similar to TurretGun)
+	ReloadDelay: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 4000
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 75
+
+TowerMissile: #atwr (made similar to Laser)
+	Range: 7c512
+	Warhead@1Dam:
+		Damage: 7500
