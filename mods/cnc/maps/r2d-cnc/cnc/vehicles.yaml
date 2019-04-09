@@ -4,6 +4,8 @@ HARV-AI:
 	-Cargo:
 	-Capturable:
 	-RevealsShroudMultiplier:
+	Mobile:
+		-RequiresCondition:
 
 ^OnePassenger:
 	Cargo:

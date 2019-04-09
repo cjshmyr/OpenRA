@@ -50,6 +50,7 @@
 # Vehicles can be repaired by engineers.
 # HACK: Neutral vehicles can be captured. Can be removed if we can garrison neutrals.
 # All vehicles provide no vision if empty.
+# Vehicles can't move unless they have an 'occupied' or 'brandnew' condition.
 ^Vehicle:
 	DetectCloaked:
 		Range: 4c0
@@ -71,6 +72,10 @@
 	RevealsShroudMultiplier:
 		Modifier: 0
 		RequiresCondition: !occupied
+	ExternalCondition@BRANDNEW:
+		Condition: brandnew
+	Mobile:
+		RequiresCondition: occupied || brandnew
 
 # Hacky, but to satisfy OpenRA's lint
 ^CivBuilding:

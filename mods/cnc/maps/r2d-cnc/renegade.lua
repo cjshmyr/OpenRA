@@ -9,7 +9,6 @@ PlayerInfo = { }
 TeamInfo = { }
 HealthAfterOnDamageEventTable = { } -- HACK: We store damage dealt since last instance, since OnDamage doesn't tell us.
 HarvesterWaypoints = { } -- Waypoints used to guide harvesters near their ore field.
-PlayerHarvesters = { } -- HACK: We have to repeatedly tell harvesters to stop moving, or they forever FindResources.
 TypeNameTable = { } -- HACK: We don't have a nice way of getting an actor's name (e.g. hand -> Hand of Nod), except for this.
 BeaconSoundsTable = { }
 CashPerSecond = 2 -- Cash given per second.
@@ -146,7 +145,6 @@ Tick = function()
 	-- Tick interval = 1
 	IncrementUnderAttackNotificationTicks()
 	HackyDrawNameTags()
-	HackyStopNeutralHarvesters()
 end
 
 --[[ World Loaded / Gameplay ]]
@@ -554,8 +552,14 @@ BindVehicleEvents = function()
 end
 
 BindProducedVehicleEvents = function(produced)
+	-- New vehicles are granted a 'brandnew' condition so they are mobile.
+	local brandnewToken = produced.GrantCondition('brandnew')
+
 	-- Damage/killed events
 	Trigger.OnDamaged(produced, function(self, attacker)
+		-- Remove the 'brandnew' token (we don't want empty damaged vehicles chasing players)
+		produced.RevokeCondition(brandnewToken)
+
 		GrantRewardOnDamaged(self, attacker)
 	end)
 	Trigger.OnKilled(produced, function(self, killer)
@@ -570,11 +574,11 @@ BindProducedVehicleEvents = function(produced)
 		InitializeAiHarvester(produced, wasPurchased)
 	end
 
-	-- HACK: Neutral vehicles are assigned a specific neutral team.
+	-- HACK: Neutral vehicles are assigned a faction-specific neutral team.
 	-- This accomplishes allowing friendly units to 'enter' or damage/repair the vehicle.
-	-- As of this engine we cannot enter neutral vehicles.
+	-- As of this engine version we cannot enter neutral vehicles.
 	-- Unfortunate side-effect:
-	-- When we see an enemy vehicle, it has to be captured (switches to their team-specific neutral)
+	-- When we see an enemy vehicle, it has to be captured (switches to their faction-specific neutral team)
 	-- then it can be destroyed or repaired.
 	-- As of this engine version, there is no way to have a neutral actor capturable by both sides,
 	-- that does not mess with order targeters or cause shared vision problems.
@@ -586,10 +590,12 @@ BindProducedVehicleEvents = function(produced)
 		Trigger.AfterDelay(1, function() captor.EnterTransport(self) end)
 	end)
 
-	-- TODO: Once a neutral vehicle has been entered, it should be immobile after someone exits it.
-
-	-- Ownership bindings; if someone enters a vehicle with no passengers, they're the owner.
+	-- Ownership bindings
 	Trigger.OnPassengerEntered(produced, function(transport, passenger)
+		-- Remove the 'brandnew' token (we don't want player harvesters to continue functioning while empty)
+		produced.RevokeCondition(brandnewToken)
+
+		-- If someone enters a vehicle with no passengers, they're the owner.
 		if transport.PassengerCount == 1 then
 			transport.Owner = passenger.Owner
 		end
@@ -602,11 +608,6 @@ BindProducedVehicleEvents = function(produced)
 		if transport.PassengerCount == 1 then
 			pi.IsPilot = true
 		end
-
-		-- Harvester hack: Also adding to list of harvesters.
-		if transport.Type == PlayerHarvesterActorType then
-			PlayerHarvesters[#PlayerHarvesters+1] = transport
-		end
 	end)
 
 	-- If it's empty, transfer ownership back to neutral.
@@ -614,9 +615,6 @@ BindProducedVehicleEvents = function(produced)
 		if transport.PassengerCount == 0 then
 			transport.Owner = GetNeutralPlayerForActor(passenger)
 		end
-
-		-- Note: This won't stop harvesters. Players can exit them whenever, so we handle that elsewhere.
-		transport.Stop()
 
 		local pi = PlayerInfo[passenger.Owner.InternalName]
 
@@ -1090,17 +1088,6 @@ HackyDrawNameTags = function()
 				end
 			end
 		end)
-	end)
-end
-
-HackyStopNeutralHarvesters = function()
-	-- Neutral harvesters will continue to harvest if we leave while en route to deliver ore.
-	-- Simply stopping the harvester or asking it to wait will not work, we have to repeatedly tell the harvester to move in place.
-	Utils.Do(PlayerHarvesters, function(harv)
-		-- TODO: This will forever tick on harvesters that are dead, etc. We never are removing them from the list when whe should.
-		if not harv.IsDead and ActorIsNeutral(harv) then
-			harv.Move(harv.Location)
-		end
 	end)
 end
 
