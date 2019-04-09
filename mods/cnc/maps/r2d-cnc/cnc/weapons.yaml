@@ -69,7 +69,7 @@ BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload a
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
-AtomicBeacon: #beacon
+AtomicBeacon: #nuke-beacon
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
@@ -83,7 +83,7 @@ AtomicBeacon: #beacon
 		ImpactSounds: nukexplo.aud
 		ImpactActors: false
 
-IonCannonBeacon: #beacon
+IonCannonBeacon: #ion-beacon
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
@@ -93,10 +93,10 @@ IonCannonBeacon: #beacon
 		AffectsParent: True
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Eff_impact: CreateEffect
-		Image: custom_explosion
 		Explosions: ion_explosion
 		ImpactSounds: ion1.aud
 		ImpactActors: false
+		Image: custom_explosion
 
 TurretGun: #gun (reduced vs heavy damage)
 	ReloadDelay: 20

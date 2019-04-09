@@ -542,12 +542,12 @@ buy.placebeacon.nuke-beacon:
 	Targetable:
 		TargetTypes: DisarmBeacon
 	TimedConditionBar:
-		Condition: beacontimer
-	ExternalCondition@beacontimer:
-		Condition: beacontimer
+		Condition: activebeacon
+	ExternalCondition@activebeacon:
+		Condition: activebeacon
 	RevealsShroudMultiplier: # HACK: This is only done so lint doesn't complain.
 		Modifier: 0
-		RequiresCondition: beacontimer
+		RequiresCondition: !activebeacon
 
 ion-beacon:
 	Inherits: ^beacon
@@ -558,6 +558,7 @@ ion-beacon:
 	Explodes:
 		Weapon: IonCannonBeacon
 		DamageSource: Killer
+		RequiresCondition: activebeacon
 
 nuke-beacon:
 	Inherits: ^beacon
@@ -568,6 +569,7 @@ nuke-beacon:
 	Explodes:
 		Weapon: AtomicBeacon
 		DamageSource: Killer
+		RequiresCondition: activebeacon
 
 buy.cameo.fact:
 	Inherits: ^buy.default

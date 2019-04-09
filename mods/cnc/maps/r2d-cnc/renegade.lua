@@ -795,7 +795,7 @@ BuildHeroItem = function(pi, actorType)
 	if string.find(actorType, HeroItemPlaceBeaconActorTypePrefix) then
 		-- Create beacon at current location (hero gets nudged)
 		local beacon = Actor.Create(type, true, { Owner = pi.Player, Location = pi.Hero.Location })
-		beacon.GrantCondition('beacontimer', BeaconTimeLimit)
+		local beaconToken = beacon.GrantCondition('activebeacon', BeaconTimeLimit)
 
 		DisplayMessage(TypeNameTable[beacon.Type] .. ' deployed!')
 
@@ -821,14 +821,18 @@ BuildHeroItem = function(pi, actorType)
 		end)
 
 		Trigger.OnDamaged(beacon, function(actor, attacker)
+			if actor.Health == 0 and actor.Type ~= attacker.Type then
+				-- If the beacon has no health left, disable the activebeacon condition so it doesn't explode.
+				beacon.RevokeCondition(beaconToken)
+			end
+
 			GrantRewardOnDamaged(actor, attacker);
 		end)
 
 		Trigger.OnKilled(beacon, function(actor, killer)
-			-- Don't display a disarm message if killing self.
-			if actor.Owner.InternalName ~= killer.Owner.InternalName then
+			if actor.Type ~= killer.Type then
 				GrantRewardOnKilled(actor, killer, "beacon");
-				DisplayMessage('Beacon disarmed!')
+				DisplayMessage(TypeNameTable[beacon.Type] .. ' disarmed by ' .. actor.Owner.Name .. '!')
 			end
 		end)
 
