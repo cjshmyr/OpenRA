@@ -19,7 +19,6 @@ RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 		Spread: 42
 		Damage: 1000
 		ValidTargets: DisarmBeacon
-		#ValidStances: Enemy # Currently allow for disarming our own.
 
 Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage)
 	Inherits: ^HeavyMG

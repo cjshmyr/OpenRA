@@ -51,7 +51,7 @@ E6:
 		Weapon: RepairGun
 		Cursor: repair
 		OutsideRangeCursor: repair
-		TargetStances: Ally
+		TargetStances: Ally, Enemy
 		ForceTargetStances: None
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
