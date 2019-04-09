@@ -748,6 +748,11 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 		local actorId = tostring(newHero)
 		HealthAfterOnDamageEventTable[actorId] = newHero.Health
 
+		-- Carry over any inventory tokens
+		if pi.HasBeaconConditionToken > -1 then
+			pi.HasBeaconConditionToken = newHero.GrantCondition("hasbeacon")
+		end
+
 		-- Doesn't look that great if moving.
 		hero.Stop()
 		hero.IsInWorld = false
