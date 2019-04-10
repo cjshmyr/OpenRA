@@ -538,7 +538,7 @@ buy.placebeacon.nuke-beacon:
 	RevealsShroud:
 		Range: 3c0
 	WithSpriteBody:
-	FrozenUnderFog:
+	HiddenUnderFog:
 	Targetable:
 		TargetTypes: DisarmBeacon
 	TimedConditionBar:
