@@ -834,6 +834,12 @@ BuildHeroItem = function(pi, actorType)
 			end
 		end)
 
+		-- Flash the beacon at intervals
+		local flashTicks = GetBeaconFlashTicks()
+		for i,v in pairs(flashTicks) do
+			Trigger.AfterDelay(v, function() if beacon.IsInWorld then beacon.Flash(2) end end)
+		end
+
 		-- Set up warhead
 		Trigger.AfterDelay(BeaconTimeLimit, function()
 			if beacon.IsInWorld then
@@ -843,6 +849,25 @@ BuildHeroItem = function(pi, actorType)
 			end
 		end)
 	end
+end
+
+GetBeaconFlashTicks = function()
+	-- A hacky gradual increase
+	local ticks = { }
+
+	local tick = BeaconTimeLimit
+	local interval = DateTime.Seconds(1) / 5
+	while tick > 0 do
+		local step = 1
+		while step <= 4 do
+			tick = tick - interval
+			if tick > 0 then ticks[#ticks+1] = tick end
+			step = step + 1
+		end
+		interval = interval + (DateTime.Seconds(1) / 5)
+	end
+
+	return ticks
 end
 
 GrantRewardOnDamaged = function(self, attacker)
