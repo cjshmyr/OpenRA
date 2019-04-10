@@ -1031,6 +1031,8 @@ DrawScoreboard = function()
 		Displaying everyone would require the position to not be centered on screen, or busier lines.
 	]]
 
+	local isSpectating = LocalPlayer == nil
+
 	local alphaTeamFaction = AlphaTeamPlayerName:lower()
 	local betaTeamFaction = BetaTeamPlayerName:lower()
 	local teamStats = { }
@@ -1058,8 +1060,12 @@ DrawScoreboard = function()
 		.. BetaTeamPlayerName .. ': ' .. tostring(teamStats[betaTeamFaction].Score) .. ' points - '
 		.. tostring(teamStats[betaTeamFaction].Kills) .. '/' .. tostring(teamStats[betaTeamFaction].Deaths)
 		.. '\n'
+
+	if not isSpectating then
+		scoreboard = scoreboard
 		.. localPlayer.Player.Name .. ': ' .. tostring(localPlayer.Score) .. ' points - '
 		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths)
+	end
 
 	UserInterface.SetMissionText(scoreboard)
 
@@ -1080,8 +1086,11 @@ HackyDrawNameTags = function()
 		Units that can cloak will never show their nametag to enemies,
 		since we can't track that state in Lua.
 	]]
+
+	local isSpectating = LocalPlayer == nil
+
 	Utils.Do(TeamInfo, function(ti)
-		local sameTeam = LocalPlayer.Faction == ti.AiPlayer.Faction
+		local sameTeam = isSpectating or LocalPlayer.Faction == ti.AiPlayer.Faction
 
 		Utils.Do(ti.Players, function(pi)
 			if pi.Hero ~= nil and pi.Hero.IsInWorld then
