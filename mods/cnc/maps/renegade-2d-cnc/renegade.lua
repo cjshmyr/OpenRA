@@ -555,11 +555,15 @@ BindProducedVehicleEvents = function(produced)
 	-- New vehicles are granted a 'brandnew' condition so they are mobile.
 	local brandnewToken = produced.GrantCondition('brandnew')
 
+	-- Revoke the brandew token 3 seconds later, this will be enough time for them to move to rallypoint.
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		if produced.IsInWorld then
+			produced.RevokeCondition(brandnewToken)
+		end
+	end)
+
 	-- Damage/killed events
 	Trigger.OnDamaged(produced, function(self, attacker)
-		-- Remove the 'brandnew' token (we don't want empty damaged vehicles chasing players)
-		produced.RevokeCondition(brandnewToken)
-
 		GrantRewardOnDamaged(self, attacker)
 	end)
 	Trigger.OnKilled(produced, function(self, killer)
@@ -592,9 +596,6 @@ BindProducedVehicleEvents = function(produced)
 
 	-- Ownership bindings
 	Trigger.OnPassengerEntered(produced, function(transport, passenger)
-		-- Remove the 'brandnew' token (we don't want player harvesters to continue functioning while empty)
-		produced.RevokeCondition(brandnewToken)
-
 		-- If someone enters a vehicle with no passengers, they're the owner.
 		if transport.PassengerCount == 1 then
 			transport.Owner = passenger.Owner

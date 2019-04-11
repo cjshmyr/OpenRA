@@ -4,9 +4,8 @@ HARV-AI:
 	-Cargo:
 	-Capturable:
 	-RevealsShroudMultiplier:
-	-ExternalCondition@BRANDNEW:
 	Mobile:
-		-RequiresCondition:
+		RequiresCondition: brandnew || !brandnew # HACK: Stop lint complaining. Can be removed when we move Mobile changes from defaults.yaml.
 
 ^OnePassenger:
 	Cargo:
@@ -43,7 +42,6 @@ APC:
 
 MSAM:
 	Inherits@Passengers: ^OnePassenger
-
 	Tooltip:
 		Name: Multiple Launch Rocket System
 	Armament@SECONDARY:

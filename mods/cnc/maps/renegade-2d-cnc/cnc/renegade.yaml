@@ -545,9 +545,6 @@ buy.placebeacon.nuke-beacon:
 		Condition: activebeacon
 	ExternalCondition@activebeacon:
 		Condition: activebeacon
-	RevealsShroudMultiplier: # HACK: This is only done so lint doesn't complain.
-		Modifier: 0
-		RequiresCondition: !activebeacon
 
 ion-beacon:
 	Inherits: ^beacon
