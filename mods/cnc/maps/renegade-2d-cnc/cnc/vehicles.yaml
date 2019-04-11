@@ -79,3 +79,4 @@ HARV:
 	Inherits@Passengers: ^OnePassenger
 	Harvester:
 		SearchOnCreation: false
+	-Explodes:
