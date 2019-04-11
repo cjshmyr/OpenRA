@@ -5,7 +5,7 @@ HARV-AI:
 	-Capturable:
 	-RevealsShroudMultiplier:
 	Mobile:
-		RequiresCondition: brandnew || !brandnew # HACK: Stop lint complaining. Can be removed when we move Mobile changes from defaults.yaml.
+		-RequiresCondition:
 
 ^OnePassenger:
 	Cargo:
