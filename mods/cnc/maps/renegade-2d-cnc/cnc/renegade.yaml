@@ -425,7 +425,7 @@ buy.vehicle.stnk:
 		BuildPaletteOrder: 60
 		Prerequisites: ~canbuy, ~vehicle, ~nod
 		Queue: Vehicle
-		Description: Anti-infantry, anti-armor vehicle.\nCloaked.\nHolds 1 passenger.
+		Description: Anti-infantry, anti-armor vehicle.\nCloaked.\nLoses cloak when health is critical or vehicle is empty.\nAll enemy defenses and units can detect cloak if nearby.\nHolds 1 passenger.
 	RenderSprites:
 		Image: stnk
 
