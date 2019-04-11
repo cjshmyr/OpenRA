@@ -576,7 +576,7 @@ buy.cameo.fact:
 		BuildPaletteOrder: 10
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides automatic repairs to all base buildings.
+		Description: When present:\n- Provides automatic repairs to all base buildings.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 		BuildLimit: -1
 	RenderSprites:
 		Image: fact
@@ -589,7 +589,7 @@ buy.cameo.proc:
 		BuildPaletteOrder: 20
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.
+		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: proc
 
@@ -601,7 +601,7 @@ buy.cameo.nuk2:
 		BuildPaletteOrder: 30
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides power to base structures.\n\nWhen destroyed:\n- Powered base defenses are offline.\n- Radar is offline.
+		Description: When present:\n- Provides power to base structures.\n\nWhen destroyed:\n- Powered base defenses are offline.\n- Radar is offline.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: nuk2
 
@@ -613,7 +613,7 @@ buy.cameo.hq:
 		BuildPaletteOrder: 40
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides radar for the team.
+		Description: When present:\n- Provides radar for the team.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hq
 
@@ -625,7 +625,7 @@ buy.cameo.weap:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Weapons Factory stood.
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: weap
 
@@ -637,7 +637,7 @@ buy.cameo.afld:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Airstrip stood.
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: afld
 
@@ -649,7 +649,7 @@ buy.cameo.pyle:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: pyle
 
@@ -661,7 +661,7 @@ buy.cameo.hand:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hand
 
@@ -673,6 +673,6 @@ buy.cameo.fix:
 		BuildPaletteOrder: 70
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for repairing of vehicles.
+		Description: When present:\n- Allows for repairing of vehicles.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fix
