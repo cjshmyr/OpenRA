@@ -471,7 +471,7 @@ buy.beacon.ion-beacon:
 		Queue: Infantry
 		Description: Purchase an Ion Cannon Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
-		Image: ion
+		Image: ion-beacon
 
 buy.beacon.nuke-beacon:
 	Inherits: ^buy.default
@@ -485,7 +485,7 @@ buy.beacon.nuke-beacon:
 		Queue: Infantry
 		Description: Purchase a Nuclear Strike Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
-		Image: nuke
+		Image: nuke-beacon
 
 buy.placebeacon.ion-beacon:
 	Inherits: ^buy.default
@@ -501,7 +501,7 @@ buy.placebeacon.ion-beacon:
 		BuildDurationModifier: 100
 		Description: Place an Ion Cannon Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, an Ion Cannon Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
-		Image: ion
+		Image: ion-beacon
 
 buy.placebeacon.nuke-beacon:
 	Inherits: ^buy.default
@@ -515,9 +515,9 @@ buy.placebeacon.nuke-beacon:
 		Queue: Building
 		BuildDuration: 50
 		BuildDurationModifier: 100
-		Description: Deploy a Nuclear Strike Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, a Nuclear Missile Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
+		Description: Place a Nuclear Strike Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, a Nuclear Missile Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
-		Image: nuke
+		Image: nuke-beacon
 
 ^beacon:
 	Inherits@1: ^ExistsInWorld
@@ -551,7 +551,6 @@ ion-beacon:
 	Tooltip:
 		Name: Ion Cannon Beacon
 	RenderSprites:
-		Image: ion
 	Explodes:
 		Weapon: IonCannonBeacon
 		DamageSource: Killer
@@ -562,7 +561,6 @@ nuke-beacon:
 	Tooltip:
 		Name: Nuclear Strike Beacon
 	RenderSprites:
-		Image: nuke
 	Explodes:
 		Weapon: AtomicBeacon
 		DamageSource: Killer

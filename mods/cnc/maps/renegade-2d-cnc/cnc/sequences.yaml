@@ -36,7 +36,7 @@ tran-ai:
 	icon: tranicnh.tem
 		AddExtension: False
 
-ion:
+ion-beacon:
 	idle: scrate
 		Start: 0
 		Length: 1
@@ -44,7 +44,7 @@ ion:
 	icon: ionicnh.tem
 		AddExtension: False
 
-nuke:
+nuke-beacon:
 	idle: scrate
 		Start: 0
 		Length: 1
