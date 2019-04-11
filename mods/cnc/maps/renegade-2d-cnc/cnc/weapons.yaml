@@ -70,14 +70,17 @@ ArtilleryShell: #arty (more accuracy, remove minrange)
 		Inaccuracy: 1c0
 	-MinRange:
 
-BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs heavy)
+BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs none, wood, light, heavy -- buff of FlameWeapon)
 	ReloadDelay: 10
 	-Burst:
 	-BurstDelays:
 	Warhead@1Dam: SpreadDamage
 		Damage: 1000
 		Versus:
-			Heavy: 75
+			None: 110
+			Wood: 100
+			Light: 100
+			Heavy: 90
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
