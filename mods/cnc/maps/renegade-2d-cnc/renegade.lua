@@ -1189,10 +1189,14 @@ end
 DoTests = function()
 	local weaponTest = false
 	if weaponTest then
-		Actor.Create('gtwr', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) });
-		Actor.Create('htnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) });
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) })
+		local a1 = Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) })
+		local a2 = Actor.Create('ltnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) })
 
-		Actor.Create('gun', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 40) });
-		Actor.Create('htnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 40) });
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 45) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 45) })
+		local a3 = Actor.Create('e5', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 45) })
+		local a4 = Actor.Create('ltnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 45) })
 	end
 end
