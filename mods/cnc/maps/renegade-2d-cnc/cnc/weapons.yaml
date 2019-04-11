@@ -12,7 +12,7 @@ RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 	#ZOffset: 1024
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: -1000
+		Damage: -1500
 		ValidTargets: Repair
 		ValidStances: Ally
 	Warhead@2Dam: SpreadDamage
@@ -20,28 +20,38 @@ RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 		Damage: 1000
 		ValidTargets: DisarmBeacon
 
-Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage)
+Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage, less damage vs wood, light, heavy)
 	Inherits: ^HeavyMG
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 4500
+		Damage: 6000
+		Versus:
+			Wood: 30
+			Light: 50
+			Heavy: 15
 
-Grenade: #e2 (faster projectile, more accurate, more damage)
+Grenade: #e2 (faster projectile, more accurate, more damage, more damage vs heavy)
 	Projectile: Bullet
 		Speed: 204
 		Inaccuracy: 400
 	Warhead@1Dam: SpreadDamage
 		Damage: 7500
+		Versus:
+			Heavy: 80
 
-Flamethrower: #e4 (longer range, more damage)
+Flamethrower: #e4 (longer range, higher rate of fire, more damage vs heavy)
 	Range: 5c0
+	ReloadDelay: 30
 	Warhead@1Dam: SpreadDamage
-		Damage: 6000
+		Versus:
+			Heavy: 50
 
-Chemspray: #e5 (longer range, more damage)
+Chemspray: #e5 (longer range, higher rate of fire, less damage vs heavy)
 	Range: 5c0
+	ReloadDelay: 30
 	Warhead@1Dam: SpreadDamage
-		Damage: 12000
+		Versus:
+			Heavy: 30
 
 227mm: #mlrs (fires 12 rockets, remove minrange, more accuracy, less rocket speed, more damage vs wood/heavy)
 	Burst: 6
