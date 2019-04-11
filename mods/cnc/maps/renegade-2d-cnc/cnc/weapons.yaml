@@ -43,9 +43,10 @@ Chemspray: #e5 (longer range, more damage)
 	Warhead@1Dam: SpreadDamage
 		Damage: 12000
 
-227mm: #mlrs (fires 12 rockets, more accuracy, less rocket speed, more damage vs wood/heavy)
+227mm: #mlrs (fires 12 rockets, remove minrange, more accuracy, less rocket speed, more damage vs wood/heavy)
 	Burst: 6
 	BurstDelays: 20
+	-MinRange:
 	Projectile:
 		Speed: 280
 		Inaccuracy: 400
@@ -54,9 +55,10 @@ Chemspray: #e5 (longer range, more damage)
 			Wood: 80
 			Heavy: 60
 
-ArtilleryShell: #arty (more accuracy)
+ArtilleryShell: #arty (more accuracy, remove minrange)
 	Projectile: Bullet
 		Inaccuracy: 1c0
+	-MinRange:
 
 BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs heavy)
 	ReloadDelay: 10
