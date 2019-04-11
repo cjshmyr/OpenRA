@@ -32,9 +32,9 @@ Player:
 	-ConquestVictoryConditions:
 	-AllyRepair:
 	Shroud:
-		FogCheckboxLocked: true
-		FogCheckboxEnabled: true
-		FogCheckboxVisible: false
+		#FogCheckboxLocked: true
+		#FogCheckboxEnabled: true
+		#FogCheckboxVisible: false
 		ExploredMapCheckboxLocked: true
 		ExploredMapCheckboxEnabled: true
 		ExploredMapCheckboxVisible: false
