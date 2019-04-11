@@ -907,16 +907,22 @@ GrantRewardOnDamaged = function(self, attacker)
 
 	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
 	if attackerpi ~= nil then -- Is a player
-		-- Points are calculated as a percentage of damage done against a unit's max HP.
-		-- If a unit has 5000 health, and the attack dealt 1500, this is 30% (so 30 points).
-		-- Percentages are rounded up (23.3% of health as damage rewards 24 points)
+		-- Points are calculated as a percentage of damage done against an actor's max HP, then doubled.
+		-- If an actor has 5000 health, and the attack dealt 1500, this is 30%.
+		-- Percentages are rounded up (23.3% of health as damage is 24), and doubled to give us points (24 * 2 = 48)
+		-- But if an actor does a fraction of a percent damage, they are given at least one point.
 
 		-- If the damage dealt was negative, this is a heal
 		damageTaken = math.abs(damageTaken)
 
 		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
 		local points = percentageDamageDealt
-		points = math.ceil(points + 0.5) -- Round up
+
+		if points < 0 then
+			points = 1 -- Fractions of a percentage will be rewarded minorly.
+		else
+			points = math.ceil(points + 0.5) * 2 -- Round up, and double.
+		end
 
 		attackerpi.Score = attackerpi.Score + points
 		attackerpi.Player.Cash = attackerpi.Player.Cash + points
