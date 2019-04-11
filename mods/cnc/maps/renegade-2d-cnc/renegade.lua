@@ -721,7 +721,7 @@ InitializeAiHarvester = function(harv, wasPurchased)
 
 	Trigger.OnKilled(harv, function(self, killer)
 		if not wasPurchased then
-			GrantRewardOnKilled(self, killer)
+			GrantRewardOnKilled(self, killer, "unit")
 		end
 
 		local ti = TeamInfo[self.Owner.InternalName]
@@ -935,7 +935,7 @@ GrantRewardOnKilled = function(self, killer, actorCategory)
 	if killerpi ~= nil then -- Is a player
 		local points = 0
 		if actorCategory == "hero" then	points = 100
-		elseif actorCategory == "unit" then	points = 50
+		elseif actorCategory == "unit" then points = 100
 		elseif actorCategory == "defense" then points = 200
 		elseif actorCategory == "building" then	points = 300
 		elseif actorCategory == "beacon" then points = 300
