@@ -838,7 +838,7 @@ BuildHeroItem = function(pi, actorType)
 		-- Flash the beacon at intervals
 		local flashTicks = GetBeaconFlashTicks()
 		for i,v in pairs(flashTicks) do
-			Trigger.AfterDelay(v, function() if beacon.IsInWorld then beacon.Flash(2) end end)
+			Trigger.AfterDelay(v, function() if beacon.IsInWorld then beacon.Flash(2, pi.Player) end end)
 		end
 
 		-- Set up warhead
