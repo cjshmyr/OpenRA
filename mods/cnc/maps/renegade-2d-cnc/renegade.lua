@@ -907,12 +907,15 @@ GrantRewardOnDamaged = function(self, attacker)
 
 	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
 	if attackerpi ~= nil then -- Is a player
-		-- Points are calculated as a percentage of damage done against an actor's max HP, then doubled.
-		-- If an actor has 5000 health, and the attack dealt 1500, this is 30%.
-		-- Percentages are rounded up (23.3% of health as damage is 24), and doubled to give us points (24 * 2 = 48)
-		-- But if an actor does a fraction of a percent damage, they are given at least one point.
+		-- Points are calculated as a percentage of damage done against an actor's max HP, with then modifiers applied.
+		-- If an actor has 5000 health, and the attack dealt 1500 damage, this is 30%.
+		-- Percentages are rounded up (23.3% of health as damage is 24)
+		-- If damage or healing < 1%, they are given one point.
+		-- If damage > 1%, percentage point reward is doubled (e.g. 24 * 2 = 48)
+		-- If healing, there is no point doubling.
 
 		-- If the damage dealt was negative, this is a heal
+		local wasHeal = damageTaken < 0
 		damageTaken = math.abs(damageTaken)
 
 		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
@@ -921,7 +924,10 @@ GrantRewardOnDamaged = function(self, attacker)
 		if points < 0 then
 			points = 1 -- Fractions of a percentage will be rewarded minorly.
 		else
-			points = math.ceil(points + 0.5) * 2 -- Round up, and double.
+			points = math.ceil(points + 0.5) -- Round up
+			if not wasHeal then
+				point = points * 2 -- Double reward for damage.
+			end
 		end
 
 		attackerpi.Score = attackerpi.Score + points
@@ -1182,7 +1188,8 @@ end
 ActorIsNeutral = function(actor)
 	-- A bit hacky, but assumes anyone with Neutral in their name being neutral.
 	-- Can go away with garrisoning logic.
-	return string.find(NeutralPlayerName, actor.Owner.InternalName)
+	local found = string.find(actor.Owner.InternalName, NeutralPlayerName)
+	return found ~= nil and found > 0
 end
 
 -- [[ Tests ]]
