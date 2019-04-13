@@ -107,6 +107,7 @@ elseif Mod == "ra" then
 end
 AlphaTeamPlayer = Player.GetPlayer(AlphaTeamPlayerName)
 BetaTeamPlayer = Player.GetPlayer(BetaTeamPlayerName)
+NeutralPlayer = Player.GetPlayer(NeutralPlayerName)
 
 WorldLoaded = function()
 	Media.PlaySound(SoundMissionStarted)
@@ -574,27 +575,11 @@ BindProducedVehicleEvents = function(produced)
 
 	-- New vehicles belong to appropriate team's Neutral (except AI harvesters...)
 	if produced.Type ~= AiHarvesterActorType then
-		produced.Owner = GetNeutralPlayerForActor(produced)
+		produced.Owner = NeutralPlayer
 	else
 		local wasPurchased = true
 		InitializeAiHarvester(produced, wasPurchased)
 	end
-
-	-- HACK: Neutral vehicles are assigned a faction-specific neutral team.
-	-- This accomplishes allowing friendly units to 'enter' or damage/repair the vehicle.
-	-- As of this engine version we cannot enter neutral vehicles.
-	-- Unfortunate side-effect:
-	-- When we see an enemy vehicle, it has to be captured (switches to their faction-specific neutral team)
-	-- then it can be destroyed or repaired.
-	-- As of this engine version, there is no way to have a neutral actor capturable by both sides,
-	-- that does not mess with order targeters or cause shared vision problems.
-	Trigger.OnCapture(produced, function(self, captor, oldOwner, newOwner)
-		-- Change owner to captor's neutral team
-		self.Owner = GetNeutralPlayerForActor(captor)
-
-		-- Order player to enter the vehicle (delay it a tick since owner changing would cancel it)
-		Trigger.AfterDelay(1, function() captor.EnterTransport(self) end)
-	end)
 
 	-- Ownership bindings
 	Trigger.OnPassengerEntered(produced, function(transport, passenger)
@@ -626,14 +611,13 @@ BindProducedVehicleEvents = function(produced)
 					SpawnHero(workaroundPI.Player)
 				end
 			end)
-			return
 		end
 	end)
 
 	-- If it's empty, transfer ownership back to neutral.
 	Trigger.OnPassengerExited(produced, function(transport, passenger)
 		if transport.PassengerCount == 0 then
-			transport.Owner = GetNeutralPlayerForActor(passenger)
+			transport.Owner = NeutralPlayer
 		end
 
 		local pi = PlayerInfo[passenger.Owner.InternalName]
@@ -791,17 +775,17 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 			-- We exit out the other end not to cause traffic jams!
 			-- This will need un-hardcoding if the map is not symmetrical.
 			-- And looks hilariously glitchy on map borders.
-			local neutralPlayer = GetNeutralPlayerForActor(pi.Hero)
+			local neutralPlayer = NeutralPlayer
 			local enterFrom = CPos.New(ti.WarFactoryActorLocation.X + 1, 0) -- Location offset +1, to get the "center"
 			local dropOffAt = ti.WarFactoryActorLocation + CVec.New(1, 1) -- Offset again
 			local exitAt = CPos.New(enterFrom.X, 999)
 
 			local produced = Reinforcements.ReinforceWithTransport(
 				neutralPlayer,				-- Neutral owner
-				"tran-ai", 					-- Transport type
-				{ type }, 					-- Actor(s) in transport
+				"tran-ai",					-- Transport type
+				{ type },					-- Actor(s) in transport
 				{ enterFrom, dropOffAt },	-- Entry path
-				{ exitAt }   				-- Exit path
+				{ exitAt }					-- Exit path
 			)[2][1]
 
 			BindProducedVehicleEvents(produced)
@@ -1204,15 +1188,8 @@ GetPurchasedActorType = function(actorType)
 	return purchasedType
 end
 
-GetNeutralPlayerForActor = function(actor)
-	return Player.GetPlayer(NeutralPlayerName .. '-' .. actor.Owner.Faction)
-end
-
 ActorIsNeutral = function(actor)
-	-- A bit hacky, but assumes anyone with Neutral in their name being neutral.
-	-- Can go away with garrisoning logic.
-	local found = string.find(actor.Owner.InternalName, NeutralPlayerName)
-	return found ~= nil and found > 0
+	return actor.Owner.InternalName == NeutralPlayerName
 end
 
 -- [[ Tests ]]

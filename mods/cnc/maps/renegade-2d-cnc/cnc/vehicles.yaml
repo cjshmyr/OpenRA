@@ -2,7 +2,6 @@
 HARV-AI:
 	Inherits: HARV
 	-Cargo:
-	-Capturable:
 	-RevealsShroudMultiplier:
 	Mobile:
 		-RequiresCondition:

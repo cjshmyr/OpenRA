@@ -17,7 +17,6 @@
 
 # Infantry can see cloaked units.
 # Allow infantry to auto-heal close enough to base buildings
-# HACK: Allow infantry to capture neutral vehicles. Can be removed if we can garrison neutrals.
 ^Infantry:
 	DetectCloaked:
 		Range: 4c0
@@ -39,16 +38,11 @@
 		RequiresCondition: damaged && inbase
 		BlinkInterval: 25
 		BlinkPattern: Off, On
-	CaptureManager:
-	Captures@VEHICLES:
-		CaptureTypes: Vehicle
-		ConsumedByCapture: False
 
 # Vehicles can see cloaked units.
 # AI's purchased vehicles cost nothing.
 # Vehicles have a condition when damaged.
 # Vehicles can be repaired by engineers.
-# HACK: Neutral vehicles can be captured. Can be removed if we can garrison neutrals.
 # All vehicles provide no vision if empty.
 # Vehicles can't move unless they have an 'occupied' or 'brandnew' condition.
 ^Vehicle:
@@ -64,11 +58,6 @@
 		TargetTypes: Repair
 	Cargo:
 		LoadedCondition: occupied
-	CaptureManager:
-	Capturable:
-		Types: Vehicle
-		RequiresCondition: !occupied
-		ValidStances: Neutral
 	RevealsShroudMultiplier:
 		Modifier: 0
 		RequiresCondition: !occupied
