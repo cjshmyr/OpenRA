@@ -449,6 +449,8 @@ NotifyHarvesterUnderAttack = function(self)
 end
 
 SpawnHero = function(player)
+	if GameOver then return end
+
 	local spawnpoint = GetAvailableSpawnPoint(player)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
