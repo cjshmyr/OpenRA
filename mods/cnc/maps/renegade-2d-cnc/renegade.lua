@@ -848,7 +848,7 @@ BuildHeroItem = function(pi, actorType)
 		Trigger.OnKilled(beacon, function(actor, killer)
 			if actor.Type ~= killer.Type then
 				GrantRewardOnKilled(actor, killer, "beacon");
-				DisplayMessage(TypeNameTable[beacon.Type] .. ' disarmed by ' .. actor.Owner.Name .. '!')
+				DisplayMessage(TypeNameTable[beacon.Type] .. ' disarmed by ' .. killer.Owner.Name .. '!')
 			end
 		end)
 
