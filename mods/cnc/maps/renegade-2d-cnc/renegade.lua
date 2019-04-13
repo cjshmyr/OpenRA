@@ -752,6 +752,10 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 	local hero = pi.Hero;
 	local type = GetPurchasedActorType(actorType)
 
+	-- Disable purchases for a bit to prevent accidental purchases.
+	local cooldownToken = pi.PurchaseTerminal.GrantCondition("purchase-terminal-cooldown")
+	Trigger.AfterDelay(10, function() pi.PurchaseTerminal.RevokeCondition(cooldownToken) end)
+
 	if string.find(actorType, PurchaseTerminalInfantryActorTypePrefix) then
 		-- We don't init the health because it's percentage based.
 		local newHero = Actor.Create(type, false, { Owner = pi.Player, Location = hero.Location })
