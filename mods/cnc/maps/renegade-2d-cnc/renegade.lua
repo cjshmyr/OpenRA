@@ -1085,16 +1085,16 @@ DrawScoreboard = function()
 	local scoreboard =
 		'\n' .. '\n' .. '\n' .. '\n'
 		.. AlphaTeamPlayerName .. ': ' .. tostring(teamStats[alphaTeamFaction].Score) .. ' points - '
-		.. tostring(teamStats[alphaTeamFaction].Kills) .. '/' .. tostring(teamStats[alphaTeamFaction].Deaths) .. ' (k/d)'
+		.. tostring(teamStats[alphaTeamFaction].Kills) .. ' kills'
 		.. '\n'
 		.. BetaTeamPlayerName .. ': ' .. tostring(teamStats[betaTeamFaction].Score) .. ' points - '
-		.. tostring(teamStats[betaTeamFaction].Kills) .. '/' .. tostring(teamStats[betaTeamFaction].Deaths)
+		.. tostring(teamStats[betaTeamFaction].Kills) .. ' kills'
 		.. '\n'
 
 	if not isSpectating then
 		scoreboard = scoreboard
 		.. localPlayer.Player.Name .. ': ' .. tostring(localPlayer.Score) .. ' points - '
-		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths)
+		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths) .. ' (kills/deaths)'
 	end
 
 	UserInterface.SetMissionText(scoreboard)
