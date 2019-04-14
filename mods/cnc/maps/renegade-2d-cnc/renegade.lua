@@ -422,8 +422,8 @@ end
 NotifyBaseUnderAttack = function(self)
 	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
 	local previousHealth = HealthAfterOnDamageEventTable[actorId]
-	if previousHealth == nil or previousHealth < self.Health then
-		return -- Hasn't taken damage yet, or was healed.
+	if previousHealth ~= nil and previousHealth < self.Health then
+		return -- Was healed.
 	end
 
 	local ti = TeamInfo[self.Owner.InternalName]
@@ -441,6 +441,12 @@ NotifyBaseUnderAttack = function(self)
 end
 
 NotifyHarvesterUnderAttack = function(self)
+	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
+	local previousHealth = HealthAfterOnDamageEventTable[actorId]
+	if previousHealth ~= nil and previousHealth < self.Health then
+		return -- Was healed.
+	end
+
 	local ti = TeamInfo[self.Owner.InternalName]
 	if ti.TicksSinceLastHarvesterDamage >= NotifyHarvesterUnderAttackInterval then
 		-- Only display a message and radar ping to that team
