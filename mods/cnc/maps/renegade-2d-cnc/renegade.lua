@@ -290,6 +290,16 @@ BindBaseEvents = function()
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
+
+			local baseBuildings = {
+				ti.Refinery, ti.Barracks, ti.WarFactory, ti.Radar, ti.Powerplant, ti.ServiceDepot
+			}
+			Utils.Do(baseBuildings, function(building)
+				if not building.IsDead then building.StopBuildingRepairs() end
+			end)
+			Utils.Do(ti.Defenses, function(building)
+				if not building.IsDead then building.StopBuildingRepairs() end
+			end)
 		end)
 		Trigger.OnDamaged(ti.ConstructionYard, function(self, attacker)
 			if not self.IsDead then
