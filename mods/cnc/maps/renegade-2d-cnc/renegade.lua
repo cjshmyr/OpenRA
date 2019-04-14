@@ -420,6 +420,12 @@ NotifyBuildingDestroyed = function(self, killer)
 end
 
 NotifyBaseUnderAttack = function(self)
+	local actorId = tostring(self) -- returns e.g. "Actor (e1 53)", where the last # is unique.
+	local previousHealth = HealthAfterOnDamageEventTable[actorId]
+	if previousHealth == nil or previousHealth < self.Health then
+		return -- Hasn't taken damage yet, or was healed.
+	end
+
 	local ti = TeamInfo[self.Owner.InternalName]
 	if ti.TicksSinceLastBuildingDamage >= NotifyBaseUnderAttackInterval then
 		-- Only display a message and play audio to that team (radar pings are handled by engine)
