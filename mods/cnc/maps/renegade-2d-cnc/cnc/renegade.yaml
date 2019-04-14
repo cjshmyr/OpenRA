@@ -550,6 +550,11 @@ buy.placebeacon.nuke-beacon:
 	ExternalCondition@activebeacon:
 		Condition: activebeacon
 
+camera.beacon:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 6c0
+
 ion-beacon:
 	Inherits: ^beacon
 	Tooltip:

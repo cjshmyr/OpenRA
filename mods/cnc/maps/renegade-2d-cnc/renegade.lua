@@ -50,6 +50,7 @@ if Mod == "cnc" then
 	AlphaBeaconType = "ion-beacon"
 	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "target3.aud"
+	BeaconHitCamera = "camera.beacon"
 	TypeNameTable['fact'] = 'Construction Yard'
 	TypeNameTable['proc'] = 'Tiberium Refinery'
 	TypeNameTable['nuk2'] = 'Power Plant'
@@ -89,6 +90,7 @@ elseif Mod == "ra" then
 	AlphaBeaconType = "nuke-beacon"
 	BetaBeaconType = "nuke-beacon"
 	BeaconDeploySound = "bleep9.aud"
+	BeaconHitCamera = "camera.paradrop"
 	TypeNameTable['fact'] = 'Construction Yard'
 	TypeNameTable['proc'] = 'Ore Refinery'
 	TypeNameTable['apwr'] = 'Power Plant'
@@ -873,8 +875,12 @@ BuildHeroItem = function(pi, actorType)
 		-- Set up warhead
 		Trigger.AfterDelay(BeaconTimeLimit, function()
 			if beacon.IsInWorld then
-				-- Calling .Kill() to force their explosion
-				-- A beacon should technically have a projectile come first.
+				-- Add a camera for the impact, and remove after.
+				local camera = Actor.Create(BeaconHitCamera, true,  { Owner = pi.Player, Location = beacon.Location })
+				Trigger.AfterDelay(DateTime.Seconds(2), function() camera.Destroy() end)
+
+				-- Calling .Kill() to force their explosion.
+				-- (A beacon should technically have a projectile come first.)
 				beacon.Kill()
 			end
 		end)

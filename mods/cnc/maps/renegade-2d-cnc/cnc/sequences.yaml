@@ -36,6 +36,10 @@ tran-ai:
 	icon: tranicnh.tem
 		AddExtension: False
 
+camera.beacon:
+	idle: camera
+		Length: *
+
 ion-beacon:
 	idle: scrate
 		Start: 0
