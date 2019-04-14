@@ -1078,19 +1078,22 @@ DrawScoreboard = function()
 		end
 	end)
 
-	local scoreboard =
-		'\n' .. '\n' .. '\n' .. '\n'
-		.. AlphaTeamPlayerName .. ': ' .. tostring(teamStats[alphaTeamFaction].Score) .. ' points - '
-		.. tostring(teamStats[alphaTeamFaction].Kills) .. ' kills'
-		.. '\n'
-		.. BetaTeamPlayerName .. ': ' .. tostring(teamStats[betaTeamFaction].Score) .. ' points - '
-		.. tostring(teamStats[betaTeamFaction].Kills) .. ' kills'
-		.. '\n'
+	local alpha = AlphaTeamPlayerName .. ': ' .. tostring(teamStats[alphaTeamFaction].Score) .. ' points - '
+		.. tostring(teamStats[alphaTeamFaction].Kills) .. '/' .. tostring(teamStats[alphaTeamFaction].Deaths) .. ' K/D'
+	local beta = BetaTeamPlayerName .. ': ' .. tostring(teamStats[betaTeamFaction].Score) .. ' points - '
+		.. tostring(teamStats[alphaTeamFaction].Kills) .. '/' .. tostring(teamStats[betaTeamFaction].Deaths) .. ' K/D'
+
+	local scoreboard = '\n' .. '\n' .. '\n' .. '\n'
+	if teamStats[alphaTeamFaction].Score >= teamStats[betaTeamFaction].Score then
+		scoreboard = scoreboard .. alpha .. '\n' .. beta
+	else
+		scoreboard = scoreboard .. beta .. '\n' .. alpha
+	end
 
 	if not isSpectating then
-		scoreboard = scoreboard
+		scoreboard = scoreboard .. '\n'
 		.. localPlayer.Player.Name .. ': ' .. tostring(localPlayer.Score) .. ' points - '
-		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths) .. ' (kills/deaths)'
+		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths) .. ' K/D'
 	end
 
 	UserInterface.SetMissionText(scoreboard)
