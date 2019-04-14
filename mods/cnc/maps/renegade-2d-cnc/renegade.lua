@@ -993,10 +993,14 @@ DistributeGatheredResources = function()
 	Utils.Do(TeamInfo, function(ti)
 		if not ti.Refinery.IsDead and ti.LastCheckedResourceAmount ~= ti.AiPlayer.Resources then
 			local addedCash = ti.AiPlayer.Resources - ti.LastCheckedResourceAmount
-
-			Utils.Do(ti.Players, function(pi)
-				pi.Player.Cash = pi.Player.Cash + addedCash
-			end)
+			-- HACK: In the rules we try to get a free repair cost.
+			-- But it seems possible that it can still cost the AI a credit.
+			-- Thus if the AI lost $, the players did. Don't pass that onto the players.
+			if addedCash > 0 then
+				Utils.Do(ti.Players, function(pi)
+					pi.Player.Cash = pi.Player.Cash + addedCash
+				end)
+			end
 
 			ti.LastCheckedResourceAmount = ti.AiPlayer.Resources
 		end
