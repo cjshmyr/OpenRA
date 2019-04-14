@@ -22,7 +22,7 @@ NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 NotifyHarvesterUnderAttackInterval = DateTime.Seconds(30)
 BeaconTimeLimit = DateTime.Seconds(30)
 RespawnTime = DateTime.Seconds(3)
-LocalPlayer = nil -- HACK: Used for nametags.
+LocalPlayerInfo = nil -- HACK: Used for nametags & scoreboard.
 EnemyNametagsHiddenForTypes = { "stnk" } -- HACK: Used for nametags.
 GameOver = false
 
@@ -119,6 +119,8 @@ WorldLoaded = function()
 
 	AssignTeamBuildings()
 
+	SetVictoryConditions()
+
 	BindBaseEvents()
 	BindVehicleEvents()
 	BindProximityEvents()
@@ -157,8 +159,6 @@ SetPlayerInfo = function()
 	end)
 
 	Utils.Do(humanPlayers, function(p)
-		if p.IsLocalPlayer then	LocalPlayer = p	end
-
 		PlayerInfo[p.InternalName] =
 		{
 			Player = p,
@@ -173,11 +173,14 @@ SetPlayerInfo = function()
 			Score = 0,
 			Kills = 0,
 			Deaths = 0,
+			VictoryMissionObjectiveId = -1,
 			PassengerOfVehicle = nil,
 			IsPilot = false,
 			ProximityEventTokens = { },
 			HealthAfterLastDamageEvent = -1
 		}
+
+		if p.IsLocalPlayer then	LocalPlayerInfo = PlayerInfo[p.InternalName] end
 	end)
 end
 
@@ -253,6 +256,13 @@ AssignTeamBuildings = function()
 			local ti = TeamInfo[actor.Owner.InternalName]
 			ti.Defenses[#ti.Defenses+1] = actor
 		end
+	end)
+end
+
+SetVictoryConditions = function()
+	Utils.Do(PlayerInfo, function(pi)
+		local objectiveId = pi.Player.AddPrimaryObjective('Destroy the enemy base!')
+		pi.VictoryMissionObjectiveId = objectiveId
 	end)
 end
 
@@ -1032,7 +1042,8 @@ DistributeGatheredResources = function()
 end
 
 CheckVictoryConditions = function()
-	local defeatedTeam = nil
+	local tiWinner = nil
+	local tiLoser = nil
 	Utils.Do(TeamInfo, function(ti)
 		if ti.ConstructionYard.IsDead
 			and ti.Refinery.IsDead
@@ -1041,35 +1052,41 @@ CheckVictoryConditions = function()
 			and ti.Radar.IsDead
 			and ti.Powerplant.IsDead
 			and ti.ServiceDepot.IsDead then
-			defeatedTeam = ti
+
+			DisplayMessage(ti.AiPlayer.InternalName)
+			DisplayMessage(AlphaTeamPlayerName)
+
+			if ti.AiPlayer.InternalName == AlphaTeamPlayerName then
+				tiWinner = TeamInfo[BetaTeamPlayerName]
+				tiLoser = TeamInfo[AlphaTeamPlayerName]
+
+				DisplayMessage('a - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
+			else
+				tiWinner = TeamInfo[AlphaTeamPlayerName]
+				tiLoser = TeamInfo[BetaTeamPlayerName]
+
+				DisplayMessage('b - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
+			end
 		end
 	end)
 
-	if defeatedTeam ~= nil then
-		local winnerTeamName = ''
-		local winnerTeam = nil
+	if tiLoser ~= nil then
+		GameOver = true
+		DisplayMessage('Game over! ' .. tiWinner.AiPlayer.InternalName .. ' wins!')
 
-		for teamName, ti in pairs(TeamInfo) do
-			if ti.AiPlayer.InternalName ~= defeatedTeam.AiPlayer.InternalName then
-				winnerTeamName = teamName
-				winnerTeam = ti
-			end
-		end
-
-		Utils.Do(winnerTeam.Players, function(pi)
+		Utils.Do(tiWinner.Players, function(pi)
+			pi.Player.MarkCompletedObjective(pi.VictoryMissionObjectiveId)
 			if pi.Player.IsLocalPlayer then
 				Media.PlaySound(SoundMissionAccomplished)
 			end
 		end)
 
-		Utils.Do(defeatedTeam.Players, function(pi)
+		Utils.Do(tiLoser.Players, function(pi)
+			pi.Player.MarkFailedObjective(pi.VictoryMissionObjectiveId)
 			if pi.Player.IsLocalPlayer then
 				Media.PlaySound(SoundMissionFailed)
 			end
 		end)
-
-		GameOver = true
-		DisplayMessage('Game over! ' .. winnerTeamName .. ' wins!')
 	end
 
 	if not GameOver then
@@ -1083,14 +1100,13 @@ DrawScoreboard = function()
 		Displaying everyone would require the position to not be centered on screen, or busier lines.
 	]]
 
-	local isSpectating = LocalPlayer == nil
+	local isSpectating = LocalPlayerInfo == nil
 
 	local alphaTeamFaction = AlphaTeamPlayerName:lower()
 	local betaTeamFaction = BetaTeamPlayerName:lower()
 	local teamStats = { }
 	teamStats[alphaTeamFaction] = { Score = 0, Kills = 0, Deaths = 0 }
 	teamStats[betaTeamFaction] = { Score = 0, Kills = 0, Deaths = 0 }
-	local localPlayer = nil
 
 	Utils.Do(PlayerInfo, function(pi)
 		local ts = teamStats[pi.Player.Faction]
@@ -1098,10 +1114,6 @@ DrawScoreboard = function()
 		ts.Score = ts.Score + pi.Score
 		ts.Kills = ts.Kills + pi.Kills
 		ts.Deaths = ts.Deaths + pi.Deaths
-
-		if pi.Player.IsLocalPlayer then -- Only care about the current player's stats (real estate)
-			localPlayer = pi
-		end
 	end)
 
 	local alpha = AlphaTeamPlayerName .. ': ' .. tostring(teamStats[alphaTeamFaction].Score) .. ' points - '
@@ -1117,9 +1129,10 @@ DrawScoreboard = function()
 	end
 
 	if not isSpectating then
+		local pi = LocalPlayerInfo
 		scoreboard = scoreboard .. '\n'
-		.. localPlayer.Player.Name .. ': ' .. tostring(localPlayer.Score) .. ' points - '
-		.. tostring(localPlayer.Kills) .. '/' .. tostring(localPlayer.Deaths) .. ' K/D'
+		.. pi.Player.Name .. ': ' .. tostring(pi.Score) .. ' points - '
+		.. tostring(pi.Kills) .. '/' .. tostring(pi.Deaths) .. ' K/D'
 	end
 
 	UserInterface.SetMissionText(scoreboard)
@@ -1142,15 +1155,15 @@ HackyDrawNameTags = function()
 		since we can't track that state in Lua.
 	]]
 
-	local isSpectating = LocalPlayer == nil
+	local isSpectating = LocalPlayerInfo == nil
 
 	Utils.Do(TeamInfo, function(ti)
-		local sameTeam = isSpectating or LocalPlayer.Faction == ti.AiPlayer.Faction
+		local sameTeam = isSpectating or LocalPlayerInfo.Player.Faction == ti.AiPlayer.Faction
 
 		Utils.Do(ti.Players, function(pi)
 			if pi.Hero ~= nil and pi.Hero.IsInWorld then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type))
+				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type)) or GameOver
 
 				if showTag then
 					local name = pi.Player.Name
@@ -1163,7 +1176,7 @@ HackyDrawNameTags = function()
 
 			if pi.IsPilot then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type))
+				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type)) or GameOver
 
 				if showTag then
 					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
