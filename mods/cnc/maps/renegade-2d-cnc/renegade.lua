@@ -648,9 +648,10 @@ BindProducedVehicleEvents = function(produced)
 		end
 	end)
 
-	-- If it's empty, transfer ownership back to neutral.
+	-- If it's empty and alive, transfer ownership back to neutral.
+	-- Husks (if any) retain ownership, and don't want husk explosions to hurt allies.
 	Trigger.OnPassengerExited(produced, function(transport, passenger)
-		if transport.PassengerCount == 0 then
+		if not transport.IsDead and transport.PassengerCount == 0 then
 			transport.Owner = NeutralPlayer
 		end
 

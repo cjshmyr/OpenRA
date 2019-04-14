@@ -84,6 +84,10 @@ BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload a
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
+UnitExplodeSmall: #husks (don't hurt allies)
+	Warhead@1Dam: SpreadDamage
+		ValidStances: Neutral, Enemy
+
 AtomicBeacon: #nuke-beacon
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
