@@ -705,6 +705,7 @@ BindProximityEvents = function()
 			ti.Refinery,
 			ti.Barracks,
 			ti.WarFactory,
+			ti.Helipad,
 			ti.Radar,
 			ti.Powerplant,
 			ti.ServiceDepot
@@ -1200,7 +1201,9 @@ HackyDrawNameTags = function()
 		Utils.Do(ti.Players, function(pi)
 			if pi.Hero ~= nil and pi.Hero.IsInWorld then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type)) or GameOver
+				local showTag = sameTeam
+					or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type))
+					or GameOver
 
 				if showTag then
 					local name = pi.Player.Name
@@ -1213,10 +1216,15 @@ HackyDrawNameTags = function()
 
 			if pi.IsPilot then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type)) or GameOver
+				local showTag = (sameTeam
+					or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type))
+					or GameOver
+					)
+					and pi.PassengerOfVehicle.HasProperty('CenterPosition') -- Handle dead/falling aircraft.
 
 				if showTag then
-					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
+					local extraOffset = Actor.CruiseAltitude(pi.PassengerOfVehicle.Type)
+					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250 - extraOffset, 0)
 					local passengerCount = pi.PassengerOfVehicle.PassengerCount
 					local name = pi.Player.Name
 					name = name:sub(0,10) -- truncate to 10 chars

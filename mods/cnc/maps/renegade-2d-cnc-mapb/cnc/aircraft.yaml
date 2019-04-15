@@ -3,3 +3,10 @@ TRAN-AI:
 	-Targetable@GROUND:
 	-Targetable@AIRBORNE:
 	WithFacingSpriteBody:
+
+TRAN: # TODO: Fix defaults.
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 4
+		EjectOnDeath: true

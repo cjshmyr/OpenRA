@@ -57,6 +57,7 @@ GUN:
 
 OBLI:
 	Inherits@Renegade: ^RenegadeSmallBuilding
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	DetectCloaked:
 		Range: 6c0
 	Power: # Powered defense

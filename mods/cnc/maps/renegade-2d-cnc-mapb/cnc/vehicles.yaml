@@ -80,6 +80,3 @@ HARV:
 		SearchOnCreation: false
 		-EmptyCondition:
 	-Explodes:
-
-TRAN: # Move me.
-	Inherits@Passengers: ^FourPassengers
