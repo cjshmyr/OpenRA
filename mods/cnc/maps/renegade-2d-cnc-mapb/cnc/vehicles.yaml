@@ -45,6 +45,8 @@ MSAM:
 		Name: Multiple Launch Rocket System
 	Armament@SECONDARY:
 		FireDelay: 10
+	RevealsShroud:
+		Range: 7c0
 
 MTNK:
 	Inherits@Passengers: ^TwoPassengers
@@ -57,12 +59,16 @@ BGGY:
 
 ARTY:
 	Inherits@Passengers: ^OnePassenger
+	RevealsShroud:
+		Range: 7c0
 
 LTNK:
 	Inherits@Passengers: ^TwoPassengers
 
 FTNK:
 	Inherits@Passengers: ^TwoPassengers
+	Health:
+		HP: 45000
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: BigFlamer
@@ -71,11 +77,15 @@ FTNK:
 
 STNK:
 	Inherits@Passengers: ^OnePassenger
+	Health:
+		HP: 20000
 	Cloak:
 		PauseOnCondition: cloak-force-disabled || !occupied
 
 HARV:
 	Inherits@Passengers: ^OnePassenger
+	Health:
+		HP: 80000
 	Harvester:
 		SearchOnCreation: false
 		-EmptyCondition:

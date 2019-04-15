@@ -67,7 +67,7 @@ MachineGun: # buggy (added anti-air)
 	Burst: 6
 	BurstDelays: 20
 	-MinRange:
-	Projectile:
+	Projectile: Bullet
 		Speed: 280
 		Inaccuracy: 400
 	Warhead@1Dam: SpreadDamage
@@ -75,12 +75,13 @@ MachineGun: # buggy (added anti-air)
 			Wood: 80
 			Heavy: 60
 
-ArtilleryShell: #arty (more accuracy, remove minrange)
+ArtilleryShell: #arty (more accuracy, faster shell speed, remove minrange)
 	Projectile: Bullet
-		Inaccuracy: 1c0
+		Inaccuracy: 0c512
+		Speed: 400
 	-MinRange:
 
-BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs none, wood, light, heavy -- buff of FlameWeapon)
+BigFlamer: #ftnk (shorter reload, less damage, no burst, more damage done (buff of Flamethrower))
 	ReloadDelay: 10
 	-Burst:
 	-BurstDelays:
