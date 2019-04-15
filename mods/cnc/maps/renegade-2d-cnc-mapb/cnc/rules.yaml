@@ -1,0 +1,46 @@
+World:
+	MissionData:
+		Briefing: Renegade 2D (C&C 0.93) by hamb\nControl a single unit in a shared base with your team; pilot vehicles, defend your base, and destroy the enemy!\n> Stand near base buildings to make purchases.\n> Base buildings provide various benefits to your team, protect them!\n> Vehicles require a pilot to be operated; many vehicles hold multiple passengers.\n> Engineers can repair vehicles, buildings, and disarm beacons.\n> Purchase beacons to call in a delayed superweapon strike.\n> Gathered resources are distributed among your team; you have your own wallet.\n> Earn $ for your team by purchasing a harvester and gathering resources.\n> Earn $ by damaging or killing enemy units and structures.\n> Win by destroying the enemy base!\n\nThis is a beta version, which has been lightly tested with players (some balance changes, may lag, and can crash).\nFor update notes, check the OpenRA Modding forums. Have fun!
+	LuaScript:
+		Scripts: renegade.lua
+	-SpawnMPUnits:
+	-MPStartLocations:
+	CrateSpawner:
+		CheckboxLocked: true
+		CheckboxEnabled: false
+		CheckboxVisible: false
+	MapOptions:
+		TechLevel: unrestricted
+		TechLevelDropdownLocked: true
+		TechLevelDropdownVisible: false
+		ShortGameCheckboxLocked: true
+		ShortGameCheckboxEnabled: false
+		ShortGameCheckboxVisible: false
+	MapBuildRadius:
+		BuildRadiusCheckboxLocked: true
+		BuildRadiusCheckboxEnabled: false
+		BuildRadiusCheckboxVisible: false
+		AllyBuildRadiusCheckboxLocked: true
+		AllyBuildRadiusCheckboxEnabled: false
+		AllyBuildRadiusCheckboxVisible: false
+	ResourceType@green-tib:
+		ValuePerUnit: 15 # 300 per load
+	ResourceType@blue-tib:
+		ValuePerUnit: 30 # 600 per load
+
+Player:
+	-ConquestVictoryConditions:
+	-AllyRepair:
+	Shroud:
+		#FogCheckboxLocked: true
+		#FogCheckboxEnabled: true
+		#FogCheckboxVisible: false
+		ExploredMapCheckboxLocked: true
+		ExploredMapCheckboxEnabled: true
+		ExploredMapCheckboxVisible: false
+	PlayerResources:
+		DefaultCash: 300
+		SelectableCash: 100, 300, 600, 1000, 2000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: false
+		Visible: false

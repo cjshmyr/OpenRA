@@ -1,0 +1,147 @@
+RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
+	ReloadDelay: 30
+	Range: 2c0
+	Report: tone16.aud
+	ValidTargets: Repair, DisarmBeacon
+	Projectile: Bullet
+		Speed: 1c682
+	#Projectile: LaserZap
+	#Width: 85
+	#HitAnim: laserfire
+	#Color: 0000FF
+	#ZOffset: 1024
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: -1500
+		ValidTargets: Repair
+		ValidStances: Ally
+	Warhead@2Dam: SpreadDamage
+		Spread: 42
+		Damage: 1000
+		ValidTargets: DisarmBeacon
+
+Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage, less damage vs wood, light, heavy)
+	Inherits: ^HeavyMG
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 6000
+		Versus:
+			Wood: 30
+			Light: 50
+			Heavy: 15
+
+Grenade: #e2 (faster projectile, more accurate, more damage, more damage vs heavy)
+	Projectile: Bullet
+		Speed: 204
+		Inaccuracy: 400
+	Warhead@1Dam: SpreadDamage
+		Damage: 7500
+		Versus:
+			Heavy: 80
+
+Flamethrower: #e4 (longer range, higher rate of fire, more damage vs heavy)
+	Range: 5c0
+	ReloadDelay: 30
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Heavy: 50
+
+Chemspray: #e5 (longer range, higher rate of fire, less damage vs heavy)
+	Range: 5c0
+	ReloadDelay: 30
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Heavy: 30
+
+227mm: #mlrs (fires 12 rockets, remove minrange, more accuracy, less rocket speed, more damage vs wood/heavy)
+	Burst: 6
+	BurstDelays: 20
+	-MinRange:
+	Projectile:
+		Speed: 280
+		Inaccuracy: 400
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Wood: 80
+			Heavy: 60
+
+ArtilleryShell: #arty (more accuracy, remove minrange)
+	Projectile: Bullet
+		Inaccuracy: 1c0
+	-MinRange:
+
+BigFlamer: #ftnk (faster reload, no burst, damage adjusted to match new reload and double armaments, more damage vs none, wood, light, heavy -- buff of FlameWeapon)
+	ReloadDelay: 10
+	-Burst:
+	-BurstDelays:
+	Warhead@1Dam: SpreadDamage
+		Damage: 1000
+		Versus:
+			None: 110
+			Wood: 100
+			Light: 100
+			Heavy: 90
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+
+UnitExplodeSmall: #husks (don't hurt allies)
+	Warhead@1Dam: SpreadDamage
+		ValidStances: Neutral, Enemy
+
+AtomicBeacon: #nuke-beacon
+	ValidTargets: Ground, Air, Trees
+	Warhead@1Dam_impact: SpreadDamage
+		Range: 0, 1c1, 2c1, 2c512
+		Damage: 50000
+		Falloff: 2000, 1000, 250, 100
+		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@2Eff_impact: CreateEffect
+		Explosions: nuke_explosion
+		ImpactSounds: nukexplo.aud
+		ImpactActors: false
+
+IonCannonBeacon: #ion-beacon
+	ValidTargets: Ground, Air, Trees
+	Warhead@1Dam_impact: SpreadDamage
+		Range: 0, 1c1, 2c1, 2c512
+		Damage: 50000
+		Falloff: 2000, 1000, 250, 100
+		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@2Eff_impact: CreateEffect
+		Explosions: ion_explosion
+		ImpactSounds: ion1.aud
+		ImpactActors: false
+		Image: custom_explosion
+
+TurretGun: #gun (reduced vs heavy damage)
+	ReloadDelay: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 4000
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 75
+
+Laser: #obli (no changes)
+
+HighV: #gtwr (made similar to TurretGun)
+	ReloadDelay: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 4000
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 75
+
+TowerMissile: #atwr (made similar to Laser)
+	Range: 7c512
+	Warhead@1Dam: SpreadDamage
+		Damage: 7500

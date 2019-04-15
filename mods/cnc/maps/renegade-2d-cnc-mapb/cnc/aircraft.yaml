@@ -1,0 +1,5 @@
+TRAN-AI:
+	Inherits: TRAN
+	-Targetable@GROUND:
+	-Targetable@AIRBORNE:
+	WithFacingSpriteBody:

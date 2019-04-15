@@ -1,0 +1,82 @@
+# AI specific harvester
+HARV-AI:
+	Inherits: HARV
+	-Cargo:
+	-RevealsShroudMultiplier:
+	Mobile:
+		-RequiresCondition:
+
+^OnePassenger:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+		EjectOnDeath: true
+
+^TwoPassengers:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 2
+		EjectOnDeath: true
+
+^FourPassengers:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 4
+		EjectOnDeath: true
+
+JEEP:
+	Inherits@Passengers: ^TwoPassengers
+
+# APC TODO: Mobile changes should be inherited at this level.
+# Other items should move up inheritance.
+APC:
+	Inherits@Passengers: ^FourPassengers
+	Mobile:
+		RequiresCondition: occupied || brandnew
+	Cargo:
+		-LoadingCondition:
+
+MSAM:
+	Inherits@Passengers: ^OnePassenger
+	Tooltip:
+		Name: Multiple Launch Rocket System
+	Armament@SECONDARY:
+		FireDelay: 10
+
+MTNK:
+	Inherits@Passengers: ^TwoPassengers
+
+HTNK:
+	Inherits@Passengers: ^TwoPassengers
+
+BGGY:
+	Inherits@Passengers: ^TwoPassengers
+
+ARTY:
+	Inherits@Passengers: ^OnePassenger
+
+LTNK:
+	Inherits@Passengers: ^TwoPassengers
+
+FTNK:
+	Inherits@Passengers: ^TwoPassengers
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: BigFlamer
+		LocalOffset: 512,-128,42, 512,128,42
+		MuzzleSequence: muzzle
+
+STNK:
+	Inherits@Passengers: ^OnePassenger
+	Cloak:
+		PauseOnCondition: cloak-force-disabled || !occupied
+
+HARV:
+	Inherits@Passengers: ^OnePassenger
+	Harvester:
+		SearchOnCreation: false
+		-EmptyCondition:
+	-Explodes:
