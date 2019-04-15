@@ -346,44 +346,8 @@ Players:
 		Allies: Nod, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11
 		Enemies: Creeps, GDI, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11
 Actors:
-	Actor4: fix
-		Location: 13,15
-		Owner: GDI
-	Actor8: atwr
-		Location: 10,20
-		TurretFacing: 92
-		Owner: GDI
-	Actor11: hpad
-		Location: 3,11
-		Owner: GDI
-	Actor12: fact
-		Location: 10,11
-		Owner: GDI
-	Actor17: atwr
-		Location: 18,12
-		TurretFacing: 92
-		Owner: GDI
-	Actor14: gtwr
-		Location: 22,9
-		TurretFacing: 92
-		Owner: GDI
-	Actor16: gtwr
-		Location: 22,14
-		TurretFacing: 92
-		Owner: GDI
-	Actor18: gtwr
-		Location: 13,24
-		TurretFacing: 92
-		Owner: GDI
-	Actor19: gtwr
-		Location: 7,24
-		TurretFacing: 92
-		Owner: GDI
 	Actor23: hq
 		Location: 14,7
-		Owner: GDI
-	Actor38: pyle
-		Location: 6,15
 		Owner: GDI
 	Actor24: fix
 		Location: 51,27
@@ -449,9 +413,6 @@ Actors:
 	Actor50: waypoint
 		Owner: Nod
 		Location: 40,36
-	Actor48: waypoint
-		Owner: GDI
-		Location: 26,8
 	Actor49: proc
 		Owner: GDI
 		Location: 10,2
@@ -461,6 +422,42 @@ Actors:
 	Actor36: weap
 		Owner: GDI
 		Location: 6,8
+	Actor52: gtwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 22,10
+	Actor53: atwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 18,13
+	Actor54: gtwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 22,15
+	Actor56: atwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 10,21
+	Actor57: gtwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 7,25
+	Actor58: gtwr
+		TurretFacing: 92
+		Owner: GDI
+		Location: 13,25
+	Actor48: waypoint
+		Owner: GDI
+		Location: 26,9
+	Actor38: fact
+		Owner: GDI
+		Location: 10,12
+	Actor55: pyle
+		Owner: GDI
+		Location: 6,16
+	Actor59: fix
+		Owner: GDI
+		Location: 14,16
 Rules: cnc/rules.yaml,cnc/renegade.yaml,cnc/defaults.yaml,cnc/infantry.yaml,cnc/vehicles.yaml,cnc/aircraft.yaml,cnc/structures.yaml
 Sequences: cnc/sequences.yaml
 Weapons: cnc/weapons.yaml
