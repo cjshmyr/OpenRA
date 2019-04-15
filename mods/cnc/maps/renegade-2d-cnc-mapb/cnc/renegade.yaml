@@ -172,7 +172,7 @@ buy.infantry.e2:
 buy.infantry.penalty.e2:
 	Inherits: buy.infantry.e2
 	Valued:
-		Cost: 500
+		Cost: 325
 	Buildable:
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~gdi
 
@@ -193,7 +193,7 @@ buy.infantry.rmbo:
 buy.infantry.penalty.rmbo:
 	Inherits: buy.infantry.rmbo
 	Valued:
-		Cost: 1000
+		Cost: 750
 	Buildable:
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~gdi
 
@@ -214,7 +214,7 @@ buy.infantry.e4:
 buy.infantry.penalty.e4:
 	Inherits: buy.infantry.e4
 	Valued:
-		Cost: 500
+		Cost: 325
 	Buildable:
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~nod
 
@@ -235,7 +235,7 @@ buy.infantry.e5:
 buy.infantry.penalty.e5:
 	Inherits: buy.infantry.e5
 	Valued:
-		Cost: 1000
+		Cost: 750
 	Buildable:
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~nod
 
@@ -256,7 +256,7 @@ buy.vehicle.jeep:
 buy.vehicle.penalty.jeep:
 	Inherits: buy.vehicle.jeep
 	Valued:
-		Cost: 700
+		Cost: 525
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~gdi
@@ -278,7 +278,7 @@ buy.vehicle.apc:
 buy.vehicle.penalty.apc:
 	Inherits: buy.vehicle.apc
 	Valued:
-		Cost: 1000
+		Cost: 750
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty
@@ -300,7 +300,7 @@ buy.vehicle.msam:
 buy.vehicle.penalty.msam:
 	Inherits: buy.vehicle.msam
 	Valued:
-		Cost: 900
+		Cost: 675
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~gdi
@@ -322,7 +322,7 @@ buy.vehicle.mtnk:
 buy.vehicle.penalty.mtnk:
 	Inherits: buy.vehicle.mtnk
 	Valued:
-		Cost: 1600
+		Cost: 1200
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~gdi
@@ -344,7 +344,7 @@ buy.vehicle.htnk:
 buy.vehicle.penalty.htnk:
 	Inherits: buy.vehicle.htnk
 	Valued:
-		Cost: 3000
+		Cost: 2250
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~gdi
@@ -366,7 +366,7 @@ buy.vehicle.bggy:
 buy.vehicle.penalty.bggy:
 	Inherits: buy.vehicle.bggy
 	Valued:
-		Cost: 600
+		Cost: 450
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -388,7 +388,7 @@ buy.vehicle.arty:
 buy.vehicle.penalty.arty:
 	Inherits: buy.vehicle.arty
 	Valued:
-		Cost: 900
+		Cost: 675
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -410,7 +410,7 @@ buy.vehicle.ltnk:
 buy.vehicle.penalty.ltnk:
 	Inherits: buy.vehicle.ltnk
 	Valued:
-		Cost: 1200
+		Cost: 900
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -432,7 +432,7 @@ buy.vehicle.ftnk:
 buy.vehicle.penalty.ftnk:
 	Inherits: buy.vehicle.ftnk
 	Valued:
-		Cost: 1600
+		Cost: 1200
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -454,7 +454,7 @@ buy.vehicle.stnk:
 buy.vehicle.penalty.stnk:
 	Inherits: buy.vehicle.stnk
 	Valued:
-		Cost: 1800
+		Cost: 1350
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -462,7 +462,7 @@ buy.vehicle.penalty.stnk:
 buy.vehicle.harv:
 	Inherits: ^buy.default
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: Harvester
 	Buildable:
@@ -476,7 +476,7 @@ buy.vehicle.harv:
 buy.vehicle.penalty.harv:
 	Inherits: buy.vehicle.harv
 	Valued:
-		Cost: 2000
+		Cost: 1800
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle-penalty, ~nod
@@ -498,7 +498,7 @@ buy.aircraft.tran:
 buy.aircraft.penalty.tran:
 	Inherits: buy.aircraft.tran
 	Valued:
-		Cost: 1800
+		Cost: 1350
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~aircraft-penalty
@@ -621,7 +621,7 @@ buy.cameo.fact:
 		BuildPaletteOrder: 10
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides automatic repairs to all base buildings.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides automatic repairs to all base buildings.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fact
 
@@ -633,7 +633,7 @@ buy.cameo.proc:
 		BuildPaletteOrder: 20
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: proc
 
@@ -645,7 +645,7 @@ buy.cameo.nuk2:
 		BuildPaletteOrder: 30
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides power to base structures.\n\nWhen destroyed:\n- Powered base defenses are offline.\n- Radar is offline.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides power to base structures.\n\nWhen destroyed:\n- Powered base defenses are offline.\n- Radar is offline.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: nuk2
 
@@ -657,7 +657,7 @@ buy.cameo.hq:
 		BuildPaletteOrder: 40
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides radar for the team.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides radar for the team.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hq
 
@@ -669,7 +669,7 @@ buy.cameo.weap:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: weap
 
@@ -681,7 +681,7 @@ buy.cameo.afld:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost double.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: afld
 
@@ -693,7 +693,7 @@ buy.cameo.pyle:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: pyle
 
@@ -705,7 +705,7 @@ buy.cameo.hand:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hand
 
@@ -717,7 +717,7 @@ buy.cameo.helipad:
 		BuildPaletteOrder: 70
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing aircraft.\n\nWhen destroyed:\n- Aircraft cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing aircraft.\n\nWhen destroyed:\n- Aircraft cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hpad
 
@@ -729,6 +729,6 @@ buy.cameo.fix:
 		BuildPaletteOrder: 80
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for repairing of vehicles.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for repairing of vehicles.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fix
