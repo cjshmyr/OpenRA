@@ -1,0 +1,129 @@
+MapFormat: 11
+RequiresMod: cnc
+Title: Renegade 2D (C&C 0.94)
+Author: hamb
+Tileset: DESERT
+MapSize: 68,46
+Bounds: 1,1,66,44
+Visibility: Lobby
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+Actors:
+	Actor4: fix
+		Owner: Neutral
+		Location: 13,15
+	Actor8: atwr
+		Owner: Neutral
+		Location: 10,20
+		TurretFacing: 92
+	Actor11: hpad
+		Owner: Neutral
+		Location: 3,11
+	Actor12: fact
+		Owner: Neutral
+		Location: 10,11
+	Actor13: weap
+		Owner: Neutral
+		Location: 6,7
+	Actor9: nuk2
+		Owner: Neutral
+		Location: 3,2
+	Actor17: atwr
+		Owner: Neutral
+		Location: 18,12
+		TurretFacing: 92
+	Actor14: gtwr
+		Owner: Neutral
+		Location: 22,9
+		TurretFacing: 92
+	Actor16: gtwr
+		Owner: Neutral
+		Location: 22,14
+		TurretFacing: 92
+	Actor18: gtwr
+		Owner: Neutral
+		Location: 13,24
+		TurretFacing: 92
+	Actor19: gtwr
+		Owner: Neutral
+		Location: 7,24
+		TurretFacing: 92
+	Actor36: proc
+		Owner: Neutral
+		Location: 10,1
+	Actor23: hq
+		Owner: Neutral
+		Location: 14,7
+	Actor38: pyle
+		Owner: Neutral
+		Location: 6,15
+	Actor24: fix
+		Owner: Neutral
+		Location: 51,27
+	Actor25: hand
+		Owner: Neutral
+		Location: 60,28
+	Actor27: fact
+		Owner: Neutral
+		Location: 55,32
+	Actor29: obli
+		Owner: Neutral
+		Location: 48,33
+	Actor31: hq
+		Owner: Neutral
+		Location: 51,36
+	Actor32: afld
+		Owner: Neutral
+		Location: 59,36
+	Actor33: proc
+		Owner: Neutral
+		Location: 55,40
+	Actor34: nuk2
+		Owner: Neutral
+		Location: 63,41
+	Actor42: hpad
+		Owner: Neutral
+		Location: 63,32
+	Actor43: gun
+		Owner: Neutral
+		Location: 44,30
+		TurretFacing: 92
+	Actor44: gun
+		Owner: Neutral
+		Location: 44,35
+		TurretFacing: 92
+	Actor35: split2
+		Owner: Neutral
+		Location: 36,6
+	Actor37: gun
+		Owner: Neutral
+		TurretFacing: 92
+		Location: 53,20
+	Actor40: gun
+		Owner: Neutral
+		TurretFacing: 92
+		Location: 59,20
+	Actor45: obli
+		Owner: Neutral
+		Location: 56,24
+	Actor46: split2
+		Owner: Neutral
+		Location: 63,4
+	Actor41: split2
+		Owner: Neutral
+		Location: 4,41
+	Actor39: splitblue
+		Owner: Neutral
+		Location: 33,22
+	Actor47: split2
+		Owner: Neutral
+		Location: 30,39
