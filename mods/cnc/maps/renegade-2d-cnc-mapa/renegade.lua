@@ -1,6 +1,6 @@
 --[[
 	Renegade 2D: Lua script by @hamb
-	Version: 0.93
+	Version: 0.94
 	Engine: OpenRA release-20190314
 ]]
 
@@ -16,6 +16,7 @@ CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
+PurchaseTerminalAircraftActorTypePrefix = "buy.aircraft."
 PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
@@ -39,6 +40,7 @@ if Mod == "cnc" then
 	RadarActorTypes = {"hq"}
 	WarFactoryActorTypes = {"weap","afld"}
 	BarracksActorTypes = {"pyle","hand"}
+	HelipadActorTypes = {"hpad"}
 	ServiceDepotActorTypes = {"fix"}
 	DefenseActorTypes = {"gtwr","atwr","gun","obli"}
 	AiHarvesterActorType = "harv-ai"
@@ -59,6 +61,7 @@ if Mod == "cnc" then
 	TypeNameTable['afld'] = 'Airstrip'
 	TypeNameTable['pyle'] = 'Barracks'
 	TypeNameTable['hand'] = 'Hand of Nod'
+	TypeNameTable['hpad'] = 'Helipad'
 	TypeNameTable['fix'] = 'Repair Facility'
 	TypeNameTable['gtwr'] = 'Guard Tower'
 	TypeNameTable['atwr'] = 'Advanced Guard Tower'
@@ -79,6 +82,7 @@ elseif Mod == "ra" then
 	RadarActorTypes = {"dome"}
 	WarFactoryActorTypes = {"weap"}
 	BarracksActorTypes = {"barr","tent"}
+	HelipadActorTypes = {"hpad"}
 	ServiceDepotActorTypes = {"fix"}
 	DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 	AiHarvesterActorType = "harv-ai"
@@ -98,6 +102,7 @@ elseif Mod == "ra" then
 	TypeNameTable['weap'] = 'War Factory'
 	TypeNameTable['barr'] = 'Barracks'
 	TypeNameTable['tent'] = 'Barracks'
+	TypeNameTable['hpad'] = 'Helipad'
 	TypeNameTable['fix'] = 'Service Depot'
 	TypeNameTable['pbox'] = 'Pillbox'
 	TypeNameTable['hbox'] = 'Camoflauged Pillbox'
@@ -169,6 +174,7 @@ SetPlayerInfo = function()
 			HasBeaconConditionToken = -1, -- hero
 			VehicleConditionToken = -1, -- pt
 			InfantryConditionToken = -1, -- pt
+			AircraftConditionToken = -1, -- pt
 			RadarConditionToken = -1, -- pt
 			Score = 0,
 			Kills = 0,
@@ -202,6 +208,7 @@ SetTeamInfo = function()
 			Refinery = nil,
 			Barracks = nil,
 			WarFactory = nil,
+			Helipad = nil,
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
@@ -209,7 +216,8 @@ SetTeamInfo = function()
 			LastCheckedResourceAmount = 0,
 			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval,
 			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval,
-			WarFactoryActorLocation = nil
+			WarFactoryActorLocation = nil,
+			HelipadActorLocation = nil
 		}
 	end)
 
@@ -242,6 +250,11 @@ AssignTeamBuildings = function()
 
 		if ArrayContains(BarracksActorTypes, actor.Type) then
 			TeamInfo[actor.Owner.InternalName].Barracks = actor
+		end
+
+		if ArrayContains(HelipadActorTypes, actor.Type) then
+			TeamInfo[actor.Owner.InternalName].Helipad = actor
+			TeamInfo[actor.Owner.InternalName].HelipadActorLocation = actor.Location
 		end
 
 		if ArrayContains(PowerplantActorTypes, actor.Type) then
@@ -288,6 +301,7 @@ BindPurchaseTerminals = function()
 			pi.RadarConditionToken = pt.GrantCondition("radar")
 			pi.InfantryConditionToken = pt.GrantCondition("infantry")
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")
+			pi.AircraftConditionToken = pt.GrantCondition("aircraft")
 
 			Trigger.OnProduction(pt, function(producer, produced)
 				BuildPurchaseTerminalItem(pi, produced.Type)
@@ -304,7 +318,7 @@ BindBaseEvents = function()
 			GrantRewardOnKilled(self, killer, "building")
 
 			local baseBuildings = {
-				ti.Refinery, ti.Barracks, ti.WarFactory, ti.Radar, ti.Powerplant, ti.ServiceDepot
+				ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
 			}
 			Utils.Do(baseBuildings, function(building)
 				if not building.IsDead then building.StopBuildingRepairs() end
@@ -363,6 +377,24 @@ BindBaseEvents = function()
 			end)
 		end)
 		Trigger.OnDamaged(ti.WarFactory, function(self, attacker)
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
+			end
+			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamaged(self, attacker)
+		end)
+
+		-- Helipad
+		Trigger.OnKilled(ti.Helipad, function(self, killer)
+			NotifyBuildingDestroyed(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
+
+			Utils.Do(ti.Players, function(pi)
+				pi.PurchaseTerminal.RevokeCondition(pi.AircraftConditionToken)
+				pi.PurchaseTerminal.GrantCondition('aircraft-penalty') -- Don't ever need to revoke it.
+			end)
+		end)
+		Trigger.OnDamaged(ti.Helipad, function(self, attacker)
 			if not self.IsDead and not ti.ConstructionYard.IsDead then
 				self.StartBuildingRepairs()
 			end
@@ -520,7 +552,7 @@ GetAvailableSpawnPoint = function(player)
 	local ti = pi.Team
 
 	local allBuildings = {
-		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.Radar, ti.Powerplant, ti.ServiceDepot
+		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
 	}
 	local aliveBuildings = { }
 	for i, v in ipairs(allBuildings) do
@@ -583,6 +615,9 @@ end
 BindVehicleEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 		Trigger.OnProduction(ti.WarFactory, function(producer, produced)
+			BindProducedVehicleEvents(produced)
+		end)
+		Trigger.OnProduction(ti.Helipad, function(producer, produced)
 			BindProducedVehicleEvents(produced)
 		end)
 	end)
@@ -673,6 +708,7 @@ BindProximityEvents = function()
 			ti.Refinery,
 			ti.Barracks,
 			ti.WarFactory,
+			ti.Helipad,
 			ti.Radar,
 			ti.Powerplant,
 			ti.ServiceDepot
@@ -810,19 +846,27 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 			-- We exit out the other end not to cause traffic jams!
 			-- This will need un-hardcoding if the map is not symmetrical.
 			-- And looks hilariously glitchy on map borders.
-			local neutralPlayer = NeutralPlayer
 			local enterFrom = CPos.New(ti.WarFactoryActorLocation.X + 1, 0) -- Location offset +1, to get the "center"
 			local dropOffAt = ti.WarFactoryActorLocation + CVec.New(1, 1) -- Offset again
 			local exitAt = CPos.New(enterFrom.X, 999)
 
 			local produced = Reinforcements.ReinforceWithTransport(
-				neutralPlayer,				-- Neutral owner
+				NeutralPlayer,				-- Neutral owner
 				"tran-ai",					-- Transport type
 				{ type },					-- Actor(s) in transport
 				{ enterFrom, dropOffAt },	-- Entry path
 				{ exitAt }					-- Exit path
 			)[2][1]
 
+			BindProducedVehicleEvents(produced)
+		end
+	elseif string.find(actorType, PurchaseTerminalAircraftActorTypePrefix) then
+		local ti = pi.Team
+		if not ti.Helipad.IsDead then
+			ti.Helipad.Produce(type)
+		else
+			-- TODO: Need to fly it in from off-map.
+			local produced = Actor.Create(type, true, { Owner = NeutralPlayer, Location = ti.HelipadActorLocation })
 			BindProducedVehicleEvents(produced)
 		end
 	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
@@ -1050,23 +1094,17 @@ CheckVictoryConditions = function()
 			and ti.Refinery.IsDead
 			and ti.Barracks.IsDead
 			and ti.WarFactory.IsDead
+			and ti.Helipad.IsDead
 			and ti.Radar.IsDead
 			and ti.Powerplant.IsDead
 			and ti.ServiceDepot.IsDead then
 
-			DisplayMessage(ti.AiPlayer.InternalName)
-			DisplayMessage(AlphaTeamPlayerName)
-
 			if ti.AiPlayer.InternalName == AlphaTeamPlayerName then
 				tiWinner = TeamInfo[BetaTeamPlayerName]
 				tiLoser = TeamInfo[AlphaTeamPlayerName]
-
-				DisplayMessage('a - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
 			else
 				tiWinner = TeamInfo[AlphaTeamPlayerName]
 				tiLoser = TeamInfo[BetaTeamPlayerName]
-
-				DisplayMessage('b - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
 			end
 		end
 	end)
@@ -1164,7 +1202,9 @@ HackyDrawNameTags = function()
 		Utils.Do(ti.Players, function(pi)
 			if pi.Hero ~= nil and pi.Hero.IsInWorld then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type)) or GameOver
+				local showTag = sameTeam
+					or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.Hero.Type))
+					or GameOver
 
 				if showTag then
 					local name = pi.Player.Name
@@ -1177,10 +1217,15 @@ HackyDrawNameTags = function()
 
 			if pi.IsPilot then
 				-- HACK: Don't show nametags on enemy units with cloak
-				local showTag = sameTeam or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type)) or GameOver
+				local showTag = (sameTeam
+					or (not sameTeam and not ArrayContains(EnemyNametagsHiddenForTypes, pi.PassengerOfVehicle.Type))
+					or GameOver
+					)
+					and pi.PassengerOfVehicle.HasProperty('CenterPosition') -- Handle dead/falling aircraft.
 
 				if showTag then
-					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250, 0)
+					local extraOffset = Actor.CruiseAltitude(pi.PassengerOfVehicle.Type)
+					local pos = WPos.New(pi.PassengerOfVehicle.CenterPosition.X, pi.PassengerOfVehicle.CenterPosition.Y - 1250 - extraOffset, 0)
 					local passengerCount = pi.PassengerOfVehicle.PassengerCount
 					local name = pi.Player.Name
 					name = name:sub(0,10) -- truncate to 10 chars
@@ -1245,14 +1290,18 @@ end
 DoTests = function()
 	local weaponTest = false
 	if weaponTest then
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) })
-		local a1 = Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 30) })
-		local a2 = Actor.Create('ltnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 30) })
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
+		local a1 = Actor.Create('htnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
+		local a2 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
+		a1.GrantCondition('brandnew')
+		a2.GrantCondition('brandnew')
 
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 45) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 45) })
-		local a3 = Actor.Create('e5', true, { Owner = AlphaTeamPlayer, Location = CPos.New(52, 45) })
-		local a4 = Actor.Create('ltnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(55, 45) })
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
+		local a3 = Actor.Create('mtnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
+		local a4 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
+		a3.GrantCondition('brandnew')
+		a4.GrantCondition('brandnew')
 	end
 end

@@ -66,6 +66,31 @@
 	Mobile:
 		RequiresCondition: occupied || brandnew
 
+# Helicopters can have conditions.
+# Helicopters can see cloaked units.
+# AI's purchased helicopters cost nothing.
+# Helicopters have a condition when damaged.
+# Helicopters can be repaired by engineers.
+# All Helicopters provide no vision if empty.
+^Helicopter:
+	DetectCloaked:
+		Range: 4c0
+	Valued:
+		Cost: 0
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
+	Targetable@REPAIR:
+		RequiresCondition: damaged
+		TargetTypes: Repair
+	Cargo:
+		LoadedCondition: occupied
+	RevealsShroudMultiplier:
+		Modifier: 0
+		RequiresCondition: !occupied
+	ExternalCondition@BRANDNEW:
+		Condition: brandnew
+
 # Hacky, but to satisfy OpenRA's lint
 ^CivBuilding:
 	ConditionManager:
