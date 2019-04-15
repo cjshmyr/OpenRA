@@ -29,16 +29,18 @@ PurchaseTerminal:
 	Exit:
 	ExternalCondition@purchase-terminal-cooldown:
 		Condition: purchase-terminal-cooldown
-	ExternalCondition@vehicle:
-		Condition: vehicle
-	ExternalCondition@vehicle-penalty:
-		Condition: vehicle-penalty
 	ExternalCondition@infantry:
 		Condition: infantry
 	ExternalCondition@infantry-penalty:
 		Condition: infantry-penalty
+	ExternalCondition@vehicle:
+		Condition: vehicle
+	ExternalCondition@vehicle-penalty:
+		Condition: vehicle-penalty
 	ExternalCondition@aircraft:
 		Condition: aircraft
+	ExternalCondition@aircraft-penalty:
+		Condition: aircraft-penalty
 	ExternalCondition@gdi:
 		Condition: gdi
 	ExternalCondition@nod:
@@ -48,21 +50,24 @@ PurchaseTerminal:
 	ProvidesPrerequisite@purchase-terminal-cooldown:
 		Prerequisite: purchase-terminal-cooldown
 		RequiresCondition: purchase-terminal-cooldown
-	ProvidesPrerequisite@vehicle:
-		Prerequisite: vehicle
-		RequiresCondition: vehicle
-	ProvidesPrerequisite@vehicle-penalty:
-		Prerequisite: vehicle-penalty
-		RequiresCondition: vehicle-penalty
 	ProvidesPrerequisite@infantry:
 		Prerequisite: infantry
 		RequiresCondition: infantry
 	ProvidesPrerequisite@infantry-penalty:
 		Prerequisite: infantry-penalty
 		RequiresCondition: infantry-penalty
+	ProvidesPrerequisite@vehicle:
+		Prerequisite: vehicle
+		RequiresCondition: vehicle
+	ProvidesPrerequisite@vehicle-penalty:
+		Prerequisite: vehicle-penalty
+		RequiresCondition: vehicle-penalty
 	ProvidesPrerequisite@aircraft:
 		Prerequisite: aircraft
 		RequiresCondition: aircraft
+	ProvidesPrerequisite@aircraft-penalty:
+		Prerequisite: aircraft-penalty
+		RequiresCondition: aircraft-penalty
 	ProvidesPrerequisite@gdi:
 		Prerequisite: gdi
 		RequiresCondition: gdi
@@ -490,6 +495,14 @@ buy.aircraft.tran:
 	RenderSprites:
 		Image: tran
 
+buy.aircraft.penalty.tran:
+	Inherits: buy.aircraft.tran
+	Valued:
+		Cost: 1800
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~aircraft-penalty
+
 buy.beacon.ion-beacon:
 	Inherits: ^buy.default
 	Valued:
@@ -704,7 +717,7 @@ buy.cameo.helipad:
 		BuildPaletteOrder: 70
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing aircraft.\n\n(This is an instructional tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing aircraft.\n\nWhen destroyed:\n- Aircraft cost double.\n\n(This is an instructional tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hpad
 

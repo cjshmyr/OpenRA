@@ -216,7 +216,8 @@ SetTeamInfo = function()
 			LastCheckedResourceAmount = 0,
 			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval,
 			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval,
-			WarFactoryActorLocation = nil
+			WarFactoryActorLocation = nil,
+			HelipadActorLocation = nil
 		}
 	end)
 
@@ -253,6 +254,7 @@ AssignTeamBuildings = function()
 
 		if ArrayContains(HelipadActorTypes, actor.Type) then
 			TeamInfo[actor.Owner.InternalName].Helipad = actor
+			TeamInfo[actor.Owner.InternalName].HelipadActorLocation = actor.Location
 		end
 
 		if ArrayContains(PowerplantActorTypes, actor.Type) then
@@ -389,6 +391,7 @@ BindBaseEvents = function()
 
 			Utils.Do(ti.Players, function(pi)
 				pi.PurchaseTerminal.RevokeCondition(pi.AircraftConditionToken)
+				pi.PurchaseTerminal.GrantCondition('aircraft-penalty') -- Don't ever need to revoke it.
 			end)
 		end)
 		Trigger.OnDamaged(ti.Helipad, function(self, attacker)
@@ -843,13 +846,12 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 			-- We exit out the other end not to cause traffic jams!
 			-- This will need un-hardcoding if the map is not symmetrical.
 			-- And looks hilariously glitchy on map borders.
-			local neutralPlayer = NeutralPlayer
 			local enterFrom = CPos.New(ti.WarFactoryActorLocation.X + 1, 0) -- Location offset +1, to get the "center"
 			local dropOffAt = ti.WarFactoryActorLocation + CVec.New(1, 1) -- Offset again
 			local exitAt = CPos.New(enterFrom.X, 999)
 
 			local produced = Reinforcements.ReinforceWithTransport(
-				neutralPlayer,				-- Neutral owner
+				NeutralPlayer,				-- Neutral owner
 				"tran-ai",					-- Transport type
 				{ type },					-- Actor(s) in transport
 				{ enterFrom, dropOffAt },	-- Entry path
@@ -860,7 +862,13 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 		end
 	elseif string.find(actorType, PurchaseTerminalAircraftActorTypePrefix) then
 		local ti = pi.Team
-		ti.Helipad.Produce(type)
+		if not ti.Helipad.IsDead then
+			ti.Helipad.Produce(type)
+		else
+			-- TODO: Need to fly it in from off-map.
+			local produced = Actor.Create(type, true, { Owner = NeutralPlayer, Location = ti.HelipadActorLocation })
+			BindProducedVehicleEvents(produced)
+		end
 	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
 		pi.HasBeaconConditionToken = hero.GrantCondition("hasbeacon")
 	end
@@ -1091,19 +1099,12 @@ CheckVictoryConditions = function()
 			and ti.Powerplant.IsDead
 			and ti.ServiceDepot.IsDead then
 
-			DisplayMessage(ti.AiPlayer.InternalName)
-			DisplayMessage(AlphaTeamPlayerName)
-
 			if ti.AiPlayer.InternalName == AlphaTeamPlayerName then
 				tiWinner = TeamInfo[BetaTeamPlayerName]
 				tiLoser = TeamInfo[AlphaTeamPlayerName]
-
-				DisplayMessage('a - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
 			else
 				tiWinner = TeamInfo[AlphaTeamPlayerName]
 				tiLoser = TeamInfo[BetaTeamPlayerName]
-
-				DisplayMessage('b - loser: ' .. tiLoser.AiPlayer.InternalName .. ' / winner: ' .. tiWinner.AiPlayer.InternalName)
 			end
 		end
 	end)
