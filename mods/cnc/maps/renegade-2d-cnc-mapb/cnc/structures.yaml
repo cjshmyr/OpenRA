@@ -47,6 +47,9 @@ HAND:
 FIX:
 	Inherits@Renegade: ^RenegadeBaseBuilding
 
+HPAD:
+	Inherits@Renegade: ^RenegadeBaseBuilding
+
 GUN:
 	Inherits@Renegade: ^RenegadeSmallBuilding
 	DetectCloaked:

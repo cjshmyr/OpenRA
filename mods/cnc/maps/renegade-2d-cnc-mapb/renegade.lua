@@ -16,6 +16,7 @@ CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
+PurchaseTerminalAircraftActorTypePrefix = "buy.aircraft."
 PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
@@ -39,6 +40,7 @@ if Mod == "cnc" then
 	RadarActorTypes = {"hq"}
 	WarFactoryActorTypes = {"weap","afld"}
 	BarracksActorTypes = {"pyle","hand"}
+	HelipadActorTypes = {"hpad"}
 	ServiceDepotActorTypes = {"fix"}
 	DefenseActorTypes = {"gtwr","atwr","gun","obli"}
 	AiHarvesterActorType = "harv-ai"
@@ -59,6 +61,7 @@ if Mod == "cnc" then
 	TypeNameTable['afld'] = 'Airstrip'
 	TypeNameTable['pyle'] = 'Barracks'
 	TypeNameTable['hand'] = 'Hand of Nod'
+	TypeNameTable['hpad'] = 'Helipad'
 	TypeNameTable['fix'] = 'Repair Facility'
 	TypeNameTable['gtwr'] = 'Guard Tower'
 	TypeNameTable['atwr'] = 'Advanced Guard Tower'
@@ -79,6 +82,7 @@ elseif Mod == "ra" then
 	RadarActorTypes = {"dome"}
 	WarFactoryActorTypes = {"weap"}
 	BarracksActorTypes = {"barr","tent"}
+	HelipadActorTypes = {"hpad"}
 	ServiceDepotActorTypes = {"fix"}
 	DefenseActorTypes = {"pbox","hbox","gun","ftur","tsla"}
 	AiHarvesterActorType = "harv-ai"
@@ -98,6 +102,7 @@ elseif Mod == "ra" then
 	TypeNameTable['weap'] = 'War Factory'
 	TypeNameTable['barr'] = 'Barracks'
 	TypeNameTable['tent'] = 'Barracks'
+	TypeNameTable['hpad'] = 'Helipad'
 	TypeNameTable['fix'] = 'Service Depot'
 	TypeNameTable['pbox'] = 'Pillbox'
 	TypeNameTable['hbox'] = 'Camoflauged Pillbox'
@@ -169,6 +174,7 @@ SetPlayerInfo = function()
 			HasBeaconConditionToken = -1, -- hero
 			VehicleConditionToken = -1, -- pt
 			InfantryConditionToken = -1, -- pt
+			AircraftConditionToken = -1, -- pt
 			RadarConditionToken = -1, -- pt
 			Score = 0,
 			Kills = 0,
@@ -202,6 +208,7 @@ SetTeamInfo = function()
 			Refinery = nil,
 			Barracks = nil,
 			WarFactory = nil,
+			Helipad = nil,
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
@@ -242,6 +249,10 @@ AssignTeamBuildings = function()
 
 		if ArrayContains(BarracksActorTypes, actor.Type) then
 			TeamInfo[actor.Owner.InternalName].Barracks = actor
+		end
+
+		if ArrayContains(HelipadActorTypes, actor.Type) then
+			TeamInfo[actor.Owner.InternalName].Helipad = actor
 		end
 
 		if ArrayContains(PowerplantActorTypes, actor.Type) then
@@ -288,6 +299,7 @@ BindPurchaseTerminals = function()
 			pi.RadarConditionToken = pt.GrantCondition("radar")
 			pi.InfantryConditionToken = pt.GrantCondition("infantry")
 			pi.VehicleConditionToken = pt.GrantCondition("vehicle")
+			pi.AircraftConditionToken = pt.GrantCondition("aircraft")
 
 			Trigger.OnProduction(pt, function(producer, produced)
 				BuildPurchaseTerminalItem(pi, produced.Type)
@@ -304,7 +316,7 @@ BindBaseEvents = function()
 			GrantRewardOnKilled(self, killer, "building")
 
 			local baseBuildings = {
-				ti.Refinery, ti.Barracks, ti.WarFactory, ti.Radar, ti.Powerplant, ti.ServiceDepot
+				ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
 			}
 			Utils.Do(baseBuildings, function(building)
 				if not building.IsDead then building.StopBuildingRepairs() end
@@ -363,6 +375,23 @@ BindBaseEvents = function()
 			end)
 		end)
 		Trigger.OnDamaged(ti.WarFactory, function(self, attacker)
+			if not self.IsDead and not ti.ConstructionYard.IsDead then
+				self.StartBuildingRepairs()
+			end
+			NotifyBaseUnderAttack(self)
+			GrantRewardOnDamaged(self, attacker)
+		end)
+
+		-- Helipad
+		Trigger.OnKilled(ti.Helipad, function(self, killer)
+			NotifyBuildingDestroyed(self, killer)
+			GrantRewardOnKilled(self, killer, "building")
+
+			Utils.Do(ti.Players, function(pi)
+				pi.PurchaseTerminal.RevokeCondition(pi.AircraftConditionToken)
+			end)
+		end)
+		Trigger.OnDamaged(ti.Helipad, function(self, attacker)
 			if not self.IsDead and not ti.ConstructionYard.IsDead then
 				self.StartBuildingRepairs()
 			end
@@ -520,7 +549,7 @@ GetAvailableSpawnPoint = function(player)
 	local ti = pi.Team
 
 	local allBuildings = {
-		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.Radar, ti.Powerplant, ti.ServiceDepot
+		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
 	}
 	local aliveBuildings = { }
 	for i, v in ipairs(allBuildings) do
@@ -583,6 +612,9 @@ end
 BindVehicleEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 		Trigger.OnProduction(ti.WarFactory, function(producer, produced)
+			BindProducedVehicleEvents(produced)
+		end)
+		Trigger.OnProduction(ti.Helipad, function(producer, produced)
 			BindProducedVehicleEvents(produced)
 		end)
 	end)
@@ -825,6 +857,9 @@ BuildPurchaseTerminalItem = function(pi, actorType)
 
 			BindProducedVehicleEvents(produced)
 		end
+	elseif string.find(actorType, PurchaseTerminalAircraftActorTypePrefix) then
+		local ti = pi.Team
+		ti.Helipad.Produce(type)
 	elseif string.find(actorType, PurchaseTerminalBeaconActorTypePrefix) then
 		pi.HasBeaconConditionToken = hero.GrantCondition("hasbeacon")
 	end
@@ -1050,6 +1085,7 @@ CheckVictoryConditions = function()
 			and ti.Refinery.IsDead
 			and ti.Barracks.IsDead
 			and ti.WarFactory.IsDead
+			and ti.Helipad.IsDead
 			and ti.Radar.IsDead
 			and ti.Powerplant.IsDead
 			and ti.ServiceDepot.IsDead then
