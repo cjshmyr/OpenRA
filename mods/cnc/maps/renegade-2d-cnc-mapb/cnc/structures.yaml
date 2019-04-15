@@ -6,9 +6,9 @@
 
 ^RenegadeSmallBuilding:
 	Health:
-		HP: 50000
+		HP: 100000
 	Armor:
-		Type: Heavy
+		Type: Woood
 
 FACT:
 	Inherits@Renegade: ^RenegadeBaseBuilding
@@ -56,7 +56,7 @@ GUN:
 		Range: 6c0
 
 OBLI:
-	Inherits@Renegade: ^RenegadeSmallBuilding
+	Inherits@Renegade: ^RenegadeBaseBuilding
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	DetectCloaked:
 		Range: 6c0
@@ -64,7 +64,7 @@ OBLI:
 		Amount: -1
 
 GTWR:
-	Inherits@Renegade: ^RenegadeSmallBuilding
+	Inherits@Renegade: ^RenegadeBaseBuilding
 	DetectCloaked:
 		Range: 6c0
 
