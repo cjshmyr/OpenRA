@@ -11,7 +11,7 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
-		Spectating: True
+		Spectating: True # HACK: Lets us enter neutral actors, and we don't see them under fog. Side effect: Warhead damage types think we are targeting an Ally.
 		NonCombatant: True
 		Faction: gdi
 	PlayerReference@Creeps:
