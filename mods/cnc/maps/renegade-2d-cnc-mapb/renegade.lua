@@ -1314,18 +1314,18 @@ end
 DoTests = function()
 	local weaponTest = false
 	if weaponTest then
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
-		local a1 = Actor.Create('htnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
-		local a2 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
-		a1.GrantCondition('brandnew')
-		a2.GrantCondition('brandnew')
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 23) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 23) })
+		local a1 = Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 23) })
+		local a2 = Actor.Create('e5', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 23) })
+		--a1.GrantCondition('brandnew')
+		--a2.GrantCondition('brandnew')
 
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
-		local a3 = Actor.Create('mtnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
-		local a4 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
-		a3.GrantCondition('brandnew')
-		a4.GrantCondition('brandnew')
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 33) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 33) })
+		local a3 = Actor.Create('e2', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 33) })
+		local a4 = Actor.Create('e4', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 33) })
+		--a3.GrantCondition('brandnew')
+		--a4.GrantCondition('brandnew')
 	end
 end
