@@ -183,7 +183,8 @@ SetPlayerInfo = function()
 			PassengerOfVehicle = nil,
 			IsPilot = false,
 			ProximityEventTokens = { },
-			HealthAfterLastDamageEvent = -1
+			HealthAfterLastDamageEvent = -1,
+			Surrendered = false
 		}
 
 		if p.IsLocalPlayer then	LocalPlayerInfo = PlayerInfo[p.InternalName] end
@@ -516,12 +517,13 @@ NotifyHarvesterUnderAttack = function(self)
 end
 
 SpawnHero = function(player)
-	if GameOver then return end
+	local pi = PlayerInfo[player.InternalName]
+
+	if GameOver or pi.Surrendered then return end
 
 	local spawnpoint = GetAvailableSpawnPoint(player)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
-	local pi = PlayerInfo[player.InternalName]
 	pi.Hero = hero
 
 	-- Revoke any inventory tokens
@@ -1087,6 +1089,28 @@ DistributeGatheredResources = function()
 end
 
 CheckVictoryConditions = function()
+	-- Check for surrendered players
+	-- We can't use objective triggers since they fire for only local players,
+	-- which means modifying game state == out of sync
+	-- TODO: If all players have surrendered on a team, we need to force that team a loss.
+	if not GameOver then
+		Utils.Do(PlayerInfo, function(pi)
+			if not pi.Surrendered and pi.Player.IsObjectiveFailed(pi.VictoryMissionObjectiveId) then
+				-- Destroy any vehicles they're in, then their hero.
+				if pi.PassengerOfVehicle ~= nil then
+					pi.PassengerOfVehicle.Kill()
+				end
+				if not pi.Hero.IsDead then
+					pi.Hero.Kill()
+				end
+
+				pi.Surrendered = true
+				DisplayMessage(pi.Player.Name .. ' surrendered!')
+			end
+		end)
+	end
+
+	-- Check for victory
 	local tiWinner = nil
 	local tiLoser = nil
 	Utils.Do(TeamInfo, function(ti)
