@@ -131,17 +131,29 @@ buy.infantry.e1:
 	RenderSprites:
 		Image: E1
 
-buy.infantry.e3:
+buy.infantry.e2:
 	Inherits: ^buy.default
 	Tooltip:
-		Name: Rocket Soldier
+		Name: Grenadier
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown
+		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~gdi
 		Queue: Infantry
 		Description: Anti-armor unit.
 	RenderSprites:
-		Image: E3
+		Image: E2
+
+buy.infantry.e4:
+	Inherits: ^buy.default
+	Tooltip:
+		Name: Flamethrower
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~nod
+		Queue: Infantry
+		Description: Anti-armor unit.
+	RenderSprites:
+		Image: E4
 
 buy.infantry.e6:
 	Inherits: ^buy.default
@@ -155,26 +167,26 @@ buy.infantry.e6:
 	RenderSprites:
 		Image: E6
 
-buy.infantry.e2:
+buy.infantry.e3:
 	Inherits: ^buy.default
 	Valued:
 		Cost: 250
 	Tooltip:
-		Name: Grenadier
+		Name: Rocket Soldier
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry, ~gdi
+		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry
 		Queue: Infantry
 		Description: Advanced anti-armor unit.
 	RenderSprites:
-		Image: E2
+		Image: E3
 
-buy.infantry.penalty.e2:
-	Inherits: buy.infantry.e2
+buy.infantry.penalty.e3:
+	Inherits: buy.infantry.e3
 	Valued:
 		Cost: 325
 	Buildable:
-		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~gdi
+		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty
 
 buy.infantry.rmbo:
 	Inherits: ^buy.default
@@ -196,27 +208,6 @@ buy.infantry.penalty.rmbo:
 		Cost: 750
 	Buildable:
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~gdi
-
-buy.infantry.e4:
-	Inherits: ^buy.default
-	Valued:
-		Cost: 250
-	Tooltip:
-		Name: Flamethrower
-	Buildable:
-		BuildPaletteOrder: 40
-		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry, ~nod
-		Queue: Infantry
-		Description: Advanced anti-infantry, anti-armor unit.
-	RenderSprites:
-		Image: E4
-
-buy.infantry.penalty.e4:
-	Inherits: buy.infantry.e4
-	Valued:
-		Cost: 325
-	Buildable:
-		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~infantry-penalty, ~nod
 
 buy.infantry.e5:
 	Inherits: ^buy.default

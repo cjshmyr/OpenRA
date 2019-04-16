@@ -1,15 +1,15 @@
 RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 	ReloadDelay: 30
-	Range: 2c0
+	Range: 3c0
 	Report: tone16.aud
 	ValidTargets: Repair, DisarmBeacon
 	Projectile: Bullet
 		Speed: 1c682
-	#Projectile: LaserZap
-	#Width: 85
-	#HitAnim: laserfire
-	#Color: 0000FF
-	#ZOffset: 1024
+	Projectile: LaserZap
+		Width: 100
+		HitAnim: smokey
+		Color: 009DFF
+		ZOffset: 1024
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -1500
@@ -20,38 +20,74 @@ RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 		Damage: 1000
 		ValidTargets: DisarmBeacon
 
-Rambo: #rmbo (new weapon (heavy mg), reduce spread, more damage, less damage vs wood, light, heavy)
-	Inherits: ^HeavyMG
+M16: #e1
+	Range: 5c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 6000
+		Damage: 1000
 		Versus:
-			Wood: 30
-			Light: 50
-			Heavy: 15
+			None: 160
+			Wood: 80
+			Light: 80
+			Heavy: 10
 
-Grenade: #e2 (faster projectile, more accurate, more damage, more damage vs heavy)
+Grenade: #e2
+	Range: 5c0
+	ReloadDelay: 50
 	Projectile: Bullet
 		Speed: 204
 		Inaccuracy: 400
 	Warhead@1Dam: SpreadDamage
-		Damage: 7500
+		Damage: 4000
 		Versus:
+			None: 80
+			Wood: 100
+			Light: 80
 			Heavy: 80
 
-Flamethrower: #e4 (longer range, higher rate of fire, more damage vs heavy)
-	Range: 5c0
-	ReloadDelay: 30
+Flamethrower: #e4
+	Range: 4c0
+	ReloadDelay: 25
 	Warhead@1Dam: SpreadDamage
+		Damage: 1500
 		Versus:
-			Heavy: 50
+			None: 100
+			Wood: 120
+			Light: 100
+			Heavy: 100
 
-Chemspray: #e5 (longer range, higher rate of fire, less damage vs heavy)
-	Range: 5c0
-	ReloadDelay: 30
+Rockets: #e3
+	Range: 6c0
+	ReloadDelay: 50
 	Warhead@1Dam: SpreadDamage
+		Damage: 4000
 		Versus:
-			Heavy: 30
+			None: 30
+			Wood: 100
+			Light: 100
+			Heavy: 100
+
+Rambo: #rmbo
+	Inherits: M16
+	Range: 6c0
+	Report: mgun11.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 2000
+		Versus:
+			None: 120
+			Wood: 60
+			Light: 60
+			Heavy: 10
+
+Chemspray: #e5
+	Range: 5c0
+	ReloadDelay: 25
+	Warhead@1Dam: SpreadDamage
+		Damage: 2500
+		Versus:
+			None: 100
+			Wood: 80
+			Light: 80
+			Heavy: 60
 
 MachineGunH: # jeep (added anti-air)
 	ValidTargets: Ground, Air

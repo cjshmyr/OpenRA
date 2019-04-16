@@ -2,19 +2,19 @@
 	Health:
 		HP: 10000
 	Mobile:
-		Speed: 56
+		Speed: 60
 
 ^TierTwoInfantry:
 	Health:
 		HP: 12500
 	Mobile:
-		Speed: 60
+		Speed: 66
 
 ^TierThreeInfantry:
 	Health:
 		HP: 15000
 	Mobile:
-		Speed: 64
+		Speed: 72
 
 E1:
 	Inherits@HeroUnit: ^HeroUnit
@@ -22,15 +22,15 @@ E1:
 
 E2:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierTwoInfantry
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E3:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierOneInfantry
+	Inherits@InfantryTier: ^TierTwoInfantry
 
 E4:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierTwoInfantry
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E5:
 	Inherits@HeroUnit: ^HeroUnit
@@ -57,7 +57,7 @@ E6:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Repair
 	WithInfantryBody:
-		DefaultAttackSequence: idle1
+		DefaultAttackSequence: shoot
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit
