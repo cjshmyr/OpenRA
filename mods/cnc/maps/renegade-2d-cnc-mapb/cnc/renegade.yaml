@@ -163,7 +163,7 @@ buy.infantry.e6:
 		BuildPaletteOrder: 30
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown
 		Queue: Infantry
-		Description: Repairs friendly structures and vehicles.\nDisarms beacons.\nUnarmed.
+		Description: Repairs friendly vehicles and structures.\nDisarms ion and nuclear strike beacons.\nUnarmed.
 	RenderSprites:
 		Image: E6
 
@@ -460,7 +460,7 @@ buy.vehicle.harv:
 		BuildPaletteOrder: 100
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~vehicle
 		Queue: Vehicle
-		Description: Collects Tiberium for processing.\nThe entire team will receive $ for tiberium harvested.\nUnarmed.\nHolds 1 passenger.
+		Description: Collects Tiberium for processing.\nTeam members will receive credits for harvested tiberium.\nUnarmed.\nHolds 1 passenger.
 	RenderSprites:
 		Image: harv
 
@@ -504,7 +504,7 @@ buy.beacon.ion-beacon:
 		BuildPaletteOrder: 999
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~gdi, ~!hasbeacon
 		Queue: Infantry
-		Description: Purchase an Ion Cannon Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
+		Description: Purchase an Ion Cannon Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\n\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: ion-beacon
 
@@ -518,7 +518,7 @@ buy.beacon.nuke-beacon:
 		BuildPaletteOrder: 999
 		Prerequisites: ~canbuy, ~!purchase-terminal-cooldown, ~nod, ~!hasbeacon
 		Queue: Infantry
-		Description: Purchase a Nuclear Strike Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\nBeacons can only be disarmed by Engineers.
+		Description: Purchase a Nuclear Strike Beacon.\nWhen purchased, the beacon can be deployed from the Buildings tab.\n\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: nuke-beacon
 
@@ -533,7 +533,7 @@ buy.placebeacon.ion-beacon:
 		Prerequisites: ~hasbeacon, ~gdi
 		Queue: Building
 		BuildDuration: 50
-		Description: Place an Ion Cannon Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, an Ion Cannon Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
+		Description: Place an Ion Cannon Beacon at your current location.\nIf the beacon is not disarmed after 45 seconds, an Ion Cannon will strike the beacon's location.\n\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: ion-beacon
 
@@ -548,7 +548,7 @@ buy.placebeacon.nuke-beacon:
 		Prerequisites: ~hasbeacon, ~nod
 		Queue: Building
 		BuildDuration: 50
-		Description: Place a Nuclear Strike Beacon at your current location.\nIf the beacon is not disarmed after 30 seconds, a Nuclear Missile Strike will hit the beacon's location.\nBeacons can only be disarmed by Engineers.
+		Description: Place a Nuclear Strike Beacon at your current location.\nIf the beacon is not disarmed after 45 seconds, a Nuclear Missile will strike the beacon's location.\n\nBeacons can only be disarmed by Engineers.
 	RenderSprites:
 		Image: nuke-beacon
 
@@ -612,7 +612,7 @@ buy.cameo.fact:
 		BuildPaletteOrder: 10
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides automatic repairs to all base buildings.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides automatic repairs to all base buildings.\n\nOther information:\n- Stand near major base buildings to make purchases.\n- Base buildings provide various benefits to your team.\n- Engineers can repair buildings.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fact
 
@@ -648,7 +648,7 @@ buy.cameo.hq:
 		BuildPaletteOrder: 40
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides radar for the team.\n\nOther information:\n- Pings for notification (Base Under Attack, Harvester Under Attack, and Beacon Deployed) will appear on the radar.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides radar for the team.\n\nWhen destroyed:\n- Radar is offline.\n\nOther information:\n- Pings for notifications (Base Under Attack, Harvester Under Attack, and Beacon Deployed) will appear on the radar.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hq
 
@@ -660,7 +660,7 @@ buy.cameo.weap:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\nOther information:\n- Vehicles require a pilot to be operated.\n- Many vehicles hold multiple passengers.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: weap
 
@@ -672,7 +672,7 @@ buy.cameo.afld:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\nOther information:\n- Vehicles require a pilot to be operated.\n- Many vehicles hold multiple passengers.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: afld
 
@@ -696,7 +696,7 @@ buy.cameo.hand:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\nOther information:\n- Vehicles require a pilot to be operated.\n- Many vehicles hold multiple passengers.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hand
 
@@ -708,7 +708,7 @@ buy.cameo.helipad:
 		BuildPaletteOrder: 70
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing aircraft.\n\nWhen destroyed:\n- Aircraft cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing aircraft.\n\nWhen destroyed:\n- Aircraft cost 50% more.\n\nOther information:\n- Vehicles require a pilot to be operated.\n- Many vehicles hold multiple passengers.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hpad
 
@@ -720,6 +720,6 @@ buy.cameo.fix:
 		BuildPaletteOrder: 80
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for repairing vehicles.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for repairing vehicles.\n\nOther information\n- Engineers can repair vehicles.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fix
