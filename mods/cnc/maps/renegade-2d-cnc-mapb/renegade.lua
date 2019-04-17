@@ -984,7 +984,6 @@ GrantRewardOnDamaged = function(self, attacker)
 	local currentHealth = self.Health
 	HealthAfterOnDamageEventTable[actorId] = currentHealth
 
-	-- Granting points happens below
 	local damageTaken = previousHealth - currentHealth
 
 	if damageTaken == 0 then -- No damage taken (can happen)
@@ -999,27 +998,35 @@ GrantRewardOnDamaged = function(self, attacker)
 
 	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
 	if attackerpi ~= nil then -- Is a player
-		-- Points are calculated as a percentage of damage done against an actor's max HP, with then modifiers applied.
-		-- If an actor has 5000 health, and the attack dealt 1500 damage, this is 30%.
-		-- Percentages are rounded up (23.3% of health as damage is 24)
-		-- If damage or healing < 1%, they are given one point.
-		-- If damage > 1%, percentage point reward is doubled (e.g. 24 * 2 = 48)
-		-- If healing, there is no point doubling.
+		--[[
+			Points are calculated as a percentage of damage done against an actor's max HP.
+			If an actor has 5000 health, and the attack dealt 1500 damage, this is 30%.
+
+			If damage or healing dealt was less than 1%, they are given one point.
+			If damage > 1%, the percentage is doubled then floored (e.g. 2.3% -> 4.6% -> 4 points).
+			If healing > 1%, the percentage is floored (e.g. 2.3% -> 2 points).
+
+			An MLRS and Artillery destroying a structure will end up with identical points.
+		]]
 
 		-- If the damage dealt was negative, this is a heal
 		local wasHeal = damageTaken < 0
 		damageTaken = math.abs(damageTaken)
 
 		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
-		local points = percentageDamageDealt
 
-		if points < 0 then
-			points = 1 -- Fractions of a percentage will be rewarded minorly.
+		local points = 0
+
+		if percentageDamageDealt < 1 then
+			points = 1
 		else
-			points = math.ceil(points + 0.5) -- Round up
+			points = percentageDamageDealt
+
 			if not wasHeal then
-				point = points * 2 -- Double reward for damage.
+				points = points * 2
 			end
+
+			points = math.floor(points + 0.5)
 		end
 
 		attackerpi.Score = attackerpi.Score + points
