@@ -2,19 +2,25 @@
 	Health:
 		HP: 10000
 	Mobile:
-		Speed: 56
+		Speed: 66
+	RevealsShroud:
+		Range: 6c0
 
 ^TierTwoInfantry:
 	Health:
 		HP: 12500
 	Mobile:
-		Speed: 60
+		Speed: 70
+	RevealsShroud:
+		Range: 6c0
 
 ^TierThreeInfantry:
 	Health:
 		HP: 15000
 	Mobile:
-		Speed: 64
+		Speed: 74
+	RevealsShroud:
+		Range: 6c0
 
 E1:
 	Inherits@HeroUnit: ^HeroUnit
@@ -22,15 +28,15 @@ E1:
 
 E2:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierTwoInfantry
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E3:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierOneInfantry
+	Inherits@InfantryTier: ^TierTwoInfantry
 
 E4:
 	Inherits@HeroUnit: ^HeroUnit
-	Inherits@InfantryTier: ^TierTwoInfantry
+	Inherits@InfantryTier: ^TierOneInfantry
 
 E5:
 	Inherits@HeroUnit: ^HeroUnit
@@ -53,11 +59,12 @@ E6:
 		OutsideRangeCursor: repair
 		TargetStances: Ally, Enemy
 		ForceTargetStances: None
+		LocalOffset: 341,0,256 # NOTE: E4 offset, guessed.
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Repair
 	WithInfantryBody:
-		DefaultAttackSequence: idle1
+		DefaultAttackSequence: cheer
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit
@@ -65,3 +72,5 @@ RMBO:
 	-Demolition:
 	Armament:
 		Weapon: Rambo
+	-VoiceAnnouncement:
+	-AnnounceOnKill:

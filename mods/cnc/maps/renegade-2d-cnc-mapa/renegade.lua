@@ -21,7 +21,7 @@ PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 NotifyHarvesterUnderAttackInterval = DateTime.Seconds(30)
-BeaconTimeLimit = DateTime.Seconds(30)
+BeaconTimeLimit = DateTime.Seconds(45)
 RespawnTime = DateTime.Seconds(3)
 LocalPlayerInfo = nil -- HACK: Used for nametags & scoreboard.
 EnemyNametagsHiddenForTypes = { "stnk" } -- HACK: Used for nametags.
@@ -183,7 +183,8 @@ SetPlayerInfo = function()
 			PassengerOfVehicle = nil,
 			IsPilot = false,
 			ProximityEventTokens = { },
-			HealthAfterLastDamageEvent = -1
+			HealthAfterLastDamageEvent = -1,
+			Surrendered = false
 		}
 
 		if p.IsLocalPlayer then	LocalPlayerInfo = PlayerInfo[p.InternalName] end
@@ -516,12 +517,13 @@ NotifyHarvesterUnderAttack = function(self)
 end
 
 SpawnHero = function(player)
-	if GameOver then return end
+	local pi = PlayerInfo[player.InternalName]
+
+	if GameOver or pi.Surrendered then return end
 
 	local spawnpoint = GetAvailableSpawnPoint(player)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
-	local pi = PlayerInfo[player.InternalName]
 	pi.Hero = hero
 
 	-- Revoke any inventory tokens
@@ -947,7 +949,7 @@ GetBeaconFlashTicks = function()
 	local ticks = { }
 
 	local tick = BeaconTimeLimit
-	local interval = DateTime.Seconds(1) / 5
+	local interval = DateTime.Seconds(1) / 10
 	while tick > 0 do
 		local step = 1
 		while step <= 4 do
@@ -955,7 +957,7 @@ GetBeaconFlashTicks = function()
 			if tick > 0 then ticks[#ticks+1] = tick end
 			step = step + 1
 		end
-		interval = interval + (DateTime.Seconds(1) / 5)
+		interval = interval + (DateTime.Seconds(1) / 10)
 	end
 
 	return ticks
@@ -982,7 +984,6 @@ GrantRewardOnDamaged = function(self, attacker)
 	local currentHealth = self.Health
 	HealthAfterOnDamageEventTable[actorId] = currentHealth
 
-	-- Granting points happens below
 	local damageTaken = previousHealth - currentHealth
 
 	if damageTaken == 0 then -- No damage taken (can happen)
@@ -997,27 +998,35 @@ GrantRewardOnDamaged = function(self, attacker)
 
 	local attackerpi = PlayerInfo[attacker.Owner.InternalName]
 	if attackerpi ~= nil then -- Is a player
-		-- Points are calculated as a percentage of damage done against an actor's max HP, with then modifiers applied.
-		-- If an actor has 5000 health, and the attack dealt 1500 damage, this is 30%.
-		-- Percentages are rounded up (23.3% of health as damage is 24)
-		-- If damage or healing < 1%, they are given one point.
-		-- If damage > 1%, percentage point reward is doubled (e.g. 24 * 2 = 48)
-		-- If healing, there is no point doubling.
+		--[[
+			Points are calculated as a percentage of damage done against an actor's max HP.
+			If an actor has 5000 health, and the attack dealt 1500 damage, this is 30%.
+
+			If damage or healing dealt was less than 1%, they are given one point.
+			If damage > 1%, the percentage is doubled then floored (e.g. 2.3% -> 4.6% -> 4 points).
+			If healing > 1%, the percentage is floored (e.g. 2.3% -> 2 points).
+
+			An MLRS and Artillery destroying a structure will end up with identical points.
+		]]
 
 		-- If the damage dealt was negative, this is a heal
 		local wasHeal = damageTaken < 0
 		damageTaken = math.abs(damageTaken)
 
 		local percentageDamageDealt = (damageTaken / self.MaxHealth) * 100
-		local points = percentageDamageDealt
 
-		if points < 0 then
-			points = 1 -- Fractions of a percentage will be rewarded minorly.
+		local points = 0
+
+		if percentageDamageDealt < 1 then
+			points = 1
 		else
-			points = math.ceil(points + 0.5) -- Round up
+			points = percentageDamageDealt
+
 			if not wasHeal then
-				point = points * 2 -- Double reward for damage.
+				points = points * 2
 			end
+
+			points = math.floor(points + 0.5)
 		end
 
 		attackerpi.Score = attackerpi.Score + points
@@ -1087,6 +1096,28 @@ DistributeGatheredResources = function()
 end
 
 CheckVictoryConditions = function()
+	-- Check for surrendered players
+	-- We can't use objective triggers since they fire for only local players,
+	-- which means modifying game state == out of sync
+	-- TODO: If all players have surrendered on a team, we need to force that team a loss.
+	if not GameOver then
+		Utils.Do(PlayerInfo, function(pi)
+			if not pi.Surrendered and pi.Player.IsObjectiveFailed(pi.VictoryMissionObjectiveId) then
+				-- Destroy any vehicles they're in, then their hero.
+				if pi.PassengerOfVehicle ~= nil then
+					pi.PassengerOfVehicle.Kill()
+				end
+				if not pi.Hero.IsDead then
+					pi.Hero.Kill()
+				end
+
+				pi.Surrendered = true
+				DisplayMessage(pi.Player.Name .. ' surrendered!')
+			end
+		end)
+	end
+
+	-- Check for victory
 	local tiWinner = nil
 	local tiLoser = nil
 	Utils.Do(TeamInfo, function(ti)
@@ -1290,18 +1321,18 @@ end
 DoTests = function()
 	local weaponTest = false
 	if weaponTest then
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
-		local a1 = Actor.Create('htnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 25) })
-		local a2 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 25) })
-		a1.GrantCondition('brandnew')
-		a2.GrantCondition('brandnew')
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 23) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 23) })
+		local a1 = Actor.Create('rmbo', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 23) })
+		local a2 = Actor.Create('e5', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 23) })
+		--a1.GrantCondition('brandnew')
+		--a2.GrantCondition('brandnew')
 
-		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
-		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
-		local a3 = Actor.Create('mtnk', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 30) })
-		local a4 = Actor.Create('ftnk', true, { Owner = BetaTeamPlayer, Location = CPos.New(23, 30) })
-		a3.GrantCondition('brandnew')
-		a4.GrantCondition('brandnew')
+		Actor.Create('camera', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 33) })
+		Actor.Create('camera', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 33) })
+		local a3 = Actor.Create('e2', true, { Owner = AlphaTeamPlayer, Location = CPos.New(22, 33) })
+		local a4 = Actor.Create('e4', true, { Owner = BetaTeamPlayer, Location = CPos.New(25, 33) })
+		--a3.GrantCondition('brandnew')
+		--a4.GrantCondition('brandnew')
 	end
 end
