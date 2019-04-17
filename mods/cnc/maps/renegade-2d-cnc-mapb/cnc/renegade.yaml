@@ -624,7 +624,7 @@ buy.cameo.proc:
 		BuildPaletteOrder: 20
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides an AI-controlled harvester that collects resources.\n- Provides team members with 2 credits per second.\n\nWhen destroyed:\n- Provides team members with 1 credit per second.\n\nOther information:\n- Each team member has their own personal amount of credits.\n- Credits can be earned by healing allies or damaging enemies (Points represent the amount of credits earned).\n- Credits can be earned by harvesting resources, and the reward will be given to each team member.\n- A full harvest of Green Tiberium is worth 300 credits.\n- A full harvest of Blue Tiberium is worth 600 credits.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: proc
 
@@ -648,7 +648,7 @@ buy.cameo.hq:
 		BuildPaletteOrder: 40
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Provides radar for the team.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Provides radar for the team.\n\nOther information:\n- Pings for notification (Base Under Attack, Harvester Under Attack, and Beacon Deployed) will appear on the radar.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hq
 
@@ -660,7 +660,7 @@ buy.cameo.weap:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Weapons Factory once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: weap
 
@@ -672,7 +672,7 @@ buy.cameo.afld:
 		BuildPaletteOrder: 50
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing vehicles.\n\nWhen destroyed:\n- Vehicles cost 50% more.\n- Vehicles will be air-dropped in where the Airstrip once stood.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: afld
 
@@ -684,7 +684,7 @@ buy.cameo.pyle:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~gdi
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: pyle
 
@@ -696,7 +696,7 @@ buy.cameo.hand:
 		BuildPaletteOrder: 60
 		Prerequisites: ~cameo, ~nod
 		Queue: Defence
-		Description: When present:\n- Allows for purchasing of infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for purchasing infantry.\n\nWhen destroyed:\n- Infantry cost 50% more.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: hand
 
@@ -720,6 +720,6 @@ buy.cameo.fix:
 		BuildPaletteOrder: 80
 		Prerequisites: ~cameo
 		Queue: Defence
-		Description: When present:\n- Allows for repairing of vehicles.\n\n(This is an informational tooltip, purchasing this has no effect.)
+		Description: When present:\n- Allows for repairing vehicles.\n\n(This is an informational tooltip, purchasing this has no effect.)
 	RenderSprites:
 		Image: fix
