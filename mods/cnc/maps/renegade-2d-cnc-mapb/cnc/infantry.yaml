@@ -59,11 +59,12 @@ E6:
 		OutsideRangeCursor: repair
 		TargetStances: Ally, Enemy
 		ForceTargetStances: None
+		LocalOffset: 341,0,256 # NOTE: E4 offset, guessed.
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Repair
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
+		DefaultAttackSequence: cheer
 
 RMBO:
 	Inherits@HeroUnit: ^HeroUnit

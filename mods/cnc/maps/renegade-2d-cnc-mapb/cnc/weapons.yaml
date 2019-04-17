@@ -1,6 +1,6 @@
 RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 	ReloadDelay: 30
-	Range: 3c0
+	Range: 3c512
 	Report: tone16.aud
 	ValidTargets: Repair, DisarmBeacon
 	Projectile: Bullet
@@ -8,7 +8,10 @@ RepairGun: #e6 (new weapon, repairs vehicles, disarms beacons)
 	Projectile: LaserZap
 		Width: 100
 		HitAnim: smokey
-		Color: 009DFF
+		Color: 0077FF
+		SecondaryBeam: true
+		SecondaryBeamWidth: 20
+		SecondaryBeamColor: C4DFFF #00BBFF
 		ZOffset: 1024
 	Warhead@1Dam: SpreadDamage
 		Spread: 42

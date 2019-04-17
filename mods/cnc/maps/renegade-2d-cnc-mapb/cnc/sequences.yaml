@@ -36,12 +36,6 @@ tran-ai:
 	icon: tranicnh.tem
 		AddExtension: False
 
-e6:
-	shoot:
-		Start: 66
-		Length: 2
-		Facings: 8
-
 camera.beacon:
 	idle: camera
 		Length: *
