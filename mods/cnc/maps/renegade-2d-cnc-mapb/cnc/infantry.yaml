@@ -2,19 +2,25 @@
 	Health:
 		HP: 10000
 	Mobile:
-		Speed: 60
+		Speed: 66
+	RevealsShroud:
+		Range: 6c0
 
 ^TierTwoInfantry:
 	Health:
 		HP: 12500
 	Mobile:
-		Speed: 66
+		Speed: 70
+	RevealsShroud:
+		Range: 6c0
 
 ^TierThreeInfantry:
 	Health:
 		HP: 15000
 	Mobile:
-		Speed: 72
+		Speed: 74
+	RevealsShroud:
+		Range: 6c0
 
 E1:
 	Inherits@HeroUnit: ^HeroUnit
@@ -65,3 +71,5 @@ RMBO:
 	-Demolition:
 	Armament:
 		Weapon: Rambo
+	-VoiceAnnouncement:
+	-AnnounceOnKill:
