@@ -21,7 +21,7 @@ PurchaseTerminalBeaconActorTypePrefix = "buy.beacon."
 HeroItemPlaceBeaconActorTypePrefix = "buy.placebeacon."
 NotifyBaseUnderAttackInterval = DateTime.Seconds(30)
 NotifyHarvesterUnderAttackInterval = DateTime.Seconds(30)
-BeaconTimeLimit = DateTime.Seconds(30)
+BeaconTimeLimit = DateTime.Seconds(45)
 RespawnTime = DateTime.Seconds(3)
 LocalPlayerInfo = nil -- HACK: Used for nametags & scoreboard.
 EnemyNametagsHiddenForTypes = { "stnk" } -- HACK: Used for nametags.
@@ -949,7 +949,7 @@ GetBeaconFlashTicks = function()
 	local ticks = { }
 
 	local tick = BeaconTimeLimit
-	local interval = DateTime.Seconds(1) / 5
+	local interval = DateTime.Seconds(1) / 10
 	while tick > 0 do
 		local step = 1
 		while step <= 4 do
@@ -957,7 +957,7 @@ GetBeaconFlashTicks = function()
 			if tick > 0 then ticks[#ticks+1] = tick end
 			step = step + 1
 		end
-		interval = interval + (DateTime.Seconds(1) / 5)
+		interval = interval + (DateTime.Seconds(1) / 10)
 	end
 
 	return ticks
