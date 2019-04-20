@@ -102,6 +102,8 @@
 	WithSpriteBody:
 	Tooltip:
 		GenericName: Destroyed Building
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	FrozenUnderFog:
 	ScriptTriggers:
 	MapEditorData:
