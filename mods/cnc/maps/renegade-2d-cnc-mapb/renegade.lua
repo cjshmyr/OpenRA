@@ -124,6 +124,7 @@ WorldLoaded = function()
 	SetTeamInfo()
 
 	AssignTeamBuildings()
+	AssignSpawnLocations()
 
 	SetVictoryConditions()
 
@@ -215,6 +216,7 @@ SetTeamInfo = function()
 			Powerplant = nil,
 			ServiceDepot = nil,
 			Defenses = {},
+			SpawnLocations = {},
 			LastCheckedResourceAmount = 0,
 			TicksSinceLastBuildingDamage = NotifyBaseUnderAttackInterval,
 			TicksSinceLastHarvesterDamage = NotifyHarvesterUnderAttackInterval,
@@ -271,6 +273,40 @@ AssignTeamBuildings = function()
 			local ti = TeamInfo[actor.Owner.InternalName]
 			ti.Defenses[#ti.Defenses+1] = actor
 		end
+	end)
+end
+
+AssignSpawnLocations = function()
+	--[[
+		Hacky/funny :)
+		Spawn points are defined as areas around a building's location
+		Assumes buildings are shaped as:
+			ooo
+			ooo
+			ooo
+
+		We get the center of the building, expand twice, and only use the annulus (outer ring).
+	]]
+	Utils.Do(TeamInfo, function(ti)
+		local cells = {}
+
+		local spawnBy = {
+			ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
+		}
+
+		Utils.Do(spawnBy, function(building)
+			local loc = building.Location + CVec.New(1, 1)
+			local expandedOnce = Utils.ExpandFootprint({loc}, true)
+			local expandedTwice = Utils.ExpandFootprint(expandedOnce, true)
+			local annulus = GetCPosAnnulus(expandedOnce, expandedTwice)
+
+			Utils.Do(annulus, function(cell)
+				cells[#cells+1] = cell
+			end)
+
+		end)
+
+		ti.SpawnLocations = cells
 	end)
 end
 
@@ -535,7 +571,7 @@ SpawnHero = function(player)
 
 	if GameOver or pi.Surrendered then return end
 
-	local spawnpoint = GetAvailableSpawnPoint(player)
+	local spawnpoint = GetAvailableSpawnPoint(pi)
 	local hero = Actor.Create(SpawnAsActorType, true, { Owner = player, Location = spawnpoint })
 
 	pi.Hero = hero
@@ -550,42 +586,10 @@ SpawnHero = function(player)
 	BindHeroEvents(hero)
 end
 
-GetAvailableSpawnPoint = function(player)
-	--[[
-		Hacky/funny :)
-		Spawn actors around the perimeter of an alive building
-		Assumes buildings are shaped as:
-			ooo
-			ooo
-			ooo
-
-		We get the center of the building, expand twice, and only use the annulus (outer ring).
-	]]
-
-	-- Instead of random spawns, we could allow players to select a building to spawn on after their first death.
-
-	local pi = PlayerInfo[player.InternalName]
-	local ti = pi.Team
-
-	local allBuildings = {
-		ti.ConstructionYard, ti.Refinery, ti.Barracks, ti.WarFactory, ti.Helipad, ti.Radar, ti.Powerplant, ti.ServiceDepot
-	}
-	local aliveBuildings = { }
-	for i, v in ipairs(allBuildings) do
-		if not v.IsDead then aliveBuildings[#aliveBuildings+1] = v end
-	end
-
-	-- Get the annulus
-	local building = Utils.Random(aliveBuildings)
-	local loc = building.Location + CVec.New(1, 1)
-	local expandedOnce = Utils.ExpandFootprint({loc}, true)
-	local expandedTwice = Utils.ExpandFootprint(expandedOnce, true)
-	local annulus = GetCPosAnnulus(expandedOnce, expandedTwice)
-
-	-- Pick a random cell, for now don't care about occupancy
-	local randomCell = Utils.Random(annulus)
-
-	return randomCell
+GetAvailableSpawnPoint = function(pi)
+	-- Currently doesn't check for occupancy, but doesn't matter much.
+	local spawnLocations = pi.Team.SpawnLocations
+	return Utils.Random(spawnLocations)
 end
 
 FocusLocalCameraOnActor = function(actor)
