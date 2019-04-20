@@ -518,6 +518,8 @@ end
 CreateBuildingHusk = function(building)
 	local huskName = building.Type .. BuildingHuskSuffix
 	local husk = Actor.Create(huskName, true, { Owner = building.Owner, Location = building.Location })
+	local ti = TeamInfo[building.Owner.InternalName]
+	BindBuildingProximityEvent(ti, husk)
 end
 
 NotifyBuildingDestroyed = function(self, killer)
@@ -735,56 +737,58 @@ BindProximityEvents = function()
 		}
 
 		Utils.Do(proximityEnabledBuildings, function(building)
-
-			-- Fun fact: We declare the exited trigger first, so it always fires first
-			-- Spawning a new infantry unit will cause the first one to exit, and the new one to enter
-			-- thus the order of token removal/addition is proper
-
-			Trigger.OnExitedProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
-				-- HACK: Beacons may also trip this.
-				-- Need to stop assuming that the actor is a hero, etc.
-				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
-					return
-				end
-
-				if actor.IsDead then
-					return
-				end
-
-				local pi = PlayerInfo[actor.Owner.InternalName]
-				if pi ~= nil then -- A human player
-					if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
-						local tokenToRevoke = pi.ProximityEventTokens[building.Type]
-
-						if tokenToRevoke ~= nil then
-							pi.Hero.RevokeCondition(tokenToRevoke)
-							pi.ProximityEventTokens[building.Type] = -1
-						end
-					end
-				end
-			end)
-
-			Trigger.OnEnteredProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
-				-- HACK: Beacons may also trip this.
-				-- Need to stop assuming that the actor is a hero, etc.
-				if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
-					return
-				end
-
-				if building.IsDead then -- Building trips its own exit, ignore
-					return
-				end
-
-				local pi = PlayerInfo[actor.Owner.InternalName]
-				if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
-					if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
-						pi.ProximityEventTokens[building.Type] = pi.Hero.GrantCondition("canbuy") -- e.g. table['fact'] = token
-					end
-				end
-
-			end)
-
+			BindBuildingProximityEvent(ti, building)
 		end)
+	end)
+end
+
+BindBuildingProximityEvent = function(ti, building)
+	-- Fun fact: We declare the exited trigger first, so it always fires first
+	-- Spawning a new infantry unit will cause the first one to exit, and the new one to enter
+	-- thus the order of token removal/addition is proper
+
+	Trigger.OnExitedProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
+		-- HACK: Beacons may also trip this.
+		-- Need to stop assuming that the actor is a hero, etc.
+		if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
+			return
+		end
+
+		if actor.IsDead then
+			return
+		end
+
+		local pi = PlayerInfo[actor.Owner.InternalName]
+		if pi ~= nil then -- A human player
+			if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
+				local tokenToRevoke = pi.ProximityEventTokens[building.Type]
+
+				if tokenToRevoke ~= nil then
+					pi.Hero.RevokeCondition(tokenToRevoke)
+					pi.ProximityEventTokens[building.Type] = -1
+				end
+			end
+		end
+	end)
+
+	Trigger.OnEnteredProximityTrigger(building.CenterPosition, WDist.FromCells(3), function(actor)
+		-- HACK: Beacons may also trip this.
+		-- Need to stop assuming that the actor is a hero, etc.
+		if actor.Type == AlphaBeaconType or actor.Type == BetaBeaconType then
+			return
+		end
+
+		if building.IsDead then -- Building trips its own exit, ignore
+			return
+		end
+
+		local pi = PlayerInfo[actor.Owner.InternalName]
+		if pi ~= nil and pi.PassengerOfVehicle == nil then -- A human player + not in vehicle
+			if pi.Player.Faction == ti.AiPlayer.Faction then -- On same team
+				pi.ProximityEventTokens[building.Type] = pi.Hero.GrantCondition("canbuy") -- e.g. table['fact'] = token
+			end
+		end
+
 	end)
 end
 
