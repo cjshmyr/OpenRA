@@ -215,6 +215,7 @@ SetTeamInfo = function()
 			Radar = nil,
 			Powerplant = nil,
 			ServiceDepot = nil,
+			AiHarvester = nil,
 			Defenses = {},
 			SpawnLocations = {},
 			LastCheckedResourceAmount = 0,
@@ -379,6 +380,10 @@ BindBaseEvents = function()
 			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
+
+			if not ti.AiHarvester.IsDead then
+				ti.AiHarvester.Kill()
+			end
 		end)
 		Trigger.OnDamaged(ti.Refinery, function(self, attacker)
 			if not self.IsDead and not ti.ConstructionYard.IsDead then
@@ -806,6 +811,9 @@ InitializeAiHarvesters = function()
 end
 
 InitializeAiHarvester = function(harv, wasPurchased)
+	local ti = TeamInfo[harv.Owner.InternalName]
+	ti.AiHarvester = harv
+
 	local waypointLocation = HarvesterWaypoints[harv.Owner.Faction]
 	harv.Move(waypointLocation, 3)
 	harv.FindResources()
@@ -822,7 +830,6 @@ InitializeAiHarvester = function(harv, wasPurchased)
 			GrantRewardOnKilled(self, killer, "unit")
 		end
 
-		local ti = TeamInfo[self.Owner.InternalName]
 		if not ti.WarFactory.IsDead and not ti.Refinery.IsDead then
 			ti.WarFactory.Produce(AiHarvesterActorType)
 		end
