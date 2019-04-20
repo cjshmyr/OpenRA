@@ -91,6 +91,22 @@
 	ExternalCondition@BRANDNEW:
 		Condition: brandnew
 
+# Default for destroyed buildings.
+^RenegadeBuildingHusk:
+	Inherits@1: ^SpriteActor
+	Interactable:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	WithSpriteBody:
+	Tooltip:
+		GenericName: Destroyed Building
+	FrozenUnderFog:
+	ScriptTriggers:
+	MapEditorData:
+		Categories: Husk
+
 # Hacky, but to satisfy OpenRA's lint
 ^CivBuilding:
 	ConditionManager:

@@ -13,6 +13,7 @@ TypeNameTable = { } -- HACK: We don't have a nice way of getting an actor's name
 BeaconSoundsTable = { }
 CashPerSecond = 2 -- Cash given per second.
 CashPerSecondPenalized = 1 -- Cash given per second, with no ref.
+BuildingHuskSuffix = ".husk"
 PurchaseTerminalActorType = "purchaseterminal"
 PurchaseTerminalInfantryActorTypePrefix = "buy.infantry."
 PurchaseTerminalVehicleActorTypePrefix = "buy.vehicle."
@@ -315,6 +316,7 @@ BindBaseEvents = function()
 	Utils.Do(TeamInfo, function(ti)
 		-- Construction Yard
 		Trigger.OnKilled(ti.ConstructionYard, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -338,6 +340,7 @@ BindBaseEvents = function()
 
 		-- Refinery
 		Trigger.OnKilled(ti.Refinery, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 		end)
@@ -351,6 +354,7 @@ BindBaseEvents = function()
 
 		-- Barracks
 		Trigger.OnKilled(ti.Barracks, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -369,6 +373,7 @@ BindBaseEvents = function()
 
 		-- War Factory
 		Trigger.OnKilled(ti.WarFactory, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -387,6 +392,7 @@ BindBaseEvents = function()
 
 		-- Helipad
 		Trigger.OnKilled(ti.Helipad, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -405,6 +411,7 @@ BindBaseEvents = function()
 
 		-- Radar
 		Trigger.OnKilled(ti.Radar, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -422,6 +429,7 @@ BindBaseEvents = function()
 
 		-- Powerplant
 		Trigger.OnKilled(ti.Powerplant, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 
@@ -441,6 +449,7 @@ BindBaseEvents = function()
 
 		-- Service Depot
 		Trigger.OnKilled(ti.ServiceDepot, function(self, killer)
+			CreateBuildingHusk(self)
 			NotifyBuildingDestroyed(self, killer)
 			GrantRewardOnKilled(self, killer, "building")
 		end)
@@ -468,6 +477,11 @@ BindBaseEvents = function()
 		end)
 
 	end)
+end
+
+CreateBuildingHusk = function(building)
+	local huskName = building.Type .. BuildingHuskSuffix
+	local husk = Actor.Create(huskName, true, { Owner = building.Owner, Location = building.Location })
 end
 
 NotifyBuildingDestroyed = function(self, killer)

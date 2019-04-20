@@ -62,3 +62,73 @@ custom_explosion:
 		Offset: 0, -78
 		ZOffset: 1023
 	ion_explosion: ionsfx
+
+#husks
+fact.destroyed:
+	idle: fact
+		Start: 48
+		Length: 1
+
+proc.destroyed:
+	idle: proc
+		Start: 60
+		Length: 1
+		Offset: 2,4
+
+nuk2.destroyed:
+	idle: nuk2
+		Start: 8
+		Length: 1
+
+hq.destroyed:
+	idle: hq
+		Start: 32
+		Length: 1
+
+weap.destroyed:
+	idle: weap
+		Start: 2
+		Length: 1
+		Offset: 0,-12
+		ZOffset: -511
+
+afld.destroyed:
+	idle: afld
+		Start: 32
+		Length: 1
+		ZOffset: -1023
+
+pyle.destroyed:
+	idle: pyle
+		Start: 20
+		Length: 1
+
+hand.destroyed:
+	idle: hand
+		Start: 2
+		Length: 1
+		Offset: 0,-8
+
+fix.destroyed:
+	idle: fix
+		Start: 14
+		Length: 1
+		ZOffset: -1c511
+
+hpad.destroyed:
+	idle: hpad
+		Start: 14
+		Length: 1
+		ZOffset: -1023
+
+atwr.destroyed:
+	idle: atwr
+		Start: 2
+		Length: 1
+		Offset: 0,-13
+
+obli.destroyed:
+	idle: obli
+		Start: 8
+		Length: 1
+		Offset: 0,-12
