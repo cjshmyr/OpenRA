@@ -110,11 +110,11 @@ ProduceVehicles = function()
 	end)
 end
 
-BringDDPatrol1 = function()
+BringDDPatrol = function(patrolPath)
 	local units = Reinforcements.Reinforce(Greece, DDPatrol, ShipArrivePath)
 	Utils.Do(units, function(unit)
 		Trigger.OnIdle(unit, function(patrols)
-			patrols.Patrol(DDPatrol1Path, true, 200)
+			patrols.Patrol(patrolPath, true, 200)
 		end)
 	end)
 
@@ -123,30 +123,9 @@ BringDDPatrol1 = function()
 			return
 		else
 			if Map.LobbyOption("difficulty") == "easy" then
-				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol1)
+				Trigger.AfterDelay(DateTime.Minutes(7), function() BringDDPatrol(patrolPath) end)
 			else
-				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol1)
-			end
-		end
-	end)
-end
-
-BringDDPatrol2 = function()
-	local units = Reinforcements.Reinforce(Greece, DDPatrol, ShipArrivePath)
-	Utils.Do(units, function(unit)
-		Trigger.OnIdle(unit, function(patrols)
-			patrols.Patrol(DDPatrol2Path, true, 200)
-		end)
-	end)
-
-	Trigger.OnAllKilled(units, function()
-		if GreeceNavalYard.IsDead then
-			return
-		else
-			if Map.LobbyOption("difficulty") == "easy" then
-				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol2)
-			else
-				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol2)
+				Trigger.AfterDelay(DateTime.Minutes(4), function() BringDDPatrol(patrolPath) end)
 			end
 		end
 	end)
@@ -172,6 +151,6 @@ ActivateAI = function()
 
 	ProduceInfantry()
 	ProduceVehicles()
-	BringDDPatrol1()
-	Trigger.AfterDelay(DateTime.Minutes(1), BringDDPatrol2)
+	BringDDPatrol(DDPatrol1Path)
+	Trigger.AfterDelay(DateTime.Minutes(1), function() BringDDPatrol(DDPatrol2Path) end)
 end
